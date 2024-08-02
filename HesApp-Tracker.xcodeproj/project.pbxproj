@@ -1,0 +1,446 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FD05CDA52C5D2DD300E0171E /* HesApp_TrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDA42C5D2DD300E0171E /* HesApp_TrackerApp.swift */; };
+		FD05CDA72C5D2DD300E0171E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDA62C5D2DD300E0171E /* AuthView.swift */; };
+		FD05CDA92C5D2DD300E0171E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD05CDA82C5D2DD300E0171E /* Assets.xcassets */; };
+		FD05CDAC2C5D2DD300E0171E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD05CDAB2C5D2DD300E0171E /* Preview Assets.xcassets */; };
+		FD05CDB42C5D2E0E00E0171E /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDB32C5D2E0E00E0171E /* Home.swift */; };
+		FD05CDB62C5D2E2D00E0171E /* UsersSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDB52C5D2E2D00E0171E /* UsersSubscriptions.swift */; };
+		FD05CDBA2C5D364000E0171E /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDB92C5D364000E0171E /* AppMainView.swift */; };
+		FD05CDBC2C5D365500E0171E /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDBB2C5D365500E0171E /* Login.swift */; };
+		FD05CDBE2C5D365E00E0171E /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDBD2C5D365E00E0171E /* Register.swift */; };
+		FD05CDC02C5D3AF900E0171E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD05CDBF2C5D3AF900E0171E /* GoogleService-Info.plist */; };
+		FD05CDC32C5D3CAB00E0171E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FD05CDC22C5D3CAB00E0171E /* FirebaseAnalytics */; };
+		FD05CDCD2C5D3CAB00E0171E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FD05CDCC2C5D3CAB00E0171E /* FirebaseAuth */; };
+		FD05CDD72C5D3CAB00E0171E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FD05CDD62C5D3CAB00E0171E /* FirebaseFirestore */; };
+		FD05CDEB2C5D3CAB00E0171E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FD05CDEA2C5D3CAB00E0171E /* FirebaseStorage */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FD05CDA12C5D2DD300E0171E /* HesApp-Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HesApp-Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD05CDA42C5D2DD300E0171E /* HesApp_TrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HesApp_TrackerApp.swift; sourceTree = "<group>"; };
+		FD05CDA62C5D2DD300E0171E /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		FD05CDA82C5D2DD300E0171E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FD05CDAB2C5D2DD300E0171E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FD05CDB32C5D2E0E00E0171E /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		FD05CDB52C5D2E2D00E0171E /* UsersSubscriptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersSubscriptions.swift; sourceTree = "<group>"; };
+		FD05CDB92C5D364000E0171E /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
+		FD05CDBB2C5D365500E0171E /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		FD05CDBD2C5D365E00E0171E /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
+		FD05CDBF2C5D3AF900E0171E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FD05CD9E2C5D2DD300E0171E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD05CDCD2C5D3CAB00E0171E /* FirebaseAuth in Frameworks */,
+				FD05CDC32C5D3CAB00E0171E /* FirebaseAnalytics in Frameworks */,
+				FD05CDEB2C5D3CAB00E0171E /* FirebaseStorage in Frameworks */,
+				FD05CDD72C5D3CAB00E0171E /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FD05CD982C5D2DD300E0171E = {
+			isa = PBXGroup;
+			children = (
+				FD05CDA32C5D2DD300E0171E /* HesApp-Tracker */,
+				FD05CDA22C5D2DD300E0171E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FD05CDA22C5D2DD300E0171E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FD05CDA12C5D2DD300E0171E /* HesApp-Tracker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FD05CDA32C5D2DD300E0171E /* HesApp-Tracker */ = {
+			isa = PBXGroup;
+			children = (
+				FD05CDB22C5D2DDB00E0171E /* View */,
+				FD05CDA42C5D2DD300E0171E /* HesApp_TrackerApp.swift */,
+				FD05CDA82C5D2DD300E0171E /* Assets.xcassets */,
+				FD05CDBF2C5D3AF900E0171E /* GoogleService-Info.plist */,
+				FD05CDAA2C5D2DD300E0171E /* Preview Content */,
+			);
+			path = "HesApp-Tracker";
+			sourceTree = "<group>";
+		};
+		FD05CDAA2C5D2DD300E0171E /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				FD05CDAB2C5D2DD300E0171E /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FD05CDB22C5D2DDB00E0171E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FD05CDB82C5D362B00E0171E /* AppMain */,
+				FD05CDB72C5D362300E0171E /* Auth */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		FD05CDB72C5D362300E0171E /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				FD05CDA62C5D2DD300E0171E /* AuthView.swift */,
+				FD05CDBB2C5D365500E0171E /* Login.swift */,
+				FD05CDBD2C5D365E00E0171E /* Register.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		FD05CDB82C5D362B00E0171E /* AppMain */ = {
+			isa = PBXGroup;
+			children = (
+				FD05CDB92C5D364000E0171E /* AppMainView.swift */,
+				FD05CDB32C5D2E0E00E0171E /* Home.swift */,
+				FD05CDB52C5D2E2D00E0171E /* UsersSubscriptions.swift */,
+			);
+			path = AppMain;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FD05CDA02C5D2DD300E0171E /* HesApp-Tracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD05CDAF2C5D2DD300E0171E /* Build configuration list for PBXNativeTarget "HesApp-Tracker" */;
+			buildPhases = (
+				FD05CD9D2C5D2DD300E0171E /* Sources */,
+				FD05CD9E2C5D2DD300E0171E /* Frameworks */,
+				FD05CD9F2C5D2DD300E0171E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "HesApp-Tracker";
+			packageProductDependencies = (
+				FD05CDC22C5D3CAB00E0171E /* FirebaseAnalytics */,
+				FD05CDCC2C5D3CAB00E0171E /* FirebaseAuth */,
+				FD05CDD62C5D3CAB00E0171E /* FirebaseFirestore */,
+				FD05CDEA2C5D3CAB00E0171E /* FirebaseStorage */,
+			);
+			productName = "HesApp-Tracker";
+			productReference = FD05CDA12C5D2DD300E0171E /* HesApp-Tracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FD05CD992C5D2DD300E0171E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1520;
+				LastUpgradeCheck = 1520;
+				TargetAttributes = {
+					FD05CDA02C5D2DD300E0171E = {
+						CreatedOnToolsVersion = 15.2;
+					};
+				};
+			};
+			buildConfigurationList = FD05CD9C2C5D2DD300E0171E /* Build configuration list for PBXProject "HesApp-Tracker" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FD05CD982C5D2DD300E0171E;
+			packageReferences = (
+				FD05CDC12C5D3CAB00E0171E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			productRefGroup = FD05CDA22C5D2DD300E0171E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FD05CDA02C5D2DD300E0171E /* HesApp-Tracker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FD05CD9F2C5D2DD300E0171E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD05CDAC2C5D2DD300E0171E /* Preview Assets.xcassets in Resources */,
+				FD05CDA92C5D2DD300E0171E /* Assets.xcassets in Resources */,
+				FD05CDC02C5D3AF900E0171E /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FD05CD9D2C5D2DD300E0171E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD05CDA72C5D2DD300E0171E /* AuthView.swift in Sources */,
+				FD05CDBA2C5D364000E0171E /* AppMainView.swift in Sources */,
+				FD05CDB62C5D2E2D00E0171E /* UsersSubscriptions.swift in Sources */,
+				FD05CDBC2C5D365500E0171E /* Login.swift in Sources */,
+				FD05CDBE2C5D365E00E0171E /* Register.swift in Sources */,
+				FD05CDB42C5D2E0E00E0171E /* Home.swift in Sources */,
+				FD05CDA52C5D2DD300E0171E /* HesApp_TrackerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FD05CDAD2C5D2DD300E0171E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FD05CDAE2C5D2DD300E0171E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FD05CDB02C5D2DD300E0171E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HesApp-Tracker/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.emirsansar.HesApp-Tracker";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FD05CDB12C5D2DD300E0171E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"HesApp-Tracker/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.emirsansar.HesApp-Tracker";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FD05CD9C2C5D2DD300E0171E /* Build configuration list for PBXProject "HesApp-Tracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD05CDAD2C5D2DD300E0171E /* Debug */,
+				FD05CDAE2C5D2DD300E0171E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD05CDAF2C5D2DD300E0171E /* Build configuration list for PBXNativeTarget "HesApp-Tracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD05CDB02C5D2DD300E0171E /* Debug */,
+				FD05CDB12C5D2DD300E0171E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FD05CDC12C5D3CAB00E0171E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FD05CDC22C5D3CAB00E0171E /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD05CDC12C5D3CAB00E0171E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		FD05CDCC2C5D3CAB00E0171E /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD05CDC12C5D3CAB00E0171E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		FD05CDD62C5D3CAB00E0171E /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD05CDC12C5D3CAB00E0171E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		FD05CDEA2C5D3CAB00E0171E /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD05CDC12C5D3CAB00E0171E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = FD05CD992C5D2DD300E0171E /* Project object */;
+}
