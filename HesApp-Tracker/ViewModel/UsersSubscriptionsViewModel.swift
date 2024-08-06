@@ -160,43 +160,51 @@ class UsersSubscriptionsViewModel: ObservableObject {
     }
     
     
-    func fetchSubscriptionsSummary() {
+    func fetchSubscriptionsSummary(userEmail: String) {
         isGettingUserSubCountandSpending = true
         
-        guard let userEmail = Auth.auth().currentUser?.email else {
-            fetchSubscriptionSummaryError = "User is not found."
-            isGettingUserSubCountandSpending = false
-            return
-        }
+//        guard let userEmail = Auth.auth().currentUser?.email else {
+//            fetchSubscriptionSummaryError = "User is not found."
+//            isGettingUserSubCountandSpending = false
+//            return
+//        }
         
         let db = Firestore.firestore()
         let userRef = db.collection("Users").document(userEmail)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
-                self.fetchSubscriptionSummaryError = error.localizedDescription
-                self.isGettingUserSubCountandSpending = false
+                DispatchQueue.main.async {
+                    self.fetchSubscriptionSummaryError = error.localizedDescription
+                    self.isGettingUserSubCountandSpending = false
+                }
                 return
             }
             
-            let subscriptions = documentSnapshot?.data()?["Subscriptions"] as? [String: Any] ?? [:]
-                    
-            var monthlySpend: Double = 0.0
-            var serviceCount: Int = 0
+            guard let document = documentSnapshot, document.exists,
+                  let subscriptions = document.data()?["Subscriptions"] as? [String: [String: Any]] else {
+                    DispatchQueue.main.async {
+                        self.fetchSubscriptionSummaryError = "No subscriptions found."
+                        self.isGettingUserSubCountandSpending = false
+                }
+                return
+            }
             
-            for (_, servicePrice) in subscriptions {
-                if let price = servicePrice as? Double {
-                    monthlySpend += price
-                    serviceCount += 1
+            var monthlySpend: Double = 0.0
+            var serviceCount: Int = subscriptions.count
+            
+            for (_, serviceDetails) in subscriptions {
+                if let price = serviceDetails["Price"] as? Double,
+                   let personCount = serviceDetails["PersonCount"] as? Int {
+                    monthlySpend += price / Double(personCount)
                 }
             }
             
             DispatchQueue.main.async {
                 self.totalSubscriptionCount = serviceCount
                 self.totalMonthlySpending = monthlySpend
+                self.isGettingUserSubCountandSpending = false
             }
-            
-            self.isGettingUserSubCountandSpending = false
         }
         
     }
