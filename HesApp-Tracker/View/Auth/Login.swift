@@ -1,73 +1,76 @@
-//
-//  Login.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 2.08.2024.
-//
-
 import SwiftUI
 import FirebaseAuth
 
 struct Login: View {
     
+    @Binding var isUserLoggedIn: Bool
+    
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var isLoggingIn: Bool = false
-    @State private var loginError: String?
-    @State private var loginSuccess: Bool = false
-    @Binding var isUserLoggedIn: Bool
+    
+    @ObservedObject var userAuthVM = UserAuthAndDetailsViewModel()
 
     var body: some View {
         
-        VStack {
-            titleView
+        VStack (){
+            appLogoView
+            loginLogoView
             emailField
             passwordField
-            loginFeedback
             loginButton
+            loginFeedback
             Spacer()
         }
-        .padding()
+        .padding(.horizontal)
+        .background(gradientBG)
+        .edgesIgnoringSafeArea(.all)
         
     }
     
-    private var titleView: some View {
-        Text("Login")
-            .font(.largeTitle)
-            .padding(.top, 40)
-    }
+    
+    // MARK: - Subviews
     
     private var emailField: some View {
         TextField("Email", text: $email)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
+            .background(Color.white)
+            .cornerRadius(8)
+            .shadow(radius: 5)
             .keyboardType(.emailAddress)
             .autocapitalization(.none)
+            .frame(width: UIScreen.main.bounds.width*0.88)
     }
     
     private var passwordField: some View {
         SecureField("Password", text: $password)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
+            .background(Color.white)
+            .cornerRadius(8)
+            .shadow(radius: 5)
+            .frame(width: UIScreen.main.bounds.width*0.88)
     }
     
     private var loginFeedback: some View {
         VStack {
-            if let error = loginError {
+            if let error = userAuthVM.loginError {
                 Text(error)
-                    .foregroundColor(.red)
+                    .foregroundColor(.black.opacity(0.85))
                     .padding()
+                    .background(Color.red.opacity(0.20))
+                    .cornerRadius(8)
+                    .padding(.bottom, 10)
             }
-            if loginSuccess {
-                Text("Giriş başarılı!")
-                    .foregroundColor(.green)
+            if userAuthVM.loginSuccess {
+                Text("Login successful!\nYou are being redirected to the app.")
+                    .foregroundColor(.black.opacity(0.85))
+                    .padding()
+                    .background(Color.green.opacity(0.20))
+                    .cornerRadius(8)
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             isUserLoggedIn = true
                         }
                     }
-                Text("Uygulamaya yönlendiriliyorsunuz.")
-                    .foregroundColor(.green)
             }
         }
     }
@@ -75,35 +78,55 @@ struct Login: View {
     private var loginButton: some View {
         Button(action: login) {
             Text("Login")
-                .frame(maxWidth: .infinity)
+                .frame(width: UIScreen.main.bounds.width * 0.80)
                 .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(8)
+                .font(.headline)
+                .shadow(color: .blue.opacity(0.3), radius: 5)
         }
         .padding()
-        .disabled(isLoggingIn)
+        .disabled(userAuthVM.isLoggingIn)
+    }
+    
+    private var appLogoView: some View {
+        Image("hesapp")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(height: UIScreen.main.bounds.height * 0.12)
+            .padding(.top, 70)
+            .shadow(radius: 10)
+    }
+    
+    private var loginLogoView: some View {
+        Image("login")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(height: UIScreen.main.bounds.height * 0.10)
+            .padding(.top, 40)
+            .padding(.bottom, 20)
+    }
+    
+    private var gradientBG: LinearGradient {
+        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.55), Color("#afd2e0")]), startPoint: .center, endPoint: .bottom)
     }
     
     
+    // MARK: - Functions
     
     private func login() {
-        isLoggingIn = true
-        
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            if error != nil {
-                loginError = error?.localizedDescription
-                isLoggingIn = false
-                return
+        userAuthVM.loginUser(email: email, password: password) { success in
+            if success {
+                userAuthVM.loginSuccess = true
             } else {
-                loginSuccess = true
+                userAuthVM.loginSuccess = false
             }
-            isLoggingIn = false
         }
-        
     }
     
 }
+
 
 #Preview {
     Login(isUserLoggedIn: .constant(false))

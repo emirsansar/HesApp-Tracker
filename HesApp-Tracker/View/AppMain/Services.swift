@@ -8,9 +8,73 @@
 import SwiftUI
 
 struct Services: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    
+    @ObservedObject var serviceVM = ServiceViewModel()
+    
+    init() {
+        prepareNavBarStyle()
     }
+    
+    var body: some View {
+        
+        NavigationView {
+            VStack {
+                servicesList
+                    .task {
+                        getServices()
+                    }
+                    .background(gradientBG)
+                    .navigationTitle("Services")
+            }
+        }
+        .padding(.top, -40)
+    }
+
+    
+    // MARK: - Subviews
+    
+    private var servicesList: some View {
+        List {
+            ForEach(Array(serviceVM.services.enumerated()), id: \.element.serviceName) { index, service in
+                NavigationLink(destination: ServicePlans(chosenService: service)) {
+                    Text(service.serviceName)
+                        .font(.system(size: 20, weight: .regular))
+                }
+                .listRowBackground(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
+            }
+            
+        }
+        .background(Color.clear)
+        .scrollContentBackground(.hidden)
+        
+    }
+    
+    private var gradientBG: some View {
+        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.55), Color("#afd2e0")]), startPoint: .center, endPoint: .bottom)
+            .edgesIgnoringSafeArea(.all)
+    }
+    
+    // MARK: - Functions
+    
+    private func getServices() {
+        serviceVM.getServicesFromFirestore { services, error in
+            serviceVM.services = services ?? []
+        }
+    }
+    
+    private func prepareNavBarStyle() {
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(Color.blue.opacity(0.55))
+        appearance.titleTextAttributes = [
+                    .foregroundColor: UIColor.black,
+                    .font: UIFont.systemFont(ofSize: 19, weight: .semibold)
+                ]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
+        
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+    
 }
 
 #Preview {

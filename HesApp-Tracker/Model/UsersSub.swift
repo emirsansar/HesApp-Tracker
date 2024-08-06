@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct UsersSub {
+    var id = UUID()
+    var serviceName: String
+    var planName: String
+    var planPrice: Double
+    var personCount: Int
+}

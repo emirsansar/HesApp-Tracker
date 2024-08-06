@@ -6,69 +6,99 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct Register: View {
     
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var confirmPassword: String = ""
-    @State private var isRegistering: Bool = false
-    @State private var registrationError: String?
-    @State private var registrationSuccess: Bool = false
     @Binding var selectedTab: Int
     
-
+    @State private var email: String = ""
+    @State private var name: String = ""
+    @State private var surname: String = ""
+    @State private var password: String = ""
+    @State private var confirmPassword: String = ""
+    
+    @ObservedObject var userAuthVM = UserAuthAndDetailsViewModel()
+    
     var body: some View {
         
         VStack {
-            titleView
+            appLogoView
+            registerLogoView
+            nameFields
             emailField
             passwordField
             confirmPasswordField
-            registrationFeedback
             registerButton
+            registrationFeedback
             Spacer()
         }
-        .padding()
+        .padding(.horizontal, 30)
+        .background(gradientBG)
+        .edgesIgnoringSafeArea(.all)
         
     }
     
-    private var titleView: some View {
-        Text("Register")
-            .font(.largeTitle)
-            .padding(.top, 40)
+    
+    // MARK: - Subviews
+    
+    private var nameFields: some View {
+        HStack {
+            TextField("Name", text: $name)
+                .padding()
+                .background(Color.white)
+                .cornerRadius(8)
+                .shadow(radius: 5)
+                .autocapitalization(.none)
+            
+            TextField("Surname", text: $surname)
+                .padding()
+                .background(Color.white)
+                .cornerRadius(8)
+                .shadow(radius: 5)
+                .autocapitalization(.none)
+        }.frame(width: UIScreen.main.bounds.width*0.88)
     }
     
     private var emailField: some View {
         TextField("Email", text: $email)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
             .keyboardType(.emailAddress)
+            .background(Color.white)
+            .cornerRadius(8)
+            .shadow(radius: 5)
             .autocapitalization(.none)
+            .frame(width: UIScreen.main.bounds.width*0.88)
     }
     
     private var passwordField: some View {
         SecureField("Password", text: $password)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
+            .background(Color.white)
+            .cornerRadius(8)
+            .shadow(radius: 5)
+            .autocapitalization(.none)
+            .frame(width: UIScreen.main.bounds.width*0.88)
     }
     
     private var confirmPasswordField: some View {
         SecureField("Confirm Password", text: $confirmPassword)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
+            .background(Color.white)
+            .cornerRadius(8)
+            .shadow(radius: 5)
+            .autocapitalization(.none)
+            .frame(width: UIScreen.main.bounds.width*0.88)
     }
     
     private var registrationFeedback: some View {
         VStack {
-            if let error = registrationError {
+            if let error = userAuthVM.registrationError {
                 Text(error)
                     .foregroundColor(.red)
                     .padding()
             }
-            if registrationSuccess {
-                Text("Kayıt başarılı!")
+            if userAuthVM.registrationSuccess {
+                Text("Registration successful!")
                     .foregroundColor(.green)
                     .padding()
                     .onAppear {
@@ -85,42 +115,60 @@ struct Register: View {
     private var registerButton: some View {
         Button(action: register) {
             Text("Register")
-                .frame(maxWidth: .infinity)
+                .frame(width: UIScreen.main.bounds.width * 0.80)
                 .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(8)
+                .font(.headline)
+                .shadow(color: .blue.opacity(0.3), radius: 5)
         }
-        .padding()
-        .disabled(isRegistering)
+        .padding(.top, 15)
+        .disabled(userAuthVM.isRegistering)
+    }
+    
+    private var appLogoView: some View {
+        Image("hesapp")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(height: UIScreen.main.bounds.height * 0.12)
+            .padding(.top, 70)
+            .shadow(radius: 10)
+    }
+    
+    private var registerLogoView: some View {
+        Image("register")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(height: UIScreen.main.bounds.height * 0.10)
+            .padding(.top, 40)
+            .padding(.bottom, 15)
+    }
+    
+    private var gradientBG: LinearGradient {
+        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.50), Color("#afd2e0")]), startPoint: .center, endPoint: .bottom)
     }
     
     
+    // MARK: - Functions
+    
     private func register() {
-        isRegistering = true
-        registrationError = nil
-        
         if password != confirmPassword {
-            registrationError = "Passwords do not match."
-            isRegistering = false
+            userAuthVM.registrationError = "Passwords do not match."
             return
         }
         
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    registrationError = error.localizedDescription
-                    registrationSuccess = false
-                } else {
-                    registrationSuccess = true
-                }
-                isRegistering = false
+        userAuthVM.registerUserToFirebaseAuth(email: email, password: password, name: name, surname: surname) { success in
+            if success {
+                userAuthVM.registrationSuccess = true
+            } else {
+                userAuthVM.registrationSuccess = false
             }
         }
-        
     }
     
 }
+
 
 #Preview {
     Register(selectedTab: .constant(1))
