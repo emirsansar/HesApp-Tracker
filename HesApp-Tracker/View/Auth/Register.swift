@@ -143,6 +143,7 @@ struct Register: View {
             .frame(height: UIScreen.main.bounds.height * 0.10)
             .padding(.top, 40)
             .padding(.bottom, 15)
+            .padding(.leading,15)
     }
     
     

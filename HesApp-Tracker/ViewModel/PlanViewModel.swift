@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseFirestore
 
 class PlanViewModel: ObservableObject {
     
@@ -15,9 +14,7 @@ class PlanViewModel: ObservableObject {
     
     func getPlansOfServiceFromFirestore(documentID: String, completion: @escaping ([Plan]?, Error?) -> Void){
         
-        let db = Firestore.firestore()
-        
-        db.collection("Services").document(documentID).getDocument { (documentSnapshot, error) in
+        FirestoreManager.shared.db.collection("Services").document(documentID).getDocument { (documentSnapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return

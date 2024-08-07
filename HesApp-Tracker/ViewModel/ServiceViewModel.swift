@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseFirestore
 
 class ServiceViewModel: ObservableObject {
     
@@ -14,9 +13,8 @@ class ServiceViewModel: ObservableObject {
 
     
     func getServicesFromFirestore(completion: @escaping ([Service]?, Error?) -> Void) {
-        let db = Firestore.firestore()
         
-        db.collection("Services").getDocuments { (querySnapshot, error) in
+        FirestoreManager.shared.db.collection("Services").getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return

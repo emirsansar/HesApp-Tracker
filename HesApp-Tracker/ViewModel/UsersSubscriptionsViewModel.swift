@@ -27,10 +27,8 @@ class UsersSubscriptionsViewModel: ObservableObject {
     
     
     func addPlanToUserOnFirestore(serviceName: String, plan: Plan, personCount: Int, completion: @escaping (Bool) -> Void) {
-        let userEmail = Auth.auth().currentUser!.email! as String
-        
-        let db = Firestore.firestore()
-        let userRef = db.collection("Users").document(userEmail)
+
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -85,8 +83,8 @@ class UsersSubscriptionsViewModel: ObservableObject {
 
     
     func fetchUserSubscriptions(userEmail: String) {
-        let db = Firestore.firestore()
-        let userRef = db.collection("Users").document(userEmail)
+
+        let userRef = FirestoreManager.shared.db.collection("Users").document(userEmail)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -127,13 +125,12 @@ class UsersSubscriptionsViewModel: ObservableObject {
 
     
     func removeSubscriptionFromUser(selectedSub: UsersSub, completion: @escaping (Bool, Error?) -> Void) {
-        guard let userEmail = Auth.auth().currentUser?.email else {
+        guard let userEmail = AuthManager.shared.currentUserEmail else {
             completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "User is not found."]))
             return
         }
         
-        let db = Firestore.firestore()
-        let userRef = db.collection("Users").document(userEmail)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(userEmail)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -169,8 +166,7 @@ class UsersSubscriptionsViewModel: ObservableObject {
 //            return
 //        }
         
-        let db = Firestore.firestore()
-        let userRef = db.collection("Users").document(userEmail)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(userEmail)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -191,7 +187,7 @@ class UsersSubscriptionsViewModel: ObservableObject {
             }
             
             var monthlySpend: Double = 0.0
-            var serviceCount: Int = subscriptions.count
+            let serviceCount: Int = subscriptions.count
             
             for (_, serviceDetails) in subscriptions {
                 if let price = serviceDetails["Price"] as? Double,
@@ -207,11 +203,6 @@ class UsersSubscriptionsViewModel: ObservableObject {
             }
         }
         
-    }
-    
-    
-    private func replaceCommaWithDot(text: String) -> String {
-        return text.replacingOccurrences(of: ",", with: ".")
     }
 
 }

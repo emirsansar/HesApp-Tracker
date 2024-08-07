@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
 
 class UserAuthAndDetailsViewModel: ObservableObject {
     
@@ -26,7 +24,7 @@ class UserAuthAndDetailsViewModel: ObservableObject {
         isRegistering = true
         registrationError = nil
         
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+        AuthManager.shared.auth.createUser(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 if let error = error {
                     self.registrationError = error.localizedDescription
@@ -45,8 +43,8 @@ class UserAuthAndDetailsViewModel: ObservableObject {
     }
     
     private func saveUserDetailsToFirestore(email: String, name: String, surname: String, completion: @escaping (Bool) -> Void) {
-        let db = Firestore.firestore()
-        db.collection("Users").document(email).setData([
+        
+        FirestoreManager.shared.db.collection("Users").document(email).setData([
             "Name": name,
             "Surname": surname
         ]) { error in
@@ -57,11 +55,13 @@ class UserAuthAndDetailsViewModel: ObservableObject {
                 completion(true)
             }
         }
+        
     }
     
     
     func loginUser(email: String, password: String, completion: @escaping (Bool) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+        
+        AuthManager.shared.auth.signIn(withEmail: email, password: password) { result, error in
             if error != nil {
                 self.loginError = error?.localizedDescription
                 self.isLoggingIn = false
@@ -72,12 +72,12 @@ class UserAuthAndDetailsViewModel: ObservableObject {
             }
             self.isLoggingIn = false
         }
+        
     }
     
     func getUserFullname () {
-        let db = Firestore.firestore()
         
-        db.collection("Users").document(Auth.auth().currentUser!.email!).getDocument { documentSnapshot, error in
+        FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!).getDocument { documentSnapshot, error in
             if let error = error {
                 print(error.localizedDescription)
                 self.fullname=""

@@ -25,6 +25,8 @@
 		FD0D18F52C62872200A50366 /* FeedbackPlanSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0D18F42C62872200A50366 /* FeedbackPlanSheetView.swift */; };
 		FD0D18F82C6287E300A50366 /* ConfirmationPlanSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0D18F72C6287E300A50366 /* ConfirmationPlanSheetView.swift */; };
 		FD0D18FA2C628B0100A50366 /* GradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0D18F92C628B0100A50366 /* GradientBackground.swift */; };
+		FD132FD62C6400F5005619F0 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132FD52C6400F5005619F0 /* FirestoreManager.swift */; };
+		FD132FD82C64027B005619F0 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132FD72C64027B005619F0 /* AuthManager.swift */; };
 		FD2FD6972C5D7DB4003910F2 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD6962C5D7DB4003910F2 /* Service.swift */; };
 		FD2FD6992C5D7DC9003910F2 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD6982C5D7DC9003910F2 /* Plan.swift */; };
 		FD2FD69B2C5D80EA003910F2 /* ServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */; };
@@ -52,6 +54,8 @@
 		FD0D18F42C62872200A50366 /* FeedbackPlanSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackPlanSheetView.swift; sourceTree = "<group>"; };
 		FD0D18F72C6287E300A50366 /* ConfirmationPlanSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationPlanSheetView.swift; sourceTree = "<group>"; };
 		FD0D18F92C628B0100A50366 /* GradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackground.swift; sourceTree = "<group>"; };
+		FD132FD52C6400F5005619F0 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		FD132FD72C64027B005619F0 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		FD2FD6962C5D7DB4003910F2 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		FD2FD6982C5D7DC9003910F2 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewModel.swift; sourceTree = "<group>"; };
@@ -97,6 +101,7 @@
 		FD05CDA32C5D2DD300E0171E /* HesApp-Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				FD132FD42C640078005619F0 /* Manager */,
 				FD2FD6952C5D7D8B003910F2 /* ViewModel */,
 				FD2FD6942C5D7D85003910F2 /* Model */,
 				FD05CDB22C5D2DDB00E0171E /* View */,
@@ -165,6 +170,15 @@
 				FD0D18F72C6287E300A50366 /* ConfirmationPlanSheetView.swift */,
 			);
 			path = SheetViews;
+			sourceTree = "<group>";
+		};
+		FD132FD42C640078005619F0 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				FD132FD52C6400F5005619F0 /* FirestoreManager.swift */,
+				FD132FD72C64027B005619F0 /* AuthManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		FD2FD6942C5D7D85003910F2 /* Model */ = {
@@ -269,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDCD60E42C5E696D0049CED8 /* UsersSubscriptionsViewModel.swift in Sources */,
+				FD132FD62C6400F5005619F0 /* FirestoreManager.swift in Sources */,
 				FDCD60E22C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift in Sources */,
 				FD05CDA72C5D2DD300E0171E /* AuthView.swift in Sources */,
 				FDCD60DE2C5E4E400049CED8 /* Services.swift in Sources */,
@@ -286,6 +301,7 @@
 				FDCD60DC2C5E4D1D0049CED8 /* ServicePlans.swift in Sources */,
 				FD05CDBE2C5D365E00E0171E /* Register.swift in Sources */,
 				FD05CDB42C5D2E0E00E0171E /* Home.swift in Sources */,
+				FD132FD82C64027B005619F0 /* AuthManager.swift in Sources */,
 				FD0D18F82C6287E300A50366 /* ConfirmationPlanSheetView.swift in Sources */,
 				FD05CDA52C5D2DD300E0171E /* HesApp_TrackerApp.swift in Sources */,
 			);
