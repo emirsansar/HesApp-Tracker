@@ -23,7 +23,7 @@ struct Services: View {
                     .task {
                         getServices()
                     }
-                    .background(gradientBG)
+                    .background(GradientBackground())
                     .navigationTitle("Services")
             }
         }
@@ -49,10 +49,6 @@ struct Services: View {
         
     }
     
-    private var gradientBG: some View {
-        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.55), Color("#afd2e0")]), startPoint: .center, endPoint: .bottom)
-            .edgesIgnoringSafeArea(.all)
-    }
     
     // MARK: - Functions
     
@@ -64,7 +60,7 @@ struct Services: View {
     
     private func prepareNavBarStyle() {
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = UIColor(Color.blue.opacity(0.55))
+        appearance.backgroundColor = UIColor(Color(.mainBlue).opacity(0.90))
         appearance.titleTextAttributes = [
                     .foregroundColor: UIColor.black,
                     .font: UIFont.systemFont(ofSize: 19, weight: .semibold)

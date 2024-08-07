@@ -32,7 +32,7 @@ struct UsersSubscriptions: View {
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
-        .background(gradientBG)
+        .background(GradientBackground())
         .onAppear(perform: fetchSubscriptions)
         .alert(isPresented: $isRemoveAlertPresented) {
             removeAlert
@@ -125,10 +125,6 @@ struct UsersSubscriptions: View {
             },
             secondaryButton: .cancel()
         )
-    }
-    
-    private var gradientBG: LinearGradient {
-        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.55), Color("#afd2e0")]), startPoint: .center, endPoint: .bottom)
     }
     
     

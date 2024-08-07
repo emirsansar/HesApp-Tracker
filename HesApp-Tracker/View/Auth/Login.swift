@@ -22,7 +22,7 @@ struct Login: View {
             Spacer()
         }
         .padding(.horizontal)
-        .background(gradientBG)
+        .background(GradientBackground())
         .edgesIgnoringSafeArea(.all)
         
     }
@@ -106,10 +106,6 @@ struct Login: View {
             .frame(height: UIScreen.main.bounds.height * 0.10)
             .padding(.top, 40)
             .padding(.bottom, 20)
-    }
-    
-    private var gradientBG: LinearGradient {
-        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.55), Color("#afd2e0")]), startPoint: .center, endPoint: .bottom)
     }
     
     

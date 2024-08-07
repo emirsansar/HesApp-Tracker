@@ -18,7 +18,7 @@ struct ServicePlans: View {
     
     @State private var selectedPlan: Plan?
     
-    @State private var showSubscriptionSheet = false
+    @State private var showConfirmSubSheetView = false
     @State private var numberOfUsers: String = "1"
     
     @State private var showCustomPlanSheet = false
@@ -33,31 +33,41 @@ struct ServicePlans: View {
     var body: some View {
         
         VStack {
-            HStack {
-                backToServicesButton
-                Spacer()
-                serviceTitleView
-                Spacer()
-                addCustomPlanButton
-            }
-            .padding()
-            
+            headerView
             infoTextView
             planList
         }
-        .background(gradientBG)
+        .navigationBarBackButtonHidden(true)
+        .background(GradientBackground())
         .onAppear {
             loadPlans()
         }
-        .navigationBarBackButtonHidden(true)
-        .sheet(isPresented: $showSubscriptionSheet) {
-            subscriptionConfirmationSheet
+        .sheet(isPresented: $showConfirmSubSheetView) {
+            ConfirmationSubSheetView(
+                numberOfUsers: $numberOfUsers,
+                showConfirmSubSheetView: $showConfirmSubSheetView,
+                selectedPlan: $selectedPlan,
+                processSubscription: processSubscription
+            )
         }
         .sheet(isPresented: $showCustomPlanSheet) {
-            customPlanSheet
+            CustomPlanSheetView(
+                customPlanName: $customPlanName,
+                customPlanPrice: $customPlanPrice,
+                numberOfUsers: $numberOfUsers,
+                showCustomPlanSheet: $showCustomPlanSheet,
+                showFeedbackSheet: $showFeedbackSheet,
+                feedbackMessage: $feedbackMessage,
+                isAddError: $isAddError,
+                processSubscription: processSubscription
+            )
         }
         .sheet(isPresented: $showFeedbackSheet){
-            feedbackSheet
+            FeedbackSheetView(
+                showFeedbackSheet: $showFeedbackSheet,
+                feedbackMessage: $feedbackMessage,
+                isAddError: $isAddError
+            )
         }
         
     }
@@ -68,119 +78,25 @@ struct ServicePlans: View {
     private var planList: some View {
         List {
             ForEach(Array(plansVM.plans.enumerated()), id: \.element.planName) { index, plan in
-                HStack {
-                    Text(plan.planName)
-                        .font(.system(size: 20, weight: .medium))
-                    Spacer()
-                    Text("\(plan.planPrice, specifier: "%.2f") TL")
-                        .font(.system(size: 19, weight: .medium))
-                }
-                .listRowBackground(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
-                .contentShape(Rectangle())
+                PlanRow(plan: plan, index: index)
                 .onTapGesture {
                     self.selectedPlan = plan
-                    self.showSubscriptionSheet = true
+                    self.showConfirmSubSheetView = true
                 }
             }
         }
     }
     
-    private var subscriptionConfirmationSheet: some View {
-        VStack(spacing: 20) {
-            Text("How many users?")
-                .font(.headline)
-            
-            TextField("1", text: $numberOfUsers)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.numberPad)
-            
-            HStack {
-                Button("Cancel") {
-                    showSubscriptionSheet = false
-                }
-                .foregroundColor(.red)
-                Spacer()
-                Button("Confirm") {
-                    if let quantity = Int(numberOfUsers), quantity > 0 {
-                        processSubscription(plan: selectedPlan!, quantity: quantity)
-                        showSubscriptionSheet = false
-                    }
-                }
-                .disabled(numberOfUsers.isEmpty)
-            }
+    private var headerView: some View {
+        HStack {
+            backToServicesButton
+            Spacer()
+            serviceTitleView
+            Spacer()
+            addCustomPlanButton
         }
-        .padding(.horizontal, 40)
-        .presentationDetents([.height(200)])
+        .padding()
     }
-    
-    private var feedbackSheet: some View {
-        VStack(spacing: 20) {
-            Text(isAddError ? "Error" : "Success")
-                .font(.title2)
-                .foregroundColor(isAddError ? .red : .green)
-            
-            Text(isAddError ? feedbackMessage : "Plan has been added successfully.")
-                .font(.body)
-                .multilineTextAlignment(.center)
-            
-            Button("OK") {
-                showFeedbackSheet = false
-                self.numberOfUsers = "1"
-                if !isAddError {
-                    presentationMode.wrappedValue.dismiss()
-                }
-            }
-            .padding()
-        }
-        .padding(.horizontal, 40)
-        .presentationDetents([.height(170)])
-    }
-
-    private var customPlanSheet: some View {
-        VStack(spacing: 20) {
-            Text("Your Custom Plan")
-                .font(.headline)
-            
-            TextField("Plan Name:", text: $customPlanName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            TextField("Plan Price: 00.00", text: $customPlanPrice)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.decimalPad)
-            
-            TextField("How many users?", text: $numberOfUsers)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.numberPad)
-            
-            HStack {
-                Button("Cancel") {
-                    showCustomPlanSheet = false
-                }
-                .foregroundColor(.red)
-                Spacer()
-                Button("Confirm") {
-                    if let quantity = Int(numberOfUsers), quantity > 0 {
-                        let normalizedPriceString = customPlanPrice.replacingOccurrences(of: ",", with: ".")
-                        if let price = Double(normalizedPriceString) {
-                            let customPlan = Plan(planName: customPlanName, planPrice: price)
-                            processSubscription(plan: customPlan, quantity: quantity)
-                        } else {
-                            feedbackMessage = "Error: Please enter a valid price."
-                            isAddError = true
-                            self.showCustomPlanSheet = false
-                            self.showFeedbackSheet = true
-                        }
-                        self.showCustomPlanSheet = false
-                        self.numberOfUsers = "1"
-                    }
-                }
-                .disabled(customPlanName.isEmpty || customPlanPrice.isEmpty || numberOfUsers.isEmpty)
-            }
-        }
-        .padding(.horizontal, 40)
-        .presentationDetents([.height(300)])
-    }
-    
     
     private var serviceTitleView: some View {
         Text("Plans for \(chosenService.serviceName)")
@@ -218,10 +134,6 @@ struct ServicePlans: View {
             .padding(.top, -10)
     }
     
-    private var gradientBG: LinearGradient {
-        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.55), Color("#afd2e0")]), startPoint: .center, endPoint: .bottom)
-    }
-    
     
     // MARK: - Functions
     
@@ -244,6 +156,24 @@ struct ServicePlans: View {
         }
     }
     
+}
+
+    // MARK: - Structs
+
+struct PlanRow: View {
+    var plan: Plan
+    var index: Int
+    
+    var body: some View {
+        HStack {
+            Text(plan.planName)
+                .font(.system(size: 20, weight: .medium))
+            Spacer()
+            Text("\(plan.planPrice, specifier: "%.2f") TL")
+                .font(.system(size: 19, weight: .medium))
+        }
+        .listRowBackground(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
+    }
 }
 
 

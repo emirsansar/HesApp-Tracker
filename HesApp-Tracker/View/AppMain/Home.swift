@@ -24,7 +24,7 @@ struct Home: View {
             logOutButton
         }
         .padding()
-        .background(gradientBG)
+        .background(GradientBackground())
         .onAppear {
             loadUserData()
         }
@@ -125,10 +125,6 @@ struct Home: View {
                 .opacity(0.75)
         }
         .padding(.bottom, 25)
-    }
-    
-    private var gradientBG: LinearGradient {
-        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.55), Color("#afd2e0")]), startPoint: .center, endPoint: .bottom)
     }
     
     
