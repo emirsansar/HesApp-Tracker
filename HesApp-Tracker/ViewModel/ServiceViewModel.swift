@@ -11,8 +11,8 @@ class ServiceViewModel: ObservableObject {
     
     @Published var services = [Service]()
 
-    
-    func getServicesFromFirestore(completion: @escaping ([Service]?, Error?) -> Void) {
+    // Fetchs all services from 'Services' collection in Firestore.
+    func fetchServicesFromFirestore(completion: @escaping ([Service]?, Error?) -> Void) {
         
         FirestoreManager.shared.db.collection("Services").getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -33,6 +33,7 @@ class ServiceViewModel: ObservableObject {
             
             completion(services, nil)
         }
+        
     }
     
 }

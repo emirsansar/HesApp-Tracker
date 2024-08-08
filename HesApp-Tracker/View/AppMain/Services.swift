@@ -53,7 +53,7 @@ struct Services: View {
     // MARK: - Functions
     
     private func getServices() {
-        serviceVM.getServicesFromFirestore { services, error in
+        serviceVM.fetchServicesFromFirestore { services, error in
             serviceVM.services = services ?? []
         }
     }

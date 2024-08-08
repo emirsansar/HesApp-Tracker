@@ -1,12 +1,4 @@
-//
-//  UsersSubscriptionsViewModel.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 3.08.2024.
-//
-
 import Foundation
-import FirebaseAuth
 import FirebaseFirestore
 
 class UsersSubscriptionsViewModel: ObservableObject {
@@ -25,20 +17,20 @@ class UsersSubscriptionsViewModel: ObservableObject {
     @Published var totalSubscriptionCount: Int = 0
     @Published var totalMonthlySpending: Double = 0.0
     
-    
+    // Adds a subscription plan to the user's collection in Firestore.
     func addPlanToUserOnFirestore(serviceName: String, plan: Plan, personCount: Int, completion: @escaping (Bool) -> Void) {
 
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
-            if let error = error {
+            guard error == nil else {
                 DispatchQueue.main.async {
-                    self.planAddingError = "There is an error: \(error.localizedDescription)"
+                    self.planAddingError = "There is an error: \(error!.localizedDescription)"
                     self.planAddedSuccesfully = false
                     self.isAddingPlan = false
                 }
-                return
                 completion(false)
+                return
             }
             
             var updateData: [String: Any] = [:]
@@ -81,10 +73,10 @@ class UsersSubscriptionsViewModel: ObservableObject {
         
     }
 
-    
-    func fetchUserSubscriptions(userEmail: String) {
+    // Fetchs the user's subscriptions from Firestore.
+    func fetchUserSubscriptions() {
 
-        let userRef = FirestoreManager.shared.db.collection("Users").document(userEmail)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -106,12 +98,12 @@ class UsersSubscriptionsViewModel: ObservableObject {
             
             for (serviceName, serviceDetails) in subscriptions {
                if let planName = serviceDetails["PlanName"] as? String,
-                  let price = serviceDetails["Price"] as? Double,
+                  let planPrice = serviceDetails["Price"] as? Double,
                   let personCount = serviceDetails["PersonCount"] as? Int {
                    
-                   let userSub = UsersSub(serviceName: serviceName, planName: planName, planPrice: price, personCount: personCount)
+                   let plan = Plan(planName: planName, planPrice: planPrice)
+                   let userSub = UsersSub(serviceName: serviceName, plan: plan, personCount: personCount)
                    fetchedSubscriptions.append(userSub)
-                   
                }
            }
            
@@ -122,15 +114,10 @@ class UsersSubscriptionsViewModel: ObservableObject {
         
     }
 
-
-    
+    // Removes a selected subscription from the user's collection in Firestore.
     func removeSubscriptionFromUser(selectedSub: UsersSub, completion: @escaping (Bool, Error?) -> Void) {
-        guard let userEmail = AuthManager.shared.currentUserEmail else {
-            completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "User is not found."]))
-            return
-        }
         
-        let userRef = FirestoreManager.shared.db.collection("Users").document(userEmail)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -156,17 +143,11 @@ class UsersSubscriptionsViewModel: ObservableObject {
         
     }
     
-    
-    func fetchSubscriptionsSummary(userEmail: String) {
+    // Fetches a summary of the user's total subscription count and monthly spending from Firestore.
+    func fetchSubscriptionsSummary() {
         isGettingUserSubCountandSpending = true
-        
-//        guard let userEmail = Auth.auth().currentUser?.email else {
-//            fetchSubscriptionSummaryError = "User is not found."
-//            isGettingUserSubCountandSpending = false
-//            return
-//        }
-        
-        let userRef = FirestoreManager.shared.db.collection("Users").document(userEmail)
+
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {

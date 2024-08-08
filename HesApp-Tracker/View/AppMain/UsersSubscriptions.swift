@@ -74,11 +74,11 @@ struct UsersSubscriptions: View {
             VStack(alignment: .leading) {
                 Text(subscription.serviceName)
                     .font(.system(size: 18, weight: .regular))
-                Text(subscription.planName)
+                Text(subscription.plan.planName)
                     .font(.system(size: 15, weight: .light))
             }.padding(.leading, 10)
             Spacer()
-            Text("\((subscription.planPrice / Double(subscription.personCount)), specifier: "%.2f") TL")
+            Text("\((subscription.plan.planPrice / Double(subscription.personCount)), specifier: "%.2f") TL")
                 .padding(.trailing)
                 .font(.system(size: 17, weight: .regular))
             
@@ -134,17 +134,17 @@ struct UsersSubscriptions: View {
         switch sortType {
         case .priceAscending:
             return viewModel.userSubscriptions.sorted {
-                $0.planPrice/Double($0.personCount) < $1.planPrice/Double($1.personCount)  }
+                $0.plan.planPrice/Double($0.personCount) < $1.plan.planPrice/Double($1.personCount)  }
         case .priceDescending:
             return viewModel.userSubscriptions.sorted {
-                $0.planPrice/Double($0.personCount) > $1.planPrice/Double($1.personCount)  }
+                $0.plan.planPrice/Double($0.personCount) > $1.plan.planPrice/Double($1.personCount)  }
         case .alphabetically:
             return viewModel.userSubscriptions.sorted { $0.serviceName < $1.serviceName }
         }
     }
     
     private func fetchSubscriptions() {
-        viewModel.fetchUserSubscriptions(userEmail: "emir2@gmail.com")
+        viewModel.fetchUserSubscriptions()
     }
     
     private func removeSubscription() {

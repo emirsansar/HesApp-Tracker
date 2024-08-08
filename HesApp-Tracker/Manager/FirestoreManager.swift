@@ -1,10 +1,3 @@
-//
-//  FirestoreManager.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 7.08.2024.
-//
-
 import Foundation
 import FirebaseFirestore
 

@@ -132,7 +132,7 @@ struct Home: View {
     
     private func loadUserData() {
         userDetailVM.getUserFullname()
-        userSubsVM.fetchSubscriptionsSummary(userEmail: "emir2@gmail.com")
+        userSubsVM.fetchSubscriptionsSummary()
     }
     
     private func logOut() {

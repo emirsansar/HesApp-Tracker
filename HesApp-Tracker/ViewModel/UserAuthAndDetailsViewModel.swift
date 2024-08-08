@@ -1,10 +1,3 @@
-//
-//  UserAuthAndDetailsViewModel.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 3.08.2024.
-//
-
 import Foundation
 
 class UserAuthAndDetailsViewModel: ObservableObject {
@@ -19,81 +12,96 @@ class UserAuthAndDetailsViewModel: ObservableObject {
     
     @Published var fullname: String = ""
     
-    
+    // Registers a user with Firebase Authentication.
     func registerUserToFirebaseAuth(email: String, password: String, name: String, surname: String, completion: @escaping (Bool) -> Void) {
         isRegistering = true
         registrationError = nil
         
         AuthManager.shared.auth.createUser(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
-                if let error = error {
-                    self.registrationError = error.localizedDescription
-                    self.registrationSuccess = false
-                    self.isRegistering = false
+                guard error == nil else {
+                    self.handleRegistrationError(error: error!.localizedDescription)
                     completion(false)
-                } else {
-                    self.saveUserDetailsToFirestore(email: email, name: name, surname: surname) { success in
-                        self.registrationSuccess = success
-                        self.isRegistering = false
-                        completion(success)
-                    }
+                    return
                 }
+                self.registrationSuccess = true
+                self.isRegistering = false
+                completion(true)
             }
         }
     }
     
+    // Saves user details to Firestore.
     private func saveUserDetailsToFirestore(email: String, name: String, surname: String, completion: @escaping (Bool) -> Void) {
+
+        let userData: [String: Any] = ["Name": name, "Surname": surname]
         
-        FirestoreManager.shared.db.collection("Users").document(email).setData([
-            "Name": name,
-            "Surname": surname
-        ]) { error in
-            if let error = error {
-                self.registrationError = error.localizedDescription
-                completion(false)
-            } else {
+        FirestoreManager.shared.db.collection("Users").document(email).setData(userData) { error in
+            DispatchQueue.main.async {
+                guard error == nil else {
+                    self.handleLoginError(error: error!.localizedDescription)
+                    completion(false)
+                    return
+                }
                 completion(true)
             }
         }
         
     }
     
-    
+    // Logs in a user with Firebase Authentication.
     func loginUser(email: String, password: String, completion: @escaping (Bool) -> Void) {
         
         AuthManager.shared.auth.signIn(withEmail: email, password: password) { result, error in
-            if error != nil {
-                self.loginError = error?.localizedDescription
-                self.isLoggingIn = false
-                completion(false)
-            } else {
+            DispatchQueue.main.async {
+                guard error == nil else {
+                    self.handleLoginError(error: error!.localizedDescription)
+                    completion(false)
+                    return
+                }
                 self.loginSuccess = true
+                self.isLoggingIn = false
+                AuthManager.shared.currentUserEmail = result?.user.email
                 completion(true)
             }
-            self.isLoggingIn = false
         }
         
     }
     
+    // Fetch the user's full name from Firestore to show on Home page.
     func getUserFullname () {
+        guard let email = AuthManager.shared.currentUserEmail else {
+            fullname = ""
+            return
+        }
         
-        FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!).getDocument { documentSnapshot, error in
-            if let error = error {
-                print(error.localizedDescription)
-                self.fullname=""
-            }
-            
-            if let document = documentSnapshot {
+        FirestoreManager.shared.db.collection("Users").document(email).getDocument { documentSnapshot, error in
+            DispatchQueue.main.async {
+                guard let document = documentSnapshot, error == nil else {
+                    self.fullname = ""
+                    return
+                }
                 let name = document.get("Name") as? String ?? ""
                 let surname = document.get("Surname") as? String ?? ""
-                
-                DispatchQueue.main.async {
-                    self.fullname = "\(name) \(surname)"
-                }
+                self.fullname = "\(name) \(surname)"
             }
         }
         
+    }
+    
+    
+    // Handles registration errors and updates the state
+    private func handleRegistrationError(error: String) {
+      registrationError = error
+      registrationSuccess = false
+      isRegistering = false
+    }
+
+    // Handles login errors and updates the state
+    private func handleLoginError(error: String) {
+      loginError = error
+      loginSuccess = false
+      isLoggingIn = false
     }
     
 }
-

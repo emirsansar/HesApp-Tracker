@@ -1,10 +1,3 @@
-//
-//  AuthManager.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 7.08.2024.
-//
-
 import Foundation
 import FirebaseAuth
 
@@ -17,7 +10,10 @@ class AuthManager {
     
     private init() {
         self.auth = Auth.auth()
-        self.currentUserEmail = auth.currentUser?.email
+        
+        if (Auth.auth().currentUser != nil) {
+            self.currentUserEmail = Auth.auth().currentUser?.email
+        }
     }
     
 }

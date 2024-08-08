@@ -11,8 +11,8 @@ class PlanViewModel: ObservableObject {
     
     @Published var plans = [Plan]()
     
-    
-    func getPlansOfServiceFromFirestore(documentID: String, completion: @escaping ([Plan]?, Error?) -> Void){
+    // Fetchs plans of selected service from 'Services' collection in Firestore.
+    func fetchPlansOfServiceFromFirestore(documentID: String, completion: @escaping ([Plan]?, Error?) -> Void){
         
         FirestoreManager.shared.db.collection("Services").document(documentID).getDocument { (documentSnapshot, error) in
             if let error = error {

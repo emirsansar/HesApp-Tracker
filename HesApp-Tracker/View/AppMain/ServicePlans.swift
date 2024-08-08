@@ -138,7 +138,7 @@ struct ServicePlans: View {
     // MARK: - Functions
     
     private func loadPlans() {
-        plansVM.getPlansOfServiceFromFirestore(documentID: chosenService.serviceName) { plans, error in
+        plansVM.fetchPlansOfServiceFromFirestore(documentID: chosenService.serviceName) { plans, error in
             self.plansVM.plans = plans ?? []
         }
     }

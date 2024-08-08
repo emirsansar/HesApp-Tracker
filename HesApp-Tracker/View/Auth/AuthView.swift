@@ -3,7 +3,7 @@ import FirebaseAuth
 
 struct AuthView: View {
     
-    @State private var isUserLoggedIn: Bool = AuthManager.shared.currentUserEmail != nil
+    @State private var isUserLoggedIn: Bool = AuthManager.shared.auth.currentUser != nil
     
     @State var authTabBarSelection: Int = 1
     
