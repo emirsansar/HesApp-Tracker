@@ -1,17 +1,12 @@
-//
-//  ContentView.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 2.08.2024.
-//
-
 import SwiftUI
 import FirebaseAuth
 
 struct AuthView: View {
-        
-    @State private var isUserLoggedIn: Bool = Auth.auth().currentUser != nil
-        
+    
+    @State private var isUserLoggedIn: Bool = AuthManager.shared.currentUserEmail != nil
+    
+    @State var authTabBarSelection: Int = 1
+    
     var body: some View {
         if isUserLoggedIn {
             AppMainView(isUserLoggedIn: $isUserLoggedIn)
@@ -21,74 +16,24 @@ struct AuthView: View {
     }
     
     var content: some View {
-        TabView {
-            Login(isUserLoggedIn: $isUserLoggedIn)
-                .tabItem() {
-                    Image(systemName: "person.text.rectangle")
-                    Text("Log In")
-                }
-            Register(selectedTab: .constant(1))
-                .tabItem() {
-                    Image(systemName: "pencil.line")
-                    Text("Register")
-                }
+        
+        VStack {
+            if authTabBarSelection == 1 {
+                Login(isUserLoggedIn: $isUserLoggedIn)
+            } else {
+                Register()
+            }
+            
+            AuthTabView(authTabBarSelection: $authTabBarSelection)
+                .foregroundColor(Color(.systemGray4).opacity(0.7))
+                .padding(.top, -10)
         }
+        .edgesIgnoringSafeArea(.bottom)
+        
     }
-    
 }
+
 
 #Preview {
     AuthView()
 }
-
-
-
-/*
- 
- //
- //  ContentView.swift
- //  HesApp-Tracker
- //
- //  Created by Emir Sansar on 2.08.2024.
- //
-
- import SwiftUI
- import FirebaseAuth
-
- struct AuthView: View {
-     
-     @State var selectedTab = 0
-     var user: FirebaseAuth.User? = nil
-     
-     init () {
-         user = Auth.auth().currentUser
-     }
-     
-     var body: some View {
-         
-         if user != nil {
-             AppMainView()
-         } else {
-             TabView {
-                 Login()
-                     .tabItem() {
-                         Image(systemName: "person.text.rectangle")
-                         Text("Log In")
-                     }
-                 Register(selectedTab: .constant(1))
-                     .tabItem() {
-                         Image(systemName: "pencil.line")
-                         Text("Register")
-                     }
-             }
-         }
-         
-     }
-     
- }
-
- #Preview {
-     AuthView()
- }
-
-*/

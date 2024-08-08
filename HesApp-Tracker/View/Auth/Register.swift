@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Register: View {
     
-    @Binding var selectedTab: Int
+    //@Binding var selectedTab: Int
     
     @State private var email: String = ""
     @State private var name: String = ""
@@ -103,7 +103,7 @@ struct Register: View {
                     .padding()
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            selectedTab = 0
+                            //selectedTab = 0
                         }
                     }
                 Text("Giriş sayfasına yönlendiriliyorsunuz.")
@@ -168,5 +168,5 @@ struct Register: View {
 
 
 #Preview {
-    Register(selectedTab: .constant(1))
+    Register()
 }

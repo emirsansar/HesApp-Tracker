@@ -27,9 +27,11 @@
 		FD0D18FA2C628B0100A50366 /* GradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0D18F92C628B0100A50366 /* GradientBackground.swift */; };
 		FD132FD62C6400F5005619F0 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132FD52C6400F5005619F0 /* FirestoreManager.swift */; };
 		FD132FD82C64027B005619F0 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132FD72C64027B005619F0 /* AuthManager.swift */; };
+		FD132FDA2C64078C005619F0 /* AuthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132FD92C64078C005619F0 /* AuthTabView.swift */; };
 		FD2FD6972C5D7DB4003910F2 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD6962C5D7DB4003910F2 /* Service.swift */; };
 		FD2FD6992C5D7DC9003910F2 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD6982C5D7DC9003910F2 /* Plan.swift */; };
 		FD2FD69B2C5D80EA003910F2 /* ServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */; };
+		FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */; };
 		FDCADF2B2C60CA150059BEF7 /* UsersSub.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCADF2A2C60CA150059BEF7 /* UsersSub.swift */; };
 		FDCD60DC2C5E4D1D0049CED8 /* ServicePlans.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DB2C5E4D1D0049CED8 /* ServicePlans.swift */; };
 		FDCD60DE2C5E4E400049CED8 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DD2C5E4E400049CED8 /* Services.swift */; };
@@ -56,9 +58,11 @@
 		FD0D18F92C628B0100A50366 /* GradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackground.swift; sourceTree = "<group>"; };
 		FD132FD52C6400F5005619F0 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		FD132FD72C64027B005619F0 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		FD132FD92C64078C005619F0 /* AuthTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTabView.swift; sourceTree = "<group>"; };
 		FD2FD6962C5D7DB4003910F2 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		FD2FD6982C5D7DC9003910F2 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewModel.swift; sourceTree = "<group>"; };
+		FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainTabView.swift; sourceTree = "<group>"; };
 		FDCADF2A2C60CA150059BEF7 /* UsersSub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersSub.swift; sourceTree = "<group>"; };
 		FDCD60DB2C5E4D1D0049CED8 /* ServicePlans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlans.swift; sourceTree = "<group>"; };
 		FDCD60DD2C5E4E400049CED8 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
@@ -156,6 +160,7 @@
 		FD0D18EF2C627B9100A50366 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				FD132FDB2C6412E0005619F0 /* TabViews */,
 				FD0D18F62C6287B600A50366 /* SheetViews */,
 				FD0D18F92C628B0100A50366 /* GradientBackground.swift */,
 			);
@@ -179,6 +184,15 @@
 				FD132FD72C64027B005619F0 /* AuthManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		FD132FDB2C6412E0005619F0 /* TabViews */ = {
+			isa = PBXGroup;
+			children = (
+				FD132FD92C64078C005619F0 /* AuthTabView.swift */,
+				FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */,
+			);
+			path = TabViews;
 			sourceTree = "<group>";
 		};
 		FD2FD6942C5D7D85003910F2 /* Model */ = {
@@ -294,8 +308,10 @@
 				FD0D18F32C62863900A50366 /* CustomPlanSheetView.swift in Sources */,
 				FD05CDB62C5D2E2D00E0171E /* UsersSubscriptions.swift in Sources */,
 				FD0D18F52C62872200A50366 /* FeedbackPlanSheetView.swift in Sources */,
+				FD132FDA2C64078C005619F0 /* AuthTabView.swift in Sources */,
 				FD2FD69B2C5D80EA003910F2 /* ServiceViewModel.swift in Sources */,
 				FD05CDBC2C5D365500E0171E /* Login.swift in Sources */,
+				FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */,
 				FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */,
 				FD2FD6992C5D7DC9003910F2 /* Plan.swift in Sources */,
 				FDCD60DC2C5E4D1D0049CED8 /* ServicePlans.swift in Sources */,

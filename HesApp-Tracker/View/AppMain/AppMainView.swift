@@ -1,41 +1,34 @@
-//
-//  AuthView.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 2.08.2024.
-//
-
 import SwiftUI
 
 struct AppMainView: View {
     
     @Binding var isUserLoggedIn: Bool
     
+    @State var appMainTabBarSelection: Int = 1
+    
     var body: some View {
-        TabView {
-            Home(isUserLoggedIn: $isUserLoggedIn)
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }
-                .tag(0)
+        
+        VStack {
+            switch appMainTabBarSelection {
+            case 1:
+                Home(isUserLoggedIn: $isUserLoggedIn)
+            case 2:
+                Services()
+            case 3:
+                UsersSubscriptions()
+            default:
+                Home(isUserLoggedIn: $isUserLoggedIn)
+            }
             
-            Services()
-                .tabItem {
-                    Image(systemName: "text.badge.plus")
-                    Text("Services")
-                }
-                .tag(1)
-            
-            UsersSubscriptions()
-                .tabItem {
-                    Image(systemName: "list.bullet")
-                    Text("Subs")
-                }
-                .tag(2)
+            AppMainTabView(appMainTabBarSelection: $appMainTabBarSelection)
+                .foregroundColor(Color(.systemGray4).opacity(0.7))
+                .padding(.top, -10)
         }
+        .edgesIgnoringSafeArea(.bottom)
+        
     }
 }
+
 
 #Preview {
     AppMainView(isUserLoggedIn: .constant(true))
