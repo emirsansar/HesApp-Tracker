@@ -64,7 +64,7 @@ struct Services: View {
 
     // MARK: - Structs for Subviews
 
-// Subview to navigate CustomService to create a service
+/// Subview to navigate CustomService to create a service
 struct AddNewServiceSection: View {
     var body: some View {
         Section(header: Text("Add New Service")) {
@@ -76,7 +76,7 @@ struct AddNewServiceSection: View {
     }
 }
 
-// Subview for the 'Available Services' section
+/// Subview for the 'Available Services' section
 struct AvailableServicesSection: View {
     @Binding var services: [Service]
     

@@ -15,7 +15,7 @@ struct AppMainView: View {
             case 2:
                 Services()
             case 3:
-                UsersSubscriptions()
+                UserSubscriptions()
             default:
                 Home()
             }

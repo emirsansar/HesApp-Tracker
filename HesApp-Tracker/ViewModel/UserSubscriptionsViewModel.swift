@@ -17,7 +17,7 @@ class UserSubscriptionsViewModel: ObservableObject {
     @Published var totalSubscriptionCount: Int = 0
     @Published var totalMonthlySpending: Double = 0.0
     
-    // Adds a subscription plan to the user's collection in Firestore.
+    /// Adds a subscription plan to the user's collection in Firestore.
     func addPlanToUserOnFirestore(serviceName: String, plan: Plan, personCount: Int, completion: @escaping (Bool) -> Void) {
 
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
@@ -73,7 +73,7 @@ class UserSubscriptionsViewModel: ObservableObject {
         
     }
 
-    // Fetchs the user's subscriptions from Firestore.
+    /// Fetchs the user's subscriptions from Firestore.
     func fetchUserSubscriptions() {
 
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
@@ -114,7 +114,7 @@ class UserSubscriptionsViewModel: ObservableObject {
         
     }
 
-    // Removes a selected subscription from the user's collection in Firestore.
+    /// Removes a selected subscription from the user's collection in Firestore.
     func removeSubscriptionFromUser(selectedSub: UserSubscription, completion: @escaping (Bool, Error?) -> Void) {
         
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
@@ -143,7 +143,7 @@ class UserSubscriptionsViewModel: ObservableObject {
         
     }
     
-    // Fetches a summary of the user's total subscription count and monthly spending from Firestore.
+    /// Fetches a summary of the user's total subscription count and monthly spending from Firestore.
     func fetchSubscriptionsSummary() {
         isGettingUserSubCountandSpending = true
 
