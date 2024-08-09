@@ -12,7 +12,7 @@ struct ServicePlans: View {
     var chosenService: Service
     
     @ObservedObject var plansVM = PlanViewModel()
-    @ObservedObject var userSubsVM = UsersSubscriptionsViewModel()
+    @ObservedObject var userSubsVM = UserSubscriptionsViewModel()
     
     @Environment(\.presentationMode) var presentationMode
     

@@ -4,7 +4,7 @@ import FirebaseAuth
 struct Home: View {
     
     @ObservedObject private var userDetailVM = UserAuthAndDetailsViewModel()
-    @ObservedObject private var userSubsVM = UsersSubscriptionsViewModel()
+    @ObservedObject private var userSubsVM = UserSubscriptionsViewModel()
     
     @State private var isFeedbackVisible = false
     @State private var feedbackText: String?

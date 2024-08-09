@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CustomService: View {
     
-    @ObservedObject var userSubsVM = UsersSubscriptionsViewModel()
+    @ObservedObject var userSubsVM = UserSubscriptionsViewModel()
     
     @State private var serviceName: String = ""
     @State private var planName: String = ""

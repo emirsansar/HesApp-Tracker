@@ -1,20 +1,13 @@
-//
-//  UsersSubscriptions.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 2.08.2024.
-//
-
 import SwiftUI
 import FirebaseFirestore
 import FirebaseAuth
 
-struct UsersSubscriptions: View {
+struct UserSubscriptions: View {
     
-    @ObservedObject private var viewModel = UsersSubscriptionsViewModel()
+    @ObservedObject private var viewModel = UserSubscriptionsViewModel()
     
     @State private var sortType: SortType = .priceAscending
-    @State private var selectedSubscription: UsersSub?
+    @State private var selectedSubscription: UserSubscription?
     @State private var isRemoveAlertPresented = false
     @State private var isFeedbackVisible = false
     @State private var feedbackMessage: String?
@@ -69,7 +62,7 @@ struct UsersSubscriptions: View {
         }
     }
     
-    private func subscriptionRow(subscription: UsersSub, index: Int) -> some View {
+    private func subscriptionRow(subscription: UserSubscription, index: Int) -> some View {
         HStack {
             VStack(alignment: .leading) {
                 Text(subscription.serviceName)
@@ -130,7 +123,11 @@ struct UsersSubscriptions: View {
     
     // MARK: - Functions
     
-    private var sortedSubscriptions: [UsersSub] {
+    private func fetchSubscriptions() {
+        viewModel.fetchUserSubscriptions()
+    }
+
+    private var sortedSubscriptions: [UserSubscription] {
         switch sortType {
         case .priceAscending:
             return viewModel.userSubscriptions.sorted {
@@ -141,10 +138,6 @@ struct UsersSubscriptions: View {
         case .alphabetically:
             return viewModel.userSubscriptions.sorted { $0.serviceName < $1.serviceName }
         }
-    }
-    
-    private func fetchSubscriptions() {
-        viewModel.fetchUserSubscriptions()
     }
     
     private func removeSubscription() {
@@ -180,5 +173,5 @@ enum SortType: String, CaseIterable, Identifiable {
 
 
 #Preview {
-    UsersSubscriptions()
+    UserSubscriptions()
 }

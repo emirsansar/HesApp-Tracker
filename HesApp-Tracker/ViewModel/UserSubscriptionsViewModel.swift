@@ -1,13 +1,13 @@
 import Foundation
 import FirebaseFirestore
 
-class UsersSubscriptionsViewModel: ObservableObject {
+class UserSubscriptionsViewModel: ObservableObject {
     
     @Published var planAddingError: String?
     @Published var isAddingPlan: Bool = false
     @Published var planAddedSuccesfully: Bool = false
     
-    @Published var userSubscriptions: [UsersSub] = []
+    @Published var userSubscriptions: [UserSubscription] = []
     @Published var fetchingSubsError: String?
     @Published var isFetchingSubs: Bool = false
     
@@ -94,7 +94,7 @@ class UsersSubscriptionsViewModel: ObservableObject {
                 return
             }
             
-            var fetchedSubscriptions: [UsersSub] = []
+            var fetchedSubscriptions: [UserSubscription] = []
             
             for (serviceName, serviceDetails) in subscriptions {
                if let planName = serviceDetails["PlanName"] as? String,
@@ -102,7 +102,7 @@ class UsersSubscriptionsViewModel: ObservableObject {
                   let personCount = serviceDetails["PersonCount"] as? Int {
                    
                    let plan = Plan(planName: planName, planPrice: planPrice)
-                   let userSub = UsersSub(serviceName: serviceName, plan: plan, personCount: personCount)
+                   let userSub = UserSubscription(serviceName: serviceName, plan: plan, personCount: personCount)
                    fetchedSubscriptions.append(userSub)
                }
            }
@@ -115,7 +115,7 @@ class UsersSubscriptionsViewModel: ObservableObject {
     }
 
     // Removes a selected subscription from the user's collection in Firestore.
-    func removeSubscriptionFromUser(selectedSub: UsersSub, completion: @escaping (Bool, Error?) -> Void) {
+    func removeSubscriptionFromUser(selectedSub: UserSubscription, completion: @escaping (Bool, Error?) -> Void) {
         
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
