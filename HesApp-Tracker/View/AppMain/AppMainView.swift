@@ -11,13 +11,13 @@ struct AppMainView: View {
         VStack {
             switch appMainTabBarSelection {
             case 1:
-                Home(isUserLoggedIn: $isUserLoggedIn)
+                Home()
             case 2:
                 Services()
             case 3:
                 UsersSubscriptions()
             default:
-                Home(isUserLoggedIn: $isUserLoggedIn)
+                Home()
             }
             
             AppMainTabView(appMainTabBarSelection: $appMainTabBarSelection)

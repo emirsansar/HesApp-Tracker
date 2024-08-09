@@ -3,30 +3,55 @@ import FirebaseAuth
 
 struct Home: View {
     
-    @Binding var isUserLoggedIn: Bool
-    
     @ObservedObject private var userDetailVM = UserAuthAndDetailsViewModel()
     @ObservedObject private var userSubsVM = UsersSubscriptionsViewModel()
     
     @State private var isFeedbackVisible = false
-    @State private var feedbackMessage: String?
+    @State private var feedbackText: String?
+    
+    @State private var isLogOutAlertPresented = false
+    @State private var isSideMenuVisible = false
+    
+    init () {
+        configureNavigationBarAppearance()
+    }
     
     var body: some View {
         
-        VStack {
-            appLogoView
-            greetingView
-            userSummaryView
-            if isFeedbackVisible {
-                feedbackView
+        NavigationView {
+            ZStack {
+                GradientBackground()
+                
+                VStack {
+                    appLogoView
+                    greetingView
+                    userSummaryCard
+                    if isFeedbackVisible {
+                        feedbackView
+                    }
+                    Spacer()
+                }
+                .padding()
+                .onAppear {
+                    loadUserData()
+                }
+                
+                if isSideMenuVisible {
+                    Color.black.opacity(0.5)
+                        .edgesIgnoringSafeArea(.all)
+                    
+                    sideMenuContent
+                }
+                
             }
-            Spacer()
-            logOutButton
-        }
-        .padding()
-        .background(GradientBackground())
-        .onAppear {
-            loadUserData()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    sideMenuToggleButton
+                }
+            }
+            .alert(isPresented: $isLogOutAlertPresented) {
+                logOutConfirmationAlert
+            }
         }
         
     }
@@ -38,8 +63,41 @@ struct Home: View {
         Image("hesapp")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(height: UIScreen.main.bounds.height * 0.10)
-            .padding(.top, 10)
+            .frame(height: UIScreen.main.bounds.height * 0.12)
+            .padding(.top, -40)
+    }
+    
+    private var sideMenuToggleButton: some View {
+        Button {
+            withAnimation {
+                isSideMenuVisible.toggle()
+            }
+        } label: {
+            if isSideMenuVisible {
+                Image(systemName: "xmark")
+                    .foregroundColor(.black)
+                    .imageScale(.large)
+                    .padding()
+            } else {
+                Image(systemName: "list.bullet")
+                    .foregroundColor(.black)
+                    .imageScale(.large)
+                    .padding()
+            }
+        }
+    }
+    
+    private var headerView: some View {
+        ZStack {
+            HStack {
+                sideMenuToggleButton
+                Spacer()
+            }
+            appLogoView
+            HStack {
+                Spacer()
+            }
+        }
     }
     
     private var greetingView: some View {
@@ -56,30 +114,32 @@ struct Home: View {
                 .font(.title2)
                 .padding(.bottom, 20)
         }
-        .padding()
+        .padding(.top, 30)
+        .padding(.horizontal)
     }
     
-    private var userSummaryView: some View {
-        VStack(alignment: .leading) {
-            userSubsCount
-            userMonthlySpend
-            userAnnuallySpend
+    private var userSummaryCard: some View {
+        VStack(spacing: 5) {
+            subscriptionCountView
+            monthlySpendingView
+            annualSpendingView
         }
         .padding()
         .background(Color.white.opacity(0.8))
         .cornerRadius(10)
         .shadow(color: .gray, radius: 5, x: 0, y: 5)
+        .frame(width: UIScreen.main.bounds.width * 0.85)
     }
     
-    private var userSubsCount: some View {
+    private var subscriptionCountView: some View {
         infoRow(label: "Total sub count:", value: "\(userSubsVM.totalSubscriptionCount)", icon: "number")
     }
     
-    private var userMonthlySpend: some View {
+    private var monthlySpendingView: some View {
         infoRow(label: "Monthly spending:", value: String(format: "%.2f", userSubsVM.totalMonthlySpending), icon: "calendar")
     }
     
-    private var userAnnuallySpend: some View {
+    private var annualSpendingView: some View {
         infoRow(label: "Annually spend:", value: String(format: "%.2f", userSubsVM.totalMonthlySpending * 12), icon: "calendar")
     }
     
@@ -100,11 +160,11 @@ struct Home: View {
     }
     
     private var feedbackView: some View {
-        Text(feedbackMessage ?? "Info")
+        Text(feedbackText ?? "Info")
             .font(.body)
             .padding()
             .padding(.bottom, 5)
-            .background(feedbackMessage?.starts(with: "Error") == true ? Color.red : Color.green)
+            .background(feedbackText?.starts(with: "Error") == true ? Color.red : Color.green)
             .foregroundColor(.white)
             .cornerRadius(8)
             .frame(maxWidth: .infinity, alignment: .center)
@@ -113,41 +173,70 @@ struct Home: View {
             .animation(.easeInOut, value: isFeedbackVisible)
     }
     
-    private var logOutButton: some View {
-        Button(action: logOut) {
-            Text("Log Out")
-                .frame(width: UIScreen.main.bounds.width * 0.20, height: 20, alignment: .center)
-                .padding()
-                .background(Color.red)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-                .shadow(color: .gray, radius: 5, x: 0, y: 5)
-                .opacity(0.75)
+    private var logOutConfirmationAlert: Alert {
+        Alert(
+            title: Text("Log Out"),
+            message: Text("Are you sure you want to log out?"),
+            primaryButton: .destructive(Text("Log Out")) {
+                logOut()
+            },
+            secondaryButton: .cancel() {
+                isLogOutAlertPresented = false
+            }
+        )
+    }
+    
+    private var sideMenuContent: some View {
+        GeometryReader { _ in
+            HStack {
+                AppSideMenuView(
+                    showSideMenu: $isSideMenuVisible,
+                    showingLogoutAlert: $isLogOutAlertPresented)
+                        .offset(x: isSideMenuVisible ? 0 : 230)
+                        .animation(.easeInOut(duration: 0.4), value: isSideMenuVisible)
+                Spacer()
+            }
         }
-        .padding(.bottom, 25)
     }
     
     
     // MARK: - Functions
     
+    /// Loads user data.
     private func loadUserData() {
         userDetailVM.getUserFullname()
         userSubsVM.fetchSubscriptionsSummary()
     }
     
+    /// Signs the user out.
     private func logOut() {
         do {
             try Auth.auth().signOut()
-            isUserLoggedIn = false
+            try AuthManager.shared.auth.signOut()
         } catch let signOutError as NSError {
-            feedbackMessage = "Error signing out: \(signOutError.localizedDescription)"
+            feedbackText = "Error signing out: \(signOutError.localizedDescription)"
             isFeedbackVisible = true
         }
+        
+        isLogOutAlertPresented = false
+    }
+
+    /// Configures the navigation bar appearance.
+    private func configureNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+        
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
     }
     
 }
 
 
 #Preview {
-    Home(isUserLoggedIn: .constant(true))
+    Home()
 }

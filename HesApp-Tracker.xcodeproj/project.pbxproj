@@ -28,6 +28,7 @@
 		FD132FD62C6400F5005619F0 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132FD52C6400F5005619F0 /* FirestoreManager.swift */; };
 		FD132FD82C64027B005619F0 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132FD72C64027B005619F0 /* AuthManager.swift */; };
 		FD132FDA2C64078C005619F0 /* AuthTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD132FD92C64078C005619F0 /* AuthTabView.swift */; };
+		FD29891C2C663B1E00A92F31 /* AppSideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD29891B2C663B1E00A92F31 /* AppSideMenuView.swift */; };
 		FD2FD6972C5D7DB4003910F2 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD6962C5D7DB4003910F2 /* Service.swift */; };
 		FD2FD6992C5D7DC9003910F2 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD6982C5D7DC9003910F2 /* Plan.swift */; };
 		FD2FD69B2C5D80EA003910F2 /* ServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */; };
@@ -61,6 +62,7 @@
 		FD132FD52C6400F5005619F0 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		FD132FD72C64027B005619F0 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		FD132FD92C64078C005619F0 /* AuthTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTabView.swift; sourceTree = "<group>"; };
+		FD29891B2C663B1E00A92F31 /* AppSideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSideMenuView.swift; sourceTree = "<group>"; };
 		FD2FD6962C5D7DB4003910F2 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		FD2FD6982C5D7DC9003910F2 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 		FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewModel.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 		FD0D18EF2C627B9100A50366 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				FD29891A2C663AF700A92F31 /* SideMenu */,
 				FD8BFF912C65103800A52747 /* Backgrounds */,
 				FD132FDB2C6412E0005619F0 /* TabViews */,
 				FD0D18F62C6287B600A50366 /* SheetViews */,
@@ -198,6 +201,14 @@
 				FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */,
 			);
 			path = TabViews;
+			sourceTree = "<group>";
+		};
+		FD29891A2C663AF700A92F31 /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				FD29891B2C663B1E00A92F31 /* AppSideMenuView.swift */,
+			);
+			path = SideMenu;
 			sourceTree = "<group>";
 		};
 		FD2FD6942C5D7D85003910F2 /* Model */ = {
@@ -325,6 +336,7 @@
 				FD132FDA2C64078C005619F0 /* AuthTabView.swift in Sources */,
 				FD2FD69B2C5D80EA003910F2 /* ServiceViewModel.swift in Sources */,
 				FD05CDBC2C5D365500E0171E /* Login.swift in Sources */,
+				FD29891C2C663B1E00A92F31 /* AppSideMenuView.swift in Sources */,
 				FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */,
 				FD8BFF952C65164A00A52747 /* CustomService.swift in Sources */,
 				FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */,
@@ -471,11 +483,12 @@
 				DEVELOPMENT_ASSET_PATHS = "\"HesApp-Tracker/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HesApp;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -499,11 +512,12 @@
 				DEVELOPMENT_ASSET_PATHS = "\"HesApp-Tracker/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HesApp;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
