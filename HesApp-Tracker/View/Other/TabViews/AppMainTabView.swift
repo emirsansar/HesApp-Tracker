@@ -14,7 +14,7 @@ struct AppMainTabView: View {
     var body: some View {
         
         ZStack{
-            background
+            TabViewBackground()
             HStack{
                 homeButton
                 Spacer()
@@ -24,13 +24,6 @@ struct AppMainTabView: View {
             }
         }
         
-    }
-    
-    
-    private var background: some View {
-        Rectangle()
-            .frame(height: 90)
-            .foregroundColor(Color(.systemGray4).opacity(0.7))
     }
     
     

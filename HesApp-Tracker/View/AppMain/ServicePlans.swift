@@ -65,8 +65,8 @@ struct ServicePlans: View {
         .sheet(isPresented: $showFeedbackSheet){
             FeedbackSheetView(
                 showFeedbackSheet: $showFeedbackSheet,
-                feedbackMessage: $feedbackMessage,
-                isAddError: $isAddError
+                feedbackText: $feedbackMessage,
+                errorOccured: $isAddError
             )
         }
         

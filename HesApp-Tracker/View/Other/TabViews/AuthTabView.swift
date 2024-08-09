@@ -7,7 +7,7 @@ struct AuthTabView: View {
     var body: some View {
         
         ZStack {
-            background
+            TabViewBackground()
             HStack {
                 Spacer()
                 loginButton
@@ -18,13 +18,7 @@ struct AuthTabView: View {
         }
         
     }
-    
-    
-    private var background: some View {
-        Rectangle()
-            .frame(height: 80)
-            .foregroundColor(Color(.systemGray4).opacity(0.7))
-    }
+
     
     private var loginButton: some View {
         Button(action: {

@@ -10,25 +10,25 @@ import SwiftUI
 struct FeedbackSheetView: View {
     
     @Binding var showFeedbackSheet: Bool
-    @Binding var feedbackMessage: String
-    @Binding var isAddError: Bool
+    @Binding var feedbackText: String
+    @Binding var errorOccured: Bool
     
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         
         VStack(spacing: 20) {
-            Text(isAddError ? "Error" : "Success")
+            Text(errorOccured ? "Error" : "Success")
                 .font(.title2)
-                .foregroundColor(isAddError ? .red : .green)
+                .foregroundColor(errorOccured ? .red : .green)
             
-            Text(isAddError ? feedbackMessage : "Plan has been added successfully.")
+            Text(errorOccured ? feedbackText : "Plan has been added successfully.")
                 .font(.body)
                 .multilineTextAlignment(.center)
             
             Button("OK") {
                 showFeedbackSheet = false
-                if !isAddError {
+                if !errorOccured {
                     presentationMode.wrappedValue.dismiss()
                 }
             }
@@ -49,8 +49,8 @@ struct FeedbackSheetView: View {
     
     return FeedbackSheetView(
         showFeedbackSheet: $showFeedbackSheet,
-        feedbackMessage: $feedbackMessage,
-        isAddError: $isAddError
+        feedbackText: $feedbackMessage,
+        errorOccured: $isAddError
     )
     
 }

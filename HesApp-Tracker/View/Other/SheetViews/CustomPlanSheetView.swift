@@ -51,9 +51,9 @@ struct CustomPlanSheetView: View {
                             processSubscription(customPlan, quantity)
                         } else {
                             feedbackMessage = "Error: Please enter a valid price."
+                            showFeedbackSheet = true
                             isAddError = true
                             showCustomPlanSheet = false
-                            showFeedbackSheet = true
                         }
                         showCustomPlanSheet = false
                         numberOfUsers = "1"
