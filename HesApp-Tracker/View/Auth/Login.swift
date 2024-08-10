@@ -72,7 +72,7 @@ struct Login: View {
                         }
                     }
             }
-        }
+        }.animation(.easeInOut(duration: 0.15))
     }
     
     private var loginButton: some View {

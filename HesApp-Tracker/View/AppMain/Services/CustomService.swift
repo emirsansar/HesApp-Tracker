@@ -147,7 +147,7 @@ struct CustomService: View {
     
     // MARK: - Functions
     
-    // Checks whether the price can be converted to a Double.
+    /// Checks whether the price can be converted to a Double.
     /// The price needs to be stored in Firestore with a dot instead of a comma.
     private func normalizePriceInput(planPrice: String) -> (Double?, Bool) {
         let normalizedPriceString = planPrice.replacingOccurrences(of: ",", with: ".")
@@ -159,7 +159,7 @@ struct CustomService: View {
         }
     }
     
-    // Saves the custom service to the user's collection.
+    /// Saves the custom service to the user's collection.
     private func addCustomServiceToUser () {
         let (convertedPrice, success) = normalizePriceInput(planPrice: planPrice)
         
@@ -188,7 +188,7 @@ struct CustomService: View {
         }
     }
     
-    // Controls the display of feedback based on whether the service was added successfully.
+    /// Controls the display of feedback based on whether the service was added successfully.
     private func handleShowingFeedback(isSuccessful: Bool) {
         if isSuccessful {
             self.serviceName = ""

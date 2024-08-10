@@ -1,17 +1,10 @@
-//
-//  ServiceViewModel.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 3.08.2024.
-//
-
 import Foundation
 
 class ServiceViewModel: ObservableObject {
     
     @Published var services = [Service]()
 
-    // Fetchs all services from 'Services' collection in Firestore.
+    /// Fetchs all services from 'Services' collection in Firestore.
     func fetchServicesFromFirestore(completion: @escaping ([Service]?, Error?) -> Void) {
         
         FirestoreManager.shared.db.collection("Services").getDocuments { (querySnapshot, error) in

@@ -1,7 +1,8 @@
 import SwiftUI
-import FirebaseAuth
 
 struct Home: View {
+    
+    @Binding var isUserLoggedIn: Bool
     
     @ObservedObject private var userDetailVM = UserAuthAndDetailsViewModel()
     @ObservedObject private var userSubsVM = UserSubscriptionsViewModel()
@@ -11,11 +12,7 @@ struct Home: View {
     
     @State private var isLogOutAlertPresented = false
     @State private var isSideMenuVisible = false
-    
-    init () {
-        configureNavigationBarAppearance()
-    }
-    
+        
     var body: some View {
         
         NavigationView {
@@ -31,7 +28,6 @@ struct Home: View {
                     }
                     Spacer()
                 }
-                .padding()
                 .onAppear {
                     loadUserData()
                 }
@@ -39,7 +35,6 @@ struct Home: View {
                 if isSideMenuVisible {
                     Color.black.opacity(0.5)
                         .edgesIgnoringSafeArea(.all)
-                    
                     sideMenuContent
                 }
                 
@@ -48,11 +43,23 @@ struct Home: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     sideMenuToggleButton
                 }
+                
+                ToolbarItem(placement: .principal) {
+                    Text("Home")
+                        .font(.headline)
+                        .foregroundStyle(Color.black.opacity(0.8))
+                }
             }
+            .background(Color.mainBlue)
+            .navigationBarTitleDisplayMode(.inline)
             .alert(isPresented: $isLogOutAlertPresented) {
                 logOutConfirmationAlert
             }
         }
+        .onAppear {
+            configureNavigationBarAppearance()
+        }
+        .frame(maxWidth: .infinity)
         
     }
     
@@ -64,7 +71,7 @@ struct Home: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(height: UIScreen.main.bounds.height * 0.12)
-            .padding(.top, -40)
+            .padding(.top, 5)
     }
     
     private var sideMenuToggleButton: some View {
@@ -110,11 +117,11 @@ struct Home: View {
                     .font(.title)
                     .fontWeight(.bold)
             }
-            Text(userDetailVM.fullname)
+            Text(userDetailVM.fullname != "" ? userDetailVM.fullname : " ")
                 .font(.title2)
                 .padding(.bottom, 20)
         }
-        .padding(.top, 30)
+        .padding(.top, 20)
         .padding(.horizontal)
     }
     
@@ -136,7 +143,7 @@ struct Home: View {
     }
     
     private var monthlySpendingView: some View {
-        infoRow(label: "Monthly spending:", value: String(format: "%.2f", userSubsVM.totalMonthlySpending), icon: "calendar")
+        infoRow(label: "Monthly spend:", value: String(format: "%.2f", userSubsVM.totalMonthlySpending), icon: "calendar")
     }
     
     private var annualSpendingView: some View {
@@ -193,7 +200,7 @@ struct Home: View {
                     showSideMenu: $isSideMenuVisible,
                     showingLogoutAlert: $isLogOutAlertPresented)
                         .offset(x: isSideMenuVisible ? 0 : 230)
-                        .animation(.easeInOut(duration: 0.4), value: isSideMenuVisible)
+                        .animation(.easeInOut(duration: 0.3), value: isSideMenuVisible)
                 Spacer()
             }
         }
@@ -208,11 +215,12 @@ struct Home: View {
         userSubsVM.fetchSubscriptionsSummary()
     }
     
-    /// Signs the user out.
+    /// Log the user out.
     private func logOut() {
         do {
-            try Auth.auth().signOut()
+            //try Auth.auth().signOut()
             try AuthManager.shared.auth.signOut()
+            isUserLoggedIn = false
         } catch let signOutError as NSError {
             feedbackText = "Error signing out: \(signOutError.localizedDescription)"
             isFeedbackVisible = true
@@ -224,19 +232,14 @@ struct Home: View {
     /// Configures the navigation bar appearance.
     private func configureNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = .clear
-        appearance.shadowColor = .clear
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-        
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        appearance.backgroundColor = UIColor(Color(.mainBlue).opacity(0.90))
         UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
     
 }
 
 
 #Preview {
-    Home()
+    Home(isUserLoggedIn: .constant(true))
 }

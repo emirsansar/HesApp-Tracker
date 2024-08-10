@@ -7,17 +7,16 @@ struct AppMainView: View {
     @State var appMainTabBarSelection: Int = 1
     
     var body: some View {
-        
         VStack {
             switch appMainTabBarSelection {
             case 1:
-                Home()
+                Home(isUserLoggedIn: $isUserLoggedIn)
             case 2:
                 Services()
             case 3:
                 UserSubscriptions()
             default:
-                Home()
+                Home(isUserLoggedIn: $isUserLoggedIn)
             }
             
             AppMainTabView(appMainTabBarSelection: $appMainTabBarSelection)
@@ -25,8 +24,8 @@ struct AppMainView: View {
                 .padding(.top, -10)
         }
         .edgesIgnoringSafeArea(.bottom)
-        
     }
+    
 }
 
 

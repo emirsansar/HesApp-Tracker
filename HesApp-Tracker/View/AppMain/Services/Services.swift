@@ -1,10 +1,3 @@
-//
-//  Services.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 3.08.2024.
-//
-
 import SwiftUI
 
 struct Services: View {
@@ -39,6 +32,7 @@ struct Services: View {
 
     // MARK: - Functions
     
+    /// Get services from ServicesViewModel.
     private func getServices() {
         serviceVM.fetchServicesFromFirestore { services, error in
             DispatchQueue.main.async {
@@ -47,6 +41,7 @@ struct Services: View {
         }
     }
     
+    /// Configures the navigation bar appearance.
     private func prepareNavBarStyle() {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor(Color(.mainBlue).opacity(0.90))
@@ -59,6 +54,7 @@ struct Services: View {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
+    
 }
 
 

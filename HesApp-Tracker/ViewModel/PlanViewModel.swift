@@ -1,17 +1,10 @@
-//
-//  ServicePlanViewModel.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 3.08.2024.
-//
-
 import Foundation
 
 class PlanViewModel: ObservableObject {
     
     @Published var plans = [Plan]()
     
-    // Fetchs plans of selected service from 'Services' collection in Firestore.
+    /// Fetchs plans of selected service from 'Services' collection in Firestore.
     func fetchPlansOfServiceFromFirestore(documentID: String, completion: @escaping ([Plan]?, Error?) -> Void){
         
         FirestoreManager.shared.db.collection("Services").document(documentID).getDocument { (documentSnapshot, error) in

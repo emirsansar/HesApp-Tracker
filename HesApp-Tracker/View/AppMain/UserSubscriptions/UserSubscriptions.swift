@@ -18,6 +18,7 @@ struct UserSubscriptions: View {
             titleView
             sortPickerView
             subscriptionsListView
+            
             if isFeedbackVisible {
                 feedbackView
             } else {
@@ -26,7 +27,7 @@ struct UserSubscriptions: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .background(GradientBackground())
-        .onAppear(perform: fetchSubscriptions)
+        .onAppear(perform: loadSubscriptions)
         .alert(isPresented: $isRemoveAlertPresented) {
             removeAlert
         }
@@ -123,10 +124,12 @@ struct UserSubscriptions: View {
     
     // MARK: - Functions
     
-    private func fetchSubscriptions() {
+    /// Loads subscriptions from ViewModel.
+    private func loadSubscriptions() {
         viewModel.fetchUserSubscriptions()
     }
 
+    /// Function to sort subscriptions.
     private var sortedSubscriptions: [UserSubscription] {
         switch sortType {
         case .priceAscending:
@@ -140,6 +143,7 @@ struct UserSubscriptions: View {
         }
     }
     
+    /// Handles to unsubsribe process.
     private func removeSubscription() {
         if let subscription = selectedSubscription {
             viewModel.removeSubscriptionFromUser(selectedSub: subscription) { success, error in
@@ -152,6 +156,7 @@ struct UserSubscriptions: View {
         }
     }
     
+    /// Display feedback message.
     private func displayFeedback(message: String) {
         feedbackMessage = message
         isFeedbackVisible = true

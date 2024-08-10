@@ -1,10 +1,3 @@
-//
-//  FeedbackSheetView.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 6.08.2024.
-//
-
 import SwiftUI
 
 struct FeedbackSheetView: View {
