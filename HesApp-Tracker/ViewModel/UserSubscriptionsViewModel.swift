@@ -20,7 +20,8 @@ class UserSubscriptionsViewModel: ObservableObject {
     /// Adds a subscription plan to the user's collection in Firestore.
     func addPlanToUserOnFirestore(serviceName: String, plan: Plan, personCount: Int, completion: @escaping (Bool) -> Void) {
 
-        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
+        //let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             guard error == nil else {
@@ -76,7 +77,8 @@ class UserSubscriptionsViewModel: ObservableObject {
     /// Fetchs the user's subscriptions from Firestore.
     func fetchUserSubscriptions() {
 
-        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
+        //let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -117,7 +119,8 @@ class UserSubscriptionsViewModel: ObservableObject {
     /// Removes a selected subscription from the user's collection in Firestore.
     func removeSubscriptionFromUser(selectedSub: UserSubscription, completion: @escaping (Bool, Error?) -> Void) {
         
-        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
+        //let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -147,7 +150,8 @@ class UserSubscriptionsViewModel: ObservableObject {
     func fetchSubscriptionsSummary() {
         isGettingUserSubCountandSpending = true
 
-        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
+        //let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -185,5 +189,48 @@ class UserSubscriptionsViewModel: ObservableObject {
         }
         
     }
+    
+    func updateSubscription(editedSub: UserSubscription, completion: @escaping (Bool, String?) -> Void) {
+        
+        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
+        // let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        
+        userRef.getDocument { documentSnapshot, error in
+            if let error = error {
+                completion(false, error.localizedDescription)
+            }
+            
+            guard let document = documentSnapshot, document.exists,
+                  var subscriptions = document.data()?["Subscriptions"] as? [String: [String: Any]] else {
+                completion(false, "No subscriptions found or document does not exist.")
+                return
+            }
+            
+            if var serviceDetails = subscriptions[editedSub.serviceName] {
+                serviceDetails["PlanName"] = editedSub.plan.planName
+                serviceDetails["Price"] = editedSub.plan.planPrice
+                serviceDetails["PersonCount"] = editedSub.personCount
+                
+                subscriptions[editedSub.serviceName] = serviceDetails
+                
+                userRef.updateData(["Subscriptions": subscriptions]) { error in
+                    if let error = error {
+                        completion(false, error.localizedDescription)
+                    } else {
+                        DispatchQueue.main.async {
+                            if let index = self.userSubscriptions.firstIndex(where: { $0.serviceName == editedSub.serviceName }) {
+                                self.userSubscriptions[index] = editedSub
+                            }
+                            completion(true, nil)
+                        }
+                    }
+                }
+            } 
+            else {
+                completion(false, "Service not found in user's subscriptions.")
+            }
+        }
+    }
+
 
 }

@@ -7,39 +7,45 @@ struct UserSubscriptions: View {
     @ObservedObject private var viewModel = UserSubscriptionsViewModel()
     
     @State private var sortType: SortType = .priceAscending
+    
     @State private var selectedSubscription: UserSubscription?
-    @State private var isRemoveAlertPresented = false
-    @State private var isFeedbackVisible = false
-    @State private var feedbackMessage: String?
+    
+    @State private var showFeedbackSheet = false
+    @State private var showEditSheet = false
+    @State private var feedbackMessage: String = ""
+    @State private var isAddError: Bool = false
     
     var body: some View {
-        
-        VStack {
+        VStack(spacing: 0) {
             titleView
             sortPickerView
+            subscriptionListDivider
             subscriptionsListView
-            
-            if isFeedbackVisible {
-                feedbackView
-            } else {
-                instructionTextView
-            }
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .background(GradientBackground())
         .onAppear(perform: loadSubscriptions)
-        .alert(isPresented: $isRemoveAlertPresented) {
-            removeAlert
+        .sheet(isPresented: $showFeedbackSheet) {
+            FeedbackSheetView(
+                showFeedbackSheet: $showFeedbackSheet,
+                feedbackText: $feedbackMessage,
+                errorOccured: $isAddError
+            )
         }
-
+        .sheet(isPresented: $showEditSheet) {
+            EditSubscriptionSheetView(
+                selectedSubscription: $selectedSubscription,
+                confirmEditedSubscription: confirmEdit2
+            )
+        }
     }
-    
     
     // MARK: - Subviews
     
     private var titleView: some View {
         Text("Your Subscriptions")
             .font(.system(size: 30, weight: .semibold))
+            .padding()
     }
     
     private var sortPickerView: some View {
@@ -53,115 +59,89 @@ struct UserSubscriptions: View {
     }
     
     private var subscriptionsListView: some View {
-        ScrollView {
-            LazyVStack(spacing: 10) {
-                ForEach(Array(sortedSubscriptions.enumerated()), id: \.element.serviceName) { index, subscription in
-                    subscriptionRow(subscription: subscription, index: index)
-                }
+        List {
+            ForEach(Array(sortedSubscriptions.enumerated()), id: \.element.id) { index, subscription in
+                SubscriptionRow(selectedSubscription: $selectedSubscription,
+                                subscription: subscription,
+                                index: index,
+                                onRemove: removeSubscription,
+                                onEdit: editSubscription)
             }
-            .padding(.horizontal)
+            .listRowInsets(EdgeInsets())
         }
+        //.scrollContentBackground(.hidden)
     }
     
-    private func subscriptionRow(subscription: UserSubscription, index: Int) -> some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(subscription.serviceName)
-                    .font(.system(size: 18, weight: .regular))
-                Text(subscription.plan.planName)
-                    .font(.system(size: 15, weight: .light))
-            }.padding(.leading, 10)
-            Spacer()
-            Text("\((subscription.plan.planPrice / Double(subscription.personCount)), specifier: "%.2f") TL")
-                .padding(.trailing)
-                .font(.system(size: 17, weight: .regular))
-            
-        }
-        .padding()
-        .background(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .shadow(radius: 2)
-        .onTapGesture {
-            selectedSubscription = subscription
-            isRemoveAlertPresented = true
-        }
+    private var subscriptionListDivider: some View {
+        Divider()
+            .frame(height: 0.6)
+            .background(Color.black.opacity(0.5))
     }
-
-    
-    private var feedbackView: some View {
-        Text(feedbackMessage ?? "Info")
-            .font(.body)
-            .padding()
-            .padding(.bottom, 5)
-            .background(feedbackMessage?.starts(with: "Error") == true ? Color.red : Color.green)
-            .foregroundColor(.white)
-            .cornerRadius(8)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .opacity(isFeedbackVisible ? 1 : 0)
-            .transition(.opacity)
-            .animation(.easeInOut, value: isFeedbackVisible)
-    }
-    
-    private var instructionTextView: some View {
-        Text("Tap on the subscription you want to remove.")
-            .font(.system(size: 14, weight: .regular))
-            .foregroundColor(Color(UIColor.black))
-            .padding()
-            .opacity(isFeedbackVisible ? 0 : 1)
-    }
-    
-    private var removeAlert: Alert {
-        Alert(
-            title: Text("Remove Subscription"),
-            message: Text("Are you sure you want to remove the subscription of \(selectedSubscription?.serviceName ?? "Unknown Service")?"),
-            primaryButton: .destructive(Text("Remove")) {
-                removeSubscription()
-            },
-            secondaryButton: .cancel()
-        )
-    }
-    
     
     // MARK: - Functions
     
-    /// Loads subscriptions from ViewModel.
+    /// Loads user's subscriptions from ViewModel.
     private func loadSubscriptions() {
         viewModel.fetchUserSubscriptions()
     }
 
-    /// Function to sort subscriptions.
+    /// Sorts the subscription list on ViewModel.
     private var sortedSubscriptions: [UserSubscription] {
         switch sortType {
         case .priceAscending:
             return viewModel.userSubscriptions.sorted {
-                $0.plan.planPrice/Double($0.personCount) < $1.plan.planPrice/Double($1.personCount)  }
+                $0.plan.planPrice / Double($0.personCount) < $1.plan.planPrice / Double($1.personCount)
+            }
         case .priceDescending:
             return viewModel.userSubscriptions.sorted {
-                $0.plan.planPrice/Double($0.personCount) > $1.plan.planPrice/Double($1.personCount)  }
+                $0.plan.planPrice / Double($0.personCount) > $1.plan.planPrice / Double($1.personCount)
+            }
         case .alphabetically:
             return viewModel.userSubscriptions.sorted { $0.serviceName < $1.serviceName }
         }
     }
     
-    /// Handles to unsubsribe process.
+    /// Process of the removing subscription.
     private func removeSubscription() {
         if let subscription = selectedSubscription {
             viewModel.removeSubscriptionFromUser(selectedSub: subscription) { success, error in
-                if success {
-                    displayFeedback(message: "\(subscription.serviceName) is removed successfully.")
-                } else if let error = error {
-                    displayFeedback(message: error.localizedDescription)
+                DispatchQueue.main.async {
+                    if success {
+                        self.feedbackMessage = "The \(selectedSubscription?.serviceName ?? "Subscription") was removed successfully."
+                        self.isAddError = false
+                    } else if let error = error {
+                        self.feedbackMessage = error.localizedDescription
+                        self.isAddError = false
+                        self.loadSubscriptions()
+                    }
+                    self.showFeedbackSheet = true
                 }
             }
         }
     }
     
-    /// Display feedback message.
-    private func displayFeedback(message: String) {
-        feedbackMessage = message
-        isFeedbackVisible = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            isFeedbackVisible = false
+    /// Opens the edit sheet when a subscription is selected for editing.
+    private func editSubscription() {
+        if let subscription = selectedSubscription {
+            showEditSheet = true
+        }
+    }
+    
+    /// Called when confirm button is tapped in the edit sheet, it edits the selected subscription by ViewModel.
+    private func confirmEdit2(editedSub: UserSubscription) {
+        viewModel.updateSubscription(editedSub: editedSub) { success, error in
+            DispatchQueue.main.async {
+                if success {
+                    feedbackMessage = "Subscription edited successfully."
+                    isAddError = false
+                } else if let error = error {
+                    feedbackMessage = error
+                    isAddError = true
+                }
+                showFeedbackSheet = true
+                showEditSheet = false
+                loadSubscriptions()
+            }
         }
     }
     

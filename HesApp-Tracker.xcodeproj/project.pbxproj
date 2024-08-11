@@ -41,6 +41,8 @@
 		FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */; };
 		FDCD60E22C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E12C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift */; };
 		FDCD60E42C5E696D0049CED8 /* UserSubscriptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */; };
+		FDDD0A972C67B45200A6121E /* SubscriptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */; };
+		FDDD0A992C67BE3900A6121E /* EditSubscriptionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDD0A982C67BE3900A6121E /* EditSubscriptionSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +77,8 @@
 		FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
 		FDCD60E12C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthAndDetailsViewModel.swift; sourceTree = "<group>"; };
 		FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionsViewModel.swift; sourceTree = "<group>"; };
+		FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRow.swift; sourceTree = "<group>"; };
+		FDDD0A982C67BE3900A6121E /* EditSubscriptionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubscriptionSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +183,7 @@
 				FD0D18F22C62863900A50366 /* CustomPlanSheetView.swift */,
 				FD0D18F42C62872200A50366 /* FeedbackPlanSheetView.swift */,
 				FD0D18F72C6287E300A50366 /* ConfirmationPlanSheetView.swift */,
+				FDDD0A982C67BE3900A6121E /* EditSubscriptionSheetView.swift */,
 			);
 			path = SheetViews;
 			sourceTree = "<group>";
@@ -231,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				FD05CDB52C5D2E2D00E0171E /* UserSubscriptions.swift */,
+				FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */,
 			);
 			path = UserSubscriptions;
 			sourceTree = "<group>";
@@ -362,6 +368,7 @@
 				FD05CDBC2C5D365500E0171E /* Login.swift in Sources */,
 				FD29891C2C663B1E00A92F31 /* AppSideMenuView.swift in Sources */,
 				FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */,
+				FDDD0A972C67B45200A6121E /* SubscriptionRow.swift in Sources */,
 				FD8BFF952C65164A00A52747 /* CustomService.swift in Sources */,
 				FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */,
 				FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */,
@@ -370,6 +377,7 @@
 				FD05CDBE2C5D365E00E0171E /* Register.swift in Sources */,
 				FD05CDB42C5D2E0E00E0171E /* Home.swift in Sources */,
 				FD132FD82C64027B005619F0 /* AuthManager.swift in Sources */,
+				FDDD0A992C67BE3900A6121E /* EditSubscriptionSheetView.swift in Sources */,
 				FD0D18F82C6287E300A50366 /* ConfirmationPlanSheetView.swift in Sources */,
 				FD05CDA52C5D2DD300E0171E /* HesApp_TrackerApp.swift in Sources */,
 			);
