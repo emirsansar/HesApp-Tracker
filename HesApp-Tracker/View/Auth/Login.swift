@@ -3,7 +3,7 @@ import FirebaseAuth
 
 struct Login: View {
     
-    @Binding var isUserLoggedIn: Bool
+    @EnvironmentObject var appState: AppState
     
     @State private var email: String = ""
     @State private var password: String = ""
@@ -68,7 +68,8 @@ struct Login: View {
                     .cornerRadius(8)
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            isUserLoggedIn = true
+                            UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+                            self.appState.updateLoginStatus(isLogged: true)
                         }
                     }
             }
@@ -125,5 +126,5 @@ struct Login: View {
 
 
 #Preview {
-    Login(isUserLoggedIn: .constant(false))
+    Login()
 }

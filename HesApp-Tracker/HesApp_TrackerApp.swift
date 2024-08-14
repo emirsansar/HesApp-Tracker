@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseCore
+import SwiftData
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -20,9 +21,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct HesApp_TrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
+    var appState = AppState()
+    
     var body: some Scene {
         WindowGroup {
             AuthView()
+                
         }
+        .environmentObject(appState)
+        .modelContainer(for: [Service.self])
     }
 }

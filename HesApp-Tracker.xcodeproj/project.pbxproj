@@ -41,6 +41,7 @@
 		FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */; };
 		FDCD60E22C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E12C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift */; };
 		FDCD60E42C5E696D0049CED8 /* UserSubscriptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */; };
+		FDD36B8A2C6B7D8F000702DC /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD36B892C6B7D8F000702DC /* AppState.swift */; };
 		FDDD0A972C67B45200A6121E /* SubscriptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */; };
 		FDDD0A992C67BE3900A6121E /* EditSubscriptionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDD0A982C67BE3900A6121E /* EditSubscriptionSheetView.swift */; };
 /* End PBXBuildFile section */
@@ -77,8 +78,10 @@
 		FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
 		FDCD60E12C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthAndDetailsViewModel.swift; sourceTree = "<group>"; };
 		FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionsViewModel.swift; sourceTree = "<group>"; };
+		FDD36B892C6B7D8F000702DC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRow.swift; sourceTree = "<group>"; };
 		FDDD0A982C67BE3900A6121E /* EditSubscriptionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubscriptionSheetView.swift; sourceTree = "<group>"; };
+		FDE3EBE52C6CC77C00912B05 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,7 @@
 			children = (
 				FD05CDA32C5D2DD300E0171E /* HesApp-Tracker */,
 				FD05CDA22C5D2DD300E0171E /* Products */,
+				FDE3EBE42C6CC77C00912B05 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -193,6 +197,7 @@
 			children = (
 				FD132FD52C6400F5005619F0 /* FirestoreManager.swift */,
 				FD132FD72C64027B005619F0 /* AuthManager.swift */,
+				FDD36B892C6B7D8F000702DC /* AppState.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -269,6 +274,14 @@
 				FD8BFF922C65105500A52747 /* TabViewBackground.swift */,
 			);
 			path = Backgrounds;
+			sourceTree = "<group>";
+		};
+		FDE3EBE42C6CC77C00912B05 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FDE3EBE52C6CC77C00912B05 /* SwiftData.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -372,6 +385,7 @@
 				FD8BFF952C65164A00A52747 /* CustomService.swift in Sources */,
 				FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */,
 				FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */,
+				FDD36B8A2C6B7D8F000702DC /* AppState.swift in Sources */,
 				FD2FD6992C5D7DC9003910F2 /* Plan.swift in Sources */,
 				FDCD60DC2C5E4D1D0049CED8 /* ServicePlans.swift in Sources */,
 				FD05CDBE2C5D365E00E0171E /* Register.swift in Sources */,
@@ -516,9 +530,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = HesApp;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -545,9 +561,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = HesApp;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (

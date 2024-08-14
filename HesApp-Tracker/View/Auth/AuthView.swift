@@ -1,28 +1,28 @@
 import SwiftUI
-//import FirebaseAuth
 
 struct AuthView: View {
     
-    @State var isUserLoggedIn: Bool = AuthManager.shared.auth.currentUser != nil
+    @EnvironmentObject var appState: AppState
+
     @State private var authTabBarSelection: Int = 1
     
     var body: some View {
         ZStack {
-            if isUserLoggedIn {
-                AppMainView(isUserLoggedIn: $isUserLoggedIn)
-                    .transition(.move(edge: .trailing)) // Görünüm geçiş efekti
+            if appState.isUserLoggedIn {
+                AppMainView()
+                    .transition(.move(edge: .trailing))
             } else {
                 content
-                    .transition(.move(edge: .leading)) // Görünüm geçiş efekti
+                    .transition(.move(edge: .leading))
             }
         }
-        .animation(.easeInOut, value: isUserLoggedIn)
+        .animation(.easeInOut, value: appState.isUserLoggedIn)
     }
     
     var content: some View {
         VStack {
             if authTabBarSelection == 1 {
-                Login(isUserLoggedIn: $isUserLoggedIn)
+                Login()
             } else {
                 Register()
             }

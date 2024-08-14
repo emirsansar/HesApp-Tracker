@@ -2,7 +2,7 @@ import SwiftUI
 
 struct Home: View {
     
-    @Binding var isUserLoggedIn: Bool
+    @EnvironmentObject var appState: AppState
     
     @ObservedObject private var userDetailVM = UserAuthAndDetailsViewModel()
     @ObservedObject private var userSubsVM = UserSubscriptionsViewModel()
@@ -46,7 +46,7 @@ struct Home: View {
                 
                 ToolbarItem(placement: .principal) {
                     Text("Home")
-                        .font(.headline)
+                        .font(.system(size: 18, weight: .semibold))
                         .foregroundStyle(Color.black.opacity(0.8))
                 }
             }
@@ -56,10 +56,17 @@ struct Home: View {
                 logOutConfirmationAlert
             }
         }
+        .frame(maxWidth: .infinity)
         .onAppear {
             configureNavigationBarAppearance()
         }
-        .frame(maxWidth: .infinity)
+        .onChange(of: userSubsVM.totalSubscriptionCount) {
+            
+        }
+        .onChange(of: userDetailVM.fullname) {
+            
+        }
+        
         
     }
     
@@ -218,9 +225,9 @@ struct Home: View {
     /// Log the user out.
     private func logOut() {
         do {
-            //try Auth.auth().signOut()
             try AuthManager.shared.auth.signOut()
-            isUserLoggedIn = false
+            UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
+            self.appState.updateLoginStatus(isLogged: false)
         } catch let signOutError as NSError {
             feedbackText = "Error signing out: \(signOutError.localizedDescription)"
             isFeedbackVisible = true
@@ -241,5 +248,5 @@ struct Home: View {
 
 
 #Preview {
-    Home(isUserLoggedIn: .constant(true))
+    Home()
 }

@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 
 class ServiceViewModel: ObservableObject {
     
@@ -22,6 +23,7 @@ class ServiceViewModel: ObservableObject {
                 
                 let service = Service(serviceName: serviceName, serviceType: serviceType)
                 services.append(service)
+                
             }
             
             completion(services, nil)
@@ -29,4 +31,20 @@ class ServiceViewModel: ObservableObject {
         
     }
     
+    
+    /// Saves an array of Service models to SwiftData.
+    func saveServicesToSwiftData(services: [Service], context: ModelContext) {
+        
+        for service in services {
+            context.insert(service)
+        }
+        
+        do {
+            try context.save()
+            print("Services have been successfully saved to SwiftData.")
+        } catch {
+            print("Failed to save services to SwiftData: \(error)")
+        }
+    }
+  
 }
