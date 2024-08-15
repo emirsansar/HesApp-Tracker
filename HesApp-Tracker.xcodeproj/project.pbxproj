@@ -35,11 +35,13 @@
 		FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */; };
 		FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF922C65105500A52747 /* TabViewBackground.swift */; };
 		FD8BFF952C65164A00A52747 /* CustomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF942C65164A00A52747 /* CustomService.swift */; };
+		FDB791002C6D26930075AE1B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB790FF2C6D26930075AE1B /* User.swift */; };
+		FDB791022C6D33190075AE1B /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB791012C6D33190075AE1B /* UserViewModel.swift */; };
 		FDCADF2B2C60CA150059BEF7 /* UserSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */; };
 		FDCD60DC2C5E4D1D0049CED8 /* ServicePlans.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DB2C5E4D1D0049CED8 /* ServicePlans.swift */; };
 		FDCD60DE2C5E4E400049CED8 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DD2C5E4E400049CED8 /* Services.swift */; };
 		FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */; };
-		FDCD60E22C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E12C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift */; };
+		FDCD60E22C5E61E60049CED8 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E12C5E61E60049CED8 /* AuthenticationViewModel.swift */; };
 		FDCD60E42C5E696D0049CED8 /* UserSubscriptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */; };
 		FDD36B8A2C6B7D8F000702DC /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD36B892C6B7D8F000702DC /* AppState.swift */; };
 		FDDD0A972C67B45200A6121E /* SubscriptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */; };
@@ -72,11 +74,13 @@
 		FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainTabView.swift; sourceTree = "<group>"; };
 		FD8BFF922C65105500A52747 /* TabViewBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewBackground.swift; sourceTree = "<group>"; };
 		FD8BFF942C65164A00A52747 /* CustomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomService.swift; sourceTree = "<group>"; };
+		FDB790FF2C6D26930075AE1B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		FDB791012C6D33190075AE1B /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscription.swift; sourceTree = "<group>"; };
 		FDCD60DB2C5E4D1D0049CED8 /* ServicePlans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlans.swift; sourceTree = "<group>"; };
 		FDCD60DD2C5E4E400049CED8 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
-		FDCD60E12C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthAndDetailsViewModel.swift; sourceTree = "<group>"; };
+		FDCD60E12C5E61E60049CED8 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionsViewModel.swift; sourceTree = "<group>"; };
 		FDD36B892C6B7D8F000702DC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRow.swift; sourceTree = "<group>"; };
@@ -252,6 +256,7 @@
 				FD2FD6962C5D7DB4003910F2 /* Service.swift */,
 				FD2FD6982C5D7DC9003910F2 /* Plan.swift */,
 				FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */,
+				FDB790FF2C6D26930075AE1B /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -261,8 +266,9 @@
 			children = (
 				FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */,
 				FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */,
-				FDCD60E12C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift */,
+				FDCD60E12C5E61E60049CED8 /* AuthenticationViewModel.swift */,
 				FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */,
+				FDB791012C6D33190075AE1B /* UserViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -366,8 +372,9 @@
 			files = (
 				FDCD60E42C5E696D0049CED8 /* UserSubscriptionsViewModel.swift in Sources */,
 				FD132FD62C6400F5005619F0 /* FirestoreManager.swift in Sources */,
-				FDCD60E22C5E61E60049CED8 /* UserAuthAndDetailsViewModel.swift in Sources */,
+				FDCD60E22C5E61E60049CED8 /* AuthenticationViewModel.swift in Sources */,
 				FD05CDA72C5D2DD300E0171E /* AuthView.swift in Sources */,
+				FDB791002C6D26930075AE1B /* User.swift in Sources */,
 				FDCD60DE2C5E4E400049CED8 /* Services.swift in Sources */,
 				FD2FD6972C5D7DB4003910F2 /* Service.swift in Sources */,
 				FD0D18FA2C628B0100A50366 /* GradientBackground.swift in Sources */,
@@ -388,6 +395,7 @@
 				FDD36B8A2C6B7D8F000702DC /* AppState.swift in Sources */,
 				FD2FD6992C5D7DC9003910F2 /* Plan.swift in Sources */,
 				FDCD60DC2C5E4D1D0049CED8 /* ServicePlans.swift in Sources */,
+				FDB791022C6D33190075AE1B /* UserViewModel.swift in Sources */,
 				FD05CDBE2C5D365E00E0171E /* Register.swift in Sources */,
 				FD05CDB42C5D2E0E00E0171E /* Home.swift in Sources */,
 				FD132FD82C64027B005619F0 /* AuthManager.swift in Sources */,

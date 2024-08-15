@@ -8,7 +8,7 @@ struct Login: View {
     @State private var email: String = ""
     @State private var password: String = ""
     
-    @ObservedObject var userAuthVM = UserAuthAndDetailsViewModel()
+    @ObservedObject var userAuthVM = AuthenticationViewModel()
 
     var body: some View {
         

@@ -1,6 +1,6 @@
 import Foundation
 
-class UserAuthAndDetailsViewModel: ObservableObject {
+class AuthenticationViewModel: ObservableObject {
     
     @Published var registrationError: String?
     @Published var registrationSuccess: Bool = false
@@ -10,9 +10,13 @@ class UserAuthAndDetailsViewModel: ObservableObject {
     @Published var isLoggingIn: Bool = false
     @Published var loginSuccess: Bool = false
     
+    @Published var isLoggingOut: Bool = false
+    @Published var logOutError: String?
+    @Published var logOutSuccess: Bool = false
+    
     @Published var fullname: String = ""
     
-    // Registers a user with Firebase Authentication.
+    /// Registers a user with Firebase Authentication.
     func registerUserToFirebaseAuth(email: String, password: String, name: String, surname: String, completion: @escaping (Bool) -> Void) {
         isRegistering = true
         registrationError = nil
@@ -31,7 +35,7 @@ class UserAuthAndDetailsViewModel: ObservableObject {
         }
     }
     
-    // Saves user details to Firestore.
+    /// Saves user details to Firestore.
     private func saveUserDetailsToFirestore(email: String, name: String, surname: String, completion: @escaping (Bool) -> Void) {
 
         let userData: [String: Any] = ["Name": name, "Surname": surname]
@@ -49,7 +53,7 @@ class UserAuthAndDetailsViewModel: ObservableObject {
         
     }
     
-    // Logs in a user with Firebase Authentication.
+    /// Logs in a user with Firebase Authentication.
     func loginUser(email: String, password: String, completion: @escaping (Bool) -> Void) {
         
         AuthManager.shared.auth.signIn(withEmail: email, password: password) { result, error in
@@ -68,36 +72,35 @@ class UserAuthAndDetailsViewModel: ObservableObject {
         
     }
     
-    // Fetch the user's full name from Firestore to show on Home page.
-    func getUserFullname () {
-        guard let email = AuthManager.shared.currentUserEmail else {
-            fullname = ""
+    /// Logs out a user with Firebase Authentication.
+    func logOut() {
+        self.isLoggingOut = true
+        
+        do {
+            try AuthManager.shared.auth.signOut()
+            
+        }
+        catch let signOutError as NSError {
+            self.logOutError = "Error signing out: \(signOutError.localizedDescription)"
+            self.isLoggingOut = false
+            self.logOutSuccess = false
             return
         }
         
-        FirestoreManager.shared.db.collection("Users").document(email).getDocument { documentSnapshot, error in
-            DispatchQueue.main.async {
-                guard let document = documentSnapshot, error == nil else {
-                    self.fullname = ""
-                    return
-                }
-                let name = document.get("Name") as? String ?? ""
-                let surname = document.get("Surname") as? String ?? ""
-                self.fullname = "\(name) \(surname)"
-            }
-        }
-        
+        UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
+        self.isLoggingOut = false
+        self.logOutSuccess = true
     }
     
     
-    // Handles registration errors and updates the state
+    /// Handles registration errors and updates the state
     private func handleRegistrationError(error: String) {
       registrationError = error
       registrationSuccess = false
       isRegistering = false
     }
 
-    // Handles login errors and updates the state
+    /// Handles login errors and updates the state
     private func handleLoginError(error: String) {
       loginError = error
       loginSuccess = false

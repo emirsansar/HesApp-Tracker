@@ -4,15 +4,18 @@ struct Home: View {
     
     @EnvironmentObject var appState: AppState
     
-    @ObservedObject private var userDetailVM = UserAuthAndDetailsViewModel()
+    @Environment(\.modelContext) var context
+    
     @ObservedObject private var userSubsVM = UserSubscriptionsViewModel()
+    @ObservedObject private var userVM = UserViewModel()
+    @ObservedObject private var authVM = AuthenticationViewModel()
     
-    @State private var isFeedbackVisible = false
-    @State private var feedbackText: String?
-    
+    @State private var showLogOutFeedback = false
+    @State private var logOutFeedbackText: String?
     @State private var isLogOutAlertPresented = false
     @State private var isSideMenuVisible = false
-        
+
+    
     var body: some View {
         
         NavigationView {
@@ -23,13 +26,10 @@ struct Home: View {
                     appLogoView
                     greetingView
                     userSummaryCard
-                    if isFeedbackVisible {
+                    if showLogOutFeedback {
                         feedbackView
                     }
                     Spacer()
-                }
-                .onAppear {
-                    loadUserData()
                 }
                 
                 if isSideMenuVisible {
@@ -52,21 +52,24 @@ struct Home: View {
             }
             .background(Color.mainBlue)
             .navigationBarTitleDisplayMode(.inline)
-            .alert(isPresented: $isLogOutAlertPresented) {
-                logOutConfirmationAlert
-            }
         }
         .frame(maxWidth: .infinity)
+        .alert(isPresented: $isLogOutAlertPresented) {
+            logOutConfirmationAlert
+        }
         .onAppear {
+            loadUserData()
             configureNavigationBarAppearance()
         }
-        .onChange(of: userSubsVM.totalSubscriptionCount) {
-            
+        .onChange(of: authVM.logOutSuccess) { success in
+            if success {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.appState.updateLoginStatus(isLogged: false)
+                }
+            } else if let error = authVM.logOutError {
+                logOutFeedbackText = error
+            }
         }
-        .onChange(of: userDetailVM.fullname) {
-            
-        }
-        
         
     }
     
@@ -124,7 +127,7 @@ struct Home: View {
                     .font(.title)
                     .fontWeight(.bold)
             }
-            Text(userDetailVM.fullname != "" ? userDetailVM.fullname : " ")
+            Text(userVM.currentUser.fullName == "" ? " " : userVM.currentUser.fullName)
                 .font(.title2)
                 .padding(.bottom, 20)
         }
@@ -146,15 +149,15 @@ struct Home: View {
     }
     
     private var subscriptionCountView: some View {
-        infoRow(label: "Total sub count:", value: "\(userSubsVM.totalSubscriptionCount)", icon: "number")
+        infoRow(label: "Total sub count:", value: "\(userVM.currentUser.subscriptionCount)", icon: "number")
     }
     
     private var monthlySpendingView: some View {
-        infoRow(label: "Monthly spend:", value: String(format: "%.2f", userSubsVM.totalMonthlySpending), icon: "calendar")
+        infoRow(label: "Monthly spend:", value: String(format: "%.2f", userVM.currentUser.monthlySpend), icon: "calendar")
     }
     
     private var annualSpendingView: some View {
-        infoRow(label: "Annually spend:", value: String(format: "%.2f", userSubsVM.totalMonthlySpending * 12), icon: "calendar")
+        infoRow(label: "Annually spend:", value: String(format: "%.2f", userVM.currentUser.monthlySpend * 12), icon: "calendar")
     }
     
     private func infoRow(label: String, value: String, icon: String) -> some View {
@@ -174,19 +177,41 @@ struct Home: View {
     }
     
     private var feedbackView: some View {
-        Text(feedbackText ?? "Info")
-            .font(.body)
-            .padding()
-            .padding(.bottom, 5)
-            .background(feedbackText?.starts(with: "Error") == true ? Color.red : Color.green)
-            .foregroundColor(.white)
-            .cornerRadius(8)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .opacity(isFeedbackVisible ? 1 : 0)
-            .transition(.opacity)
-            .animation(.easeInOut, value: isFeedbackVisible)
+        VStack {
+            if let error = logOutFeedbackText {
+                Text(error)
+                    .font(.body)
+                    .padding()
+                    .background(Color.red.opacity(0.20))
+                    .foregroundColor(.black.opacity(0.85))
+                    .cornerRadius(8)
+                    .padding(.bottom, 10)
+                    .transition(.opacity)
+            }
+            
+            if authVM.isLoggingOut || authVM.logOutSuccess {
+                VStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding(.top,10)
+                        .padding(.bottom,3)
+                        .scaleEffect(1.2) 
+                    Text("Logging out.")
+                        .font(.body)
+                        .padding(.horizontal)
+                        .foregroundColor(.black.opacity(0.85))
+                        .cornerRadius(8)
+                        .transition(.opacity)
+                        .padding(.bottom,10)
+                }
+                .background(Color.green.opacity(0.20))
+            }
+        }
+        .animation(.easeInOut, value: showLogOutFeedback)
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .center)
     }
-    
+
     private var logOutConfirmationAlert: Alert {
         Alert(
             title: Text("Log Out"),
@@ -216,24 +241,44 @@ struct Home: View {
     
     // MARK: - Functions
     
-    /// Loads user data.
+    /// Loads user data from ViewModels.
     private func loadUserData() {
-        userDetailVM.getUserFullname()
-        userSubsVM.fetchSubscriptionsSummary()
+        
+        if !appState.isFetchedUserDetails || appState.isUserChangedSubsList {
+            DispatchQueue.main.async {
+                userVM.fetchsUserFullname() { userFullName in
+                    let fullName = userFullName
+                    
+                    userSubsVM.fetchSubscriptionsSummary() { userSubCount, userMounthlySpend in
+                        let subsCount = userSubCount
+                        let monthlySpend = userMounthlySpend
+                        
+                        userVM.updateCurrentUser(fullName: fullName!, subscriptionCount: subsCount, monthlySpend: monthlySpend)
+                        userVM.saveUserDetailsToSwiftData(user: userVM.currentUser, context: context)
+                        
+                        appState.isFetchedUserDetails = true
+                        appState.isUserChangedSubsList = false
+                    }
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                let userEmail = AuthManager.shared.auth.currentUser!.email!
+                
+                if let existingUser = userVM.fetchUserFromSwiftData(byEmail: userEmail, context: context) {
+                    userVM.currentUser = existingUser
+                } else {
+                    print("No user found in SwiftData with email: \(userEmail)")
+                }
+            }
+        }
+
     }
     
     /// Log the user out.
     private func logOut() {
-        do {
-            try AuthManager.shared.auth.signOut()
-            UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
-            self.appState.updateLoginStatus(isLogged: false)
-        } catch let signOutError as NSError {
-            feedbackText = "Error signing out: \(signOutError.localizedDescription)"
-            isFeedbackVisible = true
-        }
-        
-        isLogOutAlertPresented = false
+        self.showLogOutFeedback = true
+        authVM.logOut()
     }
 
     /// Configures the navigation bar appearance.
@@ -248,5 +293,7 @@ struct Home: View {
 
 
 #Preview {
+    //let user = User(email: "emir2@gmail.com", fullName: "Emir Sansar", subscriptionCount: 2, monthlySpend: 125.12)
+    
     Home()
 }

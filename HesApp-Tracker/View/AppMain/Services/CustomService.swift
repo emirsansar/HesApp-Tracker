@@ -15,6 +15,9 @@ struct CustomService: View {
     @State private var feedbackMessage: String = ""
     @State private var isAddError: Bool = false
     
+    @EnvironmentObject var appState: AppState
+    
+    
     var body: some View {
         VStack {
             headerView
@@ -177,6 +180,7 @@ struct CustomService: View {
         userSubsVM.addPlanToUserOnFirestore(serviceName: serviceName, plan: plan, personCount: Int(numberOfUsers)!) { success in
             DispatchQueue.main.async {
                 if success {
+                    appState.isUserChangedSubsList = true
                     self.handleShowingFeedback(isSuccessful: true)
                 } else {
                     self.handleShowingFeedback(isSuccessful: false)

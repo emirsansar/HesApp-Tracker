@@ -17,7 +17,7 @@ struct Register: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     
-    @ObservedObject var userAuthVM = UserAuthAndDetailsViewModel()
+    @ObservedObject var userAuthVM = AuthenticationViewModel()
     
     var body: some View {
         

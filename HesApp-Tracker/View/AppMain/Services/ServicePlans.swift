@@ -1,10 +1,3 @@
-//
-//  ServicePlans.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 3.08.2024.
-//
-
 import SwiftUI
 
 struct ServicePlans: View {
@@ -28,6 +21,8 @@ struct ServicePlans: View {
     @State private var showFeedbackSheet = false
     @State private var feedbackMessage: String = ""
     @State private var isAddError: Bool = false
+    
+    @EnvironmentObject var appState: AppState
 
     
     var body: some View {
@@ -147,6 +142,7 @@ struct ServicePlans: View {
         userSubsVM.addPlanToUserOnFirestore(serviceName: chosenService.serviceName, plan: plan, personCount: quantity) { success in
             if success {
                 self.isAddError = false
+                appState.isUserChangedSubsList = true
             } else {
                 self.isAddError = true
             }

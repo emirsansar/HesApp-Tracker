@@ -15,7 +15,7 @@ struct FeedbackSheetView: View {
                 .font(.title2)
                 .foregroundColor(errorOccured ? .red : .green)
             
-            Text(errorOccured ? feedbackText : "Plan has been added successfully.")
+            Text(feedbackText)
                 .font(.body)
                 .multilineTextAlignment(.center)
             
@@ -28,7 +28,7 @@ struct FeedbackSheetView: View {
             .padding()
         }
         .padding(.horizontal, 40)
-        .presentationDetents([.height(170)])
+        .presentationDetents([.height(185)])
         
     }
     

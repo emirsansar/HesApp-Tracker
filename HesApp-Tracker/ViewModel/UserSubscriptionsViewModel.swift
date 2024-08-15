@@ -20,8 +20,7 @@ class UserSubscriptionsViewModel: ObservableObject {
     /// Adds a subscription plan to the user's collection in Firestore.
     func addPlanToUserOnFirestore(serviceName: String, plan: Plan, personCount: Int, completion: @escaping (Bool) -> Void) {
 
-        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
-        //let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             guard error == nil else {
@@ -77,8 +76,7 @@ class UserSubscriptionsViewModel: ObservableObject {
     /// Fetchs the user's subscriptions from Firestore.
     func fetchUserSubscriptions() {
 
-        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
-        //let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -119,8 +117,7 @@ class UserSubscriptionsViewModel: ObservableObject {
     /// Removes a selected subscription from the user's collection in Firestore.
     func removeSubscriptionFromUser(selectedSub: UserSubscription, completion: @escaping (Bool, Error?) -> Void) {
         
-        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
-        //let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -147,11 +144,10 @@ class UserSubscriptionsViewModel: ObservableObject {
     }
     
     /// Fetches a summary of the user's total subscription count and monthly spending from Firestore.
-    func fetchSubscriptionsSummary() {
+    func fetchSubscriptionsSummary(completion: @escaping (Int, Double) -> Void){
         isGettingUserSubCountandSpending = true
 
-        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
-        //let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
@@ -185,15 +181,17 @@ class UserSubscriptionsViewModel: ObservableObject {
                 self.totalSubscriptionCount = serviceCount
                 self.totalMonthlySpending = monthlySpend
                 self.isGettingUserSubCountandSpending = false
+                
+                completion(self.totalSubscriptionCount, self.totalMonthlySpending)
             }
         }
         
     }
     
+    /// Updates the selected subscription on Firebase.
     func updateSubscription(editedSub: UserSubscription, completion: @escaping (Bool, String?) -> Void) {
         
-        let userRef = Firestore.firestore().collection("Users").document("emir2@gmail.com")
-        // let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
+        let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {

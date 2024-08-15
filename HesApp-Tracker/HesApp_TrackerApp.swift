@@ -29,6 +29,6 @@ struct HesApp_TrackerApp: App {
                 
         }
         .environmentObject(appState)
-        .modelContainer(for: [Service.self])
+        .modelContainer(for: [Service.self, User.self])
     }
 }

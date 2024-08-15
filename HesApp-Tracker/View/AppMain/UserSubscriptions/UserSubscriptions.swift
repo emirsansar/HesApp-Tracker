@@ -15,6 +15,8 @@ struct UserSubscriptions: View {
     @State private var feedbackMessage: String = ""
     @State private var isAddError: Bool = false
     
+    @EnvironmentObject var appState: AppState
+    
     var body: some View {
         VStack(spacing: 0) {
             titleView
@@ -109,6 +111,7 @@ struct UserSubscriptions: View {
                     if success {
                         self.feedbackMessage = "The \(selectedSubscription?.serviceName ?? "Subscription") was removed successfully."
                         self.isAddError = false
+                        appState.isUserChangedSubsList = true
                     } else if let error = error {
                         self.feedbackMessage = error.localizedDescription
                         self.isAddError = false
@@ -122,7 +125,7 @@ struct UserSubscriptions: View {
     
     /// Opens the edit sheet when a subscription is selected for editing.
     private func editSubscription() {
-        if let subscription = selectedSubscription {
+        if selectedSubscription != nil {
             showEditSheet = true
         }
     }
@@ -132,11 +135,12 @@ struct UserSubscriptions: View {
         viewModel.updateSubscription(editedSub: editedSub) { success, error in
             DispatchQueue.main.async {
                 if success {
-                    feedbackMessage = "Subscription edited successfully."
-                    isAddError = false
+                    self.feedbackMessage = "Subscription edited successfully."
+                    appState.isUserChangedSubsList = true
+                    self.isAddError = false
                 } else if let error = error {
-                    feedbackMessage = error
-                    isAddError = true
+                    self.feedbackMessage = error
+                    self.isAddError = true
                 }
                 showFeedbackSheet = true
                 showEditSheet = false
