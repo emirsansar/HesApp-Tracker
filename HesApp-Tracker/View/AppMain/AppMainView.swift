@@ -8,13 +8,13 @@ struct AppMainView: View {
         VStack {
             switch appMainTabBarSelection {
             case 1:
-                Home()
+                HomeView()
             case 2:
-                Services()
+                ServicesView()
             case 3:
-                UserSubscriptions()
+                UserSubscriptionsView()
             default:
-                Home()
+                HomeView()
             }
             
             AppMainTabView(appMainTabBarSelection: $appMainTabBarSelection)

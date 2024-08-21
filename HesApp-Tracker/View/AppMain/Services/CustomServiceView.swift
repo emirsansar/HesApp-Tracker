@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CustomService: View {
+struct CustomServiceView: View {
     
     @ObservedObject var userSubsVM = UserSubscriptionsViewModel()
     
@@ -208,5 +208,5 @@ struct CustomService: View {
 
 
 #Preview {
-    CustomService()
+    CustomServiceView()
 }

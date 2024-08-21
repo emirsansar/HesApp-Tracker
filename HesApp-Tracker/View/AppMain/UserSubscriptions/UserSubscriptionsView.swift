@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct UserSubscriptions: View {
+struct UserSubscriptionsView: View {
     
     @ObservedObject private var userSubscriptionsVM = UserSubscriptionsViewModel()
     
@@ -201,5 +201,5 @@ enum SortType: String, CaseIterable, Identifiable {
 
 
 #Preview {
-    UserSubscriptions()
+    UserSubscriptionsView()
 }

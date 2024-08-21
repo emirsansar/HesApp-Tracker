@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct Services: View {
+struct ServicesView: View {
     
     @State private var serviceList: [Service] = [Service]()
     
@@ -92,7 +92,7 @@ struct Services: View {
 struct AddNewServiceSection: View {
     var body: some View {
         Section(header: Text("Add New Service")) {
-            NavigationLink(destination: CustomService()) {
+            NavigationLink(destination: CustomServiceView()) {
                 Text("Custom Service")
                     .font(.system(size: 20, weight: .regular))
             }
@@ -107,7 +107,7 @@ struct AvailableServicesSection: View {
     var body: some View {
         Section(header: Text("Available Services")) {
             ForEach(Array(services.enumerated()), id: \.element.id) { index, service in
-                NavigationLink(destination: ServicePlans(chosenService: service)) {
+                NavigationLink(destination: ServicePlansView(chosenService: service)) {
                     Text(service.serviceName)
                         .font(.system(size: 20, weight: .regular))
                 }
@@ -118,5 +118,5 @@ struct AvailableServicesSection: View {
 }
 
 #Preview {
-    Services()
+    ServicesView()
 }

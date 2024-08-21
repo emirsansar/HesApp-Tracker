@@ -22,9 +22,9 @@ struct AuthView: View {
     var content: some View {
         VStack {
             if authTabBarSelection == 1 {
-                Login()
+                LoginView()
             } else {
-                Register()
+                RegisterView()
             }
             
             AuthTabView(authTabBarSelection: $authTabBarSelection)

@@ -1,15 +1,6 @@
-//
-//  Register.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 2.08.2024.
-//
-
 import SwiftUI
 
-struct Register: View {
-    
-    //@Binding var selectedTab: Int
+struct RegisterView: View {
     
     @State private var email: String = ""
     @State private var name: String = ""
@@ -168,5 +159,5 @@ struct Register: View {
 
 
 #Preview {
-    Register()
+    RegisterView()
 }

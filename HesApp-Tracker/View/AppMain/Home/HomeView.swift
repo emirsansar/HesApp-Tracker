@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Home: View {
+struct HomeView: View {
     
     @EnvironmentObject var appState: AppState
     
@@ -295,5 +295,5 @@ struct Home: View {
 #Preview {
     //let user = User(email: "emir2@gmail.com", fullName: "Emir Sansar", subscriptionCount: 2, monthlySpend: 125.12)
     
-    Home()
+    HomeView()
 }

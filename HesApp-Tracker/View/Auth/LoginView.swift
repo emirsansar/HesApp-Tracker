@@ -1,7 +1,7 @@
 import SwiftUI
 import FirebaseAuth
 
-struct Login: View {
+struct LoginView: View {
     
     @EnvironmentObject var appState: AppState
     
@@ -126,5 +126,5 @@ struct Login: View {
 
 
 #Preview {
-    Login()
+    LoginView()
 }

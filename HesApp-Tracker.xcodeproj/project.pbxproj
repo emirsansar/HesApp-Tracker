@@ -11,11 +11,11 @@
 		FD05CDA72C5D2DD300E0171E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDA62C5D2DD300E0171E /* AuthView.swift */; };
 		FD05CDA92C5D2DD300E0171E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD05CDA82C5D2DD300E0171E /* Assets.xcassets */; };
 		FD05CDAC2C5D2DD300E0171E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD05CDAB2C5D2DD300E0171E /* Preview Assets.xcassets */; };
-		FD05CDB42C5D2E0E00E0171E /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDB32C5D2E0E00E0171E /* Home.swift */; };
-		FD05CDB62C5D2E2D00E0171E /* UserSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDB52C5D2E2D00E0171E /* UserSubscriptions.swift */; };
+		FD05CDB42C5D2E0E00E0171E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDB32C5D2E0E00E0171E /* HomeView.swift */; };
+		FD05CDB62C5D2E2D00E0171E /* UserSubscriptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDB52C5D2E2D00E0171E /* UserSubscriptionsView.swift */; };
 		FD05CDBA2C5D364000E0171E /* AppMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDB92C5D364000E0171E /* AppMainView.swift */; };
-		FD05CDBC2C5D365500E0171E /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDBB2C5D365500E0171E /* Login.swift */; };
-		FD05CDBE2C5D365E00E0171E /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDBD2C5D365E00E0171E /* Register.swift */; };
+		FD05CDBC2C5D365500E0171E /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDBB2C5D365500E0171E /* LoginView.swift */; };
+		FD05CDBE2C5D365E00E0171E /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD05CDBD2C5D365E00E0171E /* RegisterView.swift */; };
 		FD05CDC02C5D3AF900E0171E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FD05CDBF2C5D3AF900E0171E /* GoogleService-Info.plist */; };
 		FD05CDC32C5D3CAB00E0171E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FD05CDC22C5D3CAB00E0171E /* FirebaseAnalytics */; };
 		FD05CDCD2C5D3CAB00E0171E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FD05CDCC2C5D3CAB00E0171E /* FirebaseAuth */; };
@@ -34,12 +34,12 @@
 		FD2FD69B2C5D80EA003910F2 /* ServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */; };
 		FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */; };
 		FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF922C65105500A52747 /* TabViewBackground.swift */; };
-		FD8BFF952C65164A00A52747 /* CustomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF942C65164A00A52747 /* CustomService.swift */; };
+		FD8BFF952C65164A00A52747 /* CustomServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF942C65164A00A52747 /* CustomServiceView.swift */; };
 		FDB791002C6D26930075AE1B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB790FF2C6D26930075AE1B /* User.swift */; };
 		FDB791022C6D33190075AE1B /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB791012C6D33190075AE1B /* UserViewModel.swift */; };
 		FDCADF2B2C60CA150059BEF7 /* UserSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */; };
-		FDCD60DC2C5E4D1D0049CED8 /* ServicePlans.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DB2C5E4D1D0049CED8 /* ServicePlans.swift */; };
-		FDCD60DE2C5E4E400049CED8 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DD2C5E4E400049CED8 /* Services.swift */; };
+		FDCD60DC2C5E4D1D0049CED8 /* ServicePlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DB2C5E4D1D0049CED8 /* ServicePlansView.swift */; };
+		FDCD60DE2C5E4E400049CED8 /* ServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DD2C5E4E400049CED8 /* ServicesView.swift */; };
 		FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */; };
 		FDCD60E22C5E61E60049CED8 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E12C5E61E60049CED8 /* AuthenticationViewModel.swift */; };
 		FDCD60E42C5E696D0049CED8 /* UserSubscriptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */; };
@@ -54,11 +54,11 @@
 		FD05CDA62C5D2DD300E0171E /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		FD05CDA82C5D2DD300E0171E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD05CDAB2C5D2DD300E0171E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		FD05CDB32C5D2E0E00E0171E /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
-		FD05CDB52C5D2E2D00E0171E /* UserSubscriptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptions.swift; sourceTree = "<group>"; };
+		FD05CDB32C5D2E0E00E0171E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		FD05CDB52C5D2E2D00E0171E /* UserSubscriptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionsView.swift; sourceTree = "<group>"; };
 		FD05CDB92C5D364000E0171E /* AppMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainView.swift; sourceTree = "<group>"; };
-		FD05CDBB2C5D365500E0171E /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
-		FD05CDBD2C5D365E00E0171E /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
+		FD05CDBB2C5D365500E0171E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		FD05CDBD2C5D365E00E0171E /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		FD05CDBF2C5D3AF900E0171E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FD0D18F22C62863900A50366 /* CustomPlanSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlanSheetView.swift; sourceTree = "<group>"; };
 		FD0D18F42C62872200A50366 /* FeedbackPlanSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackPlanSheetView.swift; sourceTree = "<group>"; };
@@ -73,12 +73,12 @@
 		FD2FD69A2C5D80EA003910F2 /* ServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewModel.swift; sourceTree = "<group>"; };
 		FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainTabView.swift; sourceTree = "<group>"; };
 		FD8BFF922C65105500A52747 /* TabViewBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewBackground.swift; sourceTree = "<group>"; };
-		FD8BFF942C65164A00A52747 /* CustomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomService.swift; sourceTree = "<group>"; };
+		FD8BFF942C65164A00A52747 /* CustomServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomServiceView.swift; sourceTree = "<group>"; };
 		FDB790FF2C6D26930075AE1B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FDB791012C6D33190075AE1B /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscription.swift; sourceTree = "<group>"; };
-		FDCD60DB2C5E4D1D0049CED8 /* ServicePlans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlans.swift; sourceTree = "<group>"; };
-		FDCD60DD2C5E4E400049CED8 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		FDCD60DB2C5E4D1D0049CED8 /* ServicePlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlansView.swift; sourceTree = "<group>"; };
+		FDCD60DD2C5E4E400049CED8 /* ServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesView.swift; sourceTree = "<group>"; };
 		FDCD60DF2C5E4FB00049CED8 /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
 		FDCD60E12C5E61E60049CED8 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		FDCD60E32C5E696D0049CED8 /* UserSubscriptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionsViewModel.swift; sourceTree = "<group>"; };
@@ -157,8 +157,8 @@
 			isa = PBXGroup;
 			children = (
 				FD05CDA62C5D2DD300E0171E /* AuthView.swift */,
-				FD05CDBB2C5D365500E0171E /* Login.swift */,
-				FD05CDBD2C5D365E00E0171E /* Register.swift */,
+				FD05CDBB2C5D365500E0171E /* LoginView.swift */,
+				FD05CDBD2C5D365E00E0171E /* RegisterView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -226,7 +226,7 @@
 		FD29891D2C66756000A92F31 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				FD05CDB32C5D2E0E00E0171E /* Home.swift */,
+				FD05CDB32C5D2E0E00E0171E /* HomeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -234,9 +234,9 @@
 		FD29891E2C66757B00A92F31 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				FD8BFF942C65164A00A52747 /* CustomService.swift */,
-				FDCD60DB2C5E4D1D0049CED8 /* ServicePlans.swift */,
-				FDCD60DD2C5E4E400049CED8 /* Services.swift */,
+				FD8BFF942C65164A00A52747 /* CustomServiceView.swift */,
+				FDCD60DB2C5E4D1D0049CED8 /* ServicePlansView.swift */,
+				FDCD60DD2C5E4E400049CED8 /* ServicesView.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -244,7 +244,7 @@
 		FD29891F2C66758400A92F31 /* UserSubscriptions */ = {
 			isa = PBXGroup;
 			children = (
-				FD05CDB52C5D2E2D00E0171E /* UserSubscriptions.swift */,
+				FD05CDB52C5D2E2D00E0171E /* UserSubscriptionsView.swift */,
 				FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */,
 			);
 			path = UserSubscriptions;
@@ -375,29 +375,29 @@
 				FDCD60E22C5E61E60049CED8 /* AuthenticationViewModel.swift in Sources */,
 				FD05CDA72C5D2DD300E0171E /* AuthView.swift in Sources */,
 				FDB791002C6D26930075AE1B /* User.swift in Sources */,
-				FDCD60DE2C5E4E400049CED8 /* Services.swift in Sources */,
+				FDCD60DE2C5E4E400049CED8 /* ServicesView.swift in Sources */,
 				FD2FD6972C5D7DB4003910F2 /* Service.swift in Sources */,
 				FD0D18FA2C628B0100A50366 /* GradientBackground.swift in Sources */,
 				FDCADF2B2C60CA150059BEF7 /* UserSubscription.swift in Sources */,
 				FD05CDBA2C5D364000E0171E /* AppMainView.swift in Sources */,
 				FD0D18F32C62863900A50366 /* CustomPlanSheetView.swift in Sources */,
-				FD05CDB62C5D2E2D00E0171E /* UserSubscriptions.swift in Sources */,
+				FD05CDB62C5D2E2D00E0171E /* UserSubscriptionsView.swift in Sources */,
 				FD0D18F52C62872200A50366 /* FeedbackPlanSheetView.swift in Sources */,
 				FD132FDA2C64078C005619F0 /* AuthTabView.swift in Sources */,
 				FD2FD69B2C5D80EA003910F2 /* ServiceViewModel.swift in Sources */,
-				FD05CDBC2C5D365500E0171E /* Login.swift in Sources */,
+				FD05CDBC2C5D365500E0171E /* LoginView.swift in Sources */,
 				FD29891C2C663B1E00A92F31 /* AppSideMenuView.swift in Sources */,
 				FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */,
 				FDDD0A972C67B45200A6121E /* SubscriptionRow.swift in Sources */,
-				FD8BFF952C65164A00A52747 /* CustomService.swift in Sources */,
+				FD8BFF952C65164A00A52747 /* CustomServiceView.swift in Sources */,
 				FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */,
 				FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */,
 				FDD36B8A2C6B7D8F000702DC /* AppState.swift in Sources */,
 				FD2FD6992C5D7DC9003910F2 /* Plan.swift in Sources */,
-				FDCD60DC2C5E4D1D0049CED8 /* ServicePlans.swift in Sources */,
+				FDCD60DC2C5E4D1D0049CED8 /* ServicePlansView.swift in Sources */,
 				FDB791022C6D33190075AE1B /* UserViewModel.swift in Sources */,
-				FD05CDBE2C5D365E00E0171E /* Register.swift in Sources */,
-				FD05CDB42C5D2E0E00E0171E /* Home.swift in Sources */,
+				FD05CDBE2C5D365E00E0171E /* RegisterView.swift in Sources */,
+				FD05CDB42C5D2E0E00E0171E /* HomeView.swift in Sources */,
 				FD132FD82C64027B005619F0 /* AuthManager.swift in Sources */,
 				FDDD0A992C67BE3900A6121E /* EditSubscriptionSheetView.swift in Sources */,
 				FD0D18F82C6287E300A50366 /* ConfirmationPlanSheetView.swift in Sources */,

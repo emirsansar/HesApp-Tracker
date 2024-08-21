@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ServicePlans: View {
+struct ServicePlansView: View {
     
     var chosenService: Service
     
@@ -174,5 +174,5 @@ struct PlanRow: View {
 
 
 #Preview {
-    ServicePlans(chosenService: Service(serviceName: "Spotify",serviceType: "Müzik"))
+    ServicePlansView(chosenService: Service(serviceName: "Spotify",serviceType: "Müzik"))
 }
