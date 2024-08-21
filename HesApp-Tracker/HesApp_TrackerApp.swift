@@ -1,10 +1,3 @@
-//
-//  HesApp_TrackerApp.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 2.08.2024.
-//
-
 import SwiftUI
 import FirebaseCore
 import SwiftData
@@ -29,6 +22,6 @@ struct HesApp_TrackerApp: App {
                 
         }
         .environmentObject(appState)
-        .modelContainer(for: [Service.self, User.self])
+        .modelContainer(for: [Service.self, User.self, UserSubscription.self])
     }
 }

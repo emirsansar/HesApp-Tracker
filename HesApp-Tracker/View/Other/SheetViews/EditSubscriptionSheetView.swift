@@ -24,8 +24,8 @@ struct EditSubscriptionSheetView: View {
             .padding()
             .onAppear {
                 if let subscription = selectedSubscription {
-                    selectedPlanName = subscription.plan.planName
-                    selectedPlanPrice = String(subscription.plan.planPrice)
+                    selectedPlanName = subscription.planName
+                    selectedPlanPrice = String(subscription.planPrice)
                     numberOfUsers = String(subscription.personCount)
                 }
             }
@@ -111,7 +111,7 @@ struct EditSubscriptionSheetView: View {
             let normalizedPriceString = selectedPlanPrice.replacingOccurrences(of: ",", with: ".")
             
             if let price = Double(normalizedPriceString), let personCount = Int(numberOfUsers) {
-                let editedSubscription = UserSubscription(id: selectedSubscription!.id, serviceName: selectedSubscription!.serviceName, plan: Plan(planName: selectedPlanName, planPrice: price), personCount: personCount)
+                let editedSubscription = UserSubscription(serviceName: selectedSubscription!.serviceName, planName: selectedPlanName, planPrice: price, personCount: personCount)
                 
                 confirmEditedSubscription(editedSubscription)
             }
@@ -138,9 +138,9 @@ struct EditSubscriptionSheetView_Previews: PreviewProvider {
         EditSubscriptionSheetView(
             selectedSubscription: .constant(
                 UserSubscription(
-                    id: UUID(),
                     serviceName: "Example Service",
-                    plan: Plan(planName: "Example Plan", planPrice: 100.0),
+                    planName: "Example Plan",
+                    planPrice: 100.0,
                     personCount: 1
                 )
             ),

@@ -1,5 +1,5 @@
-import Foundation
 import FirebaseFirestore
+import SwiftData
 
 class UserSubscriptionsViewModel: ObservableObject {
     
@@ -7,7 +7,7 @@ class UserSubscriptionsViewModel: ObservableObject {
     @Published var isAddingPlan: Bool = false
     @Published var planAddedSuccesfully: Bool = false
     
-    @Published var userSubscriptions: [UserSubscription] = []
+    @Published var userSubscriptions = [UserSubscription]()
     @Published var fetchingSubsError: String?
     @Published var isFetchingSubs: Bool = false
     
@@ -16,6 +16,9 @@ class UserSubscriptionsViewModel: ObservableObject {
     
     @Published var totalSubscriptionCount: Int = 0
     @Published var totalMonthlySpending: Double = 0.0
+ 
+    
+// MARK: - Firestore
     
     /// Adds a subscription plan to the user's collection in Firestore.
     func addPlanToUserOnFirestore(serviceName: String, plan: Plan, personCount: Int, completion: @escaping (Bool) -> Void) {
@@ -74,7 +77,7 @@ class UserSubscriptionsViewModel: ObservableObject {
     }
 
     /// Fetchs the user's subscriptions from Firestore.
-    func fetchUserSubscriptions() {
+    func fetchUserSubscriptions(completion: @escaping ([UserSubscription]? ,Bool) -> Void) {
 
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
@@ -83,6 +86,7 @@ class UserSubscriptionsViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.fetchingSubsError = "An error occurred: \(error.localizedDescription)"
                 }
+                completion(nil, false)
                 return
             }
             
@@ -91,6 +95,7 @@ class UserSubscriptionsViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.fetchingSubsError = "There are no subscriptions."
                 }
+                completion(nil, false)
                 return
             }
             
@@ -101,17 +106,18 @@ class UserSubscriptionsViewModel: ObservableObject {
                   let planPrice = serviceDetails["Price"] as? Double,
                   let personCount = serviceDetails["PersonCount"] as? Int {
                    
-                   let plan = Plan(planName: planName, planPrice: planPrice)
-                   let userSub = UserSubscription(serviceName: serviceName, plan: plan, personCount: personCount)
+                   //let plan = Plan(planName: planName, planPrice: planPrice)
+                   let userSub = UserSubscription(serviceName: serviceName, planName: planName, planPrice: planPrice, personCount: personCount)
                    fetchedSubscriptions.append(userSub)
                }
            }
            
            DispatchQueue.main.async {
                self.userSubscriptions = fetchedSubscriptions
+               completion(self.userSubscriptions, true)
            }
         }
-        
+       
     }
 
     /// Removes a selected subscription from the user's collection in Firestore.
@@ -205,8 +211,8 @@ class UserSubscriptionsViewModel: ObservableObject {
             }
             
             if var serviceDetails = subscriptions[editedSub.serviceName] {
-                serviceDetails["PlanName"] = editedSub.plan.planName
-                serviceDetails["Price"] = editedSub.plan.planPrice
+                serviceDetails["PlanName"] = editedSub.planName
+                serviceDetails["Price"] = editedSub.planPrice
                 serviceDetails["PersonCount"] = editedSub.personCount
                 
                 subscriptions[editedSub.serviceName] = serviceDetails
@@ -229,6 +235,40 @@ class UserSubscriptionsViewModel: ObservableObject {
             }
         }
     }
+    
+    
+// MARK: - SwiftData
+    
+    /// Saves an array of Service models to SwiftData.
+    func saveUserSubscriptionsToSwiftData(userSubscriptions: [UserSubscription], context: ModelContext) {
+        
+        for subscription in userSubscriptions {
+            context.insert(subscription)
+        }
+        
+        do {
+            try context.save()
+            print("User's subscriptions have been successfully saved to SwiftData.")
+        } catch {
+            print("Failed to save user's subscriptions to SwiftData: \(error)")
+        }
+    }
 
-
+    /// Removes a subscription from SwiftData.
+    func removeUserSubscriptionFromSwiftData(selectedSub: UserSubscription, userSubsriptionsFromSWData: [UserSubscription], context: ModelContext, completion: @escaping (Bool) -> Void) {
+        
+        if let index = userSubsriptionsFromSWData.firstIndex(where: { $0.serviceName == selectedSub.serviceName }) {
+            context.delete(userSubsriptionsFromSWData[index])
+            
+            do {
+                try context.save()
+                print("Subscription successfully removed from SwiftData.")
+                completion(true)
+            } catch {
+                print("Failed to remove subscription from SwiftData: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
 }

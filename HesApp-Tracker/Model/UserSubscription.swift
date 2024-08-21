@@ -1,8 +1,18 @@
 import Foundation
+import SwiftData
 
-struct UserSubscription: Identifiable {
-    var id = UUID()
+@Model
+class UserSubscription {
+    
     var serviceName: String
-    var plan: Plan
+    var planName: String
+    var planPrice: Double
     var personCount: Int
+    
+    init (serviceName: String, planName: String, planPrice: Double, personCount: Int) {
+        self.serviceName = serviceName
+        self.planName = planName
+        self.planPrice = planPrice
+        self.personCount = personCount
+    }
 }

@@ -1,10 +1,9 @@
 import SwiftUI
-import FirebaseFirestore
-import FirebaseAuth
+import SwiftData
 
 struct UserSubscriptions: View {
     
-    @ObservedObject private var viewModel = UserSubscriptionsViewModel()
+    @ObservedObject private var userSubscriptionsVM = UserSubscriptionsViewModel()
     
     @State private var sortType: SortType = .priceAscending
     
@@ -16,6 +15,9 @@ struct UserSubscriptions: View {
     @State private var isAddError: Bool = false
     
     @EnvironmentObject var appState: AppState
+    @Environment(\.modelContext) var context
+    
+    @Query(sort: \UserSubscription.planPrice, order: .forward) private var userSubsriptionsFromSWData: [UserSubscription]
     
     var body: some View {
         VStack(spacing: 0) {
@@ -26,7 +28,7 @@ struct UserSubscriptions: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .background(GradientBackground())
-        .onAppear(perform: loadSubscriptions)
+        .onAppear(perform: loadUserSubscriptions)
         .sheet(isPresented: $showFeedbackSheet) {
             FeedbackSheetView(
                 showFeedbackSheet: $showFeedbackSheet,
@@ -37,7 +39,7 @@ struct UserSubscriptions: View {
         .sheet(isPresented: $showEditSheet) {
             EditSubscriptionSheetView(
                 selectedSubscription: $selectedSubscription,
-                confirmEditedSubscription: confirmEdit2
+                confirmEditedSubscription: editSelectedUserSubscription
             )
         }
     }
@@ -62,16 +64,19 @@ struct UserSubscriptions: View {
     
     private var subscriptionsListView: some View {
         List {
-            ForEach(Array(sortedSubscriptions.enumerated()), id: \.element.id) { index, subscription in
+            ForEach(Array(sortedSubscriptions.enumerated()), id: \.element.serviceName) { index, subscription in
                 SubscriptionRow(selectedSubscription: $selectedSubscription,
                                 subscription: subscription,
                                 index: index,
                                 onRemove: removeSubscription,
-                                onEdit: editSubscription)
+                                onEdit: toggleShowEditSheet)
             }
             .listRowInsets(EdgeInsets())
         }
-        //.scrollContentBackground(.hidden)
+        .refreshable {
+            appState.isFetchedUserSubscriptions = false
+            loadUserSubscriptions()
+        }
     }
     
     private var subscriptionListDivider: some View {
@@ -80,59 +85,93 @@ struct UserSubscriptions: View {
             .background(Color.black.opacity(0.5))
     }
     
+    
     // MARK: - Functions
     
     /// Loads user's subscriptions from ViewModel.
-    private func loadSubscriptions() {
-        viewModel.fetchUserSubscriptions()
+    private func loadUserSubscriptions() {
+        if !appState.isFetchedUserSubscriptions || appState.isUserChangedSubsList {
+            userSubscriptionsVM.fetchUserSubscriptions() { fetchedUserSubscriptions, success in
+                if success {
+                    processAddingUserSubscriptionsToSwiftData(fetchedUserSubscriptinos: fetchedUserSubscriptions!)
+                    appState.isFetchedUserSubscriptions = true
+                }
+            }
+        } else {
+            userSubscriptionsVM.userSubscriptions = userSubsriptionsFromSWData
+        }
+    }
+    
+    private func processAddingUserSubscriptionsToSwiftData (fetchedUserSubscriptinos: [UserSubscription]) {
+        let existingUserSubscriptions = Set(userSubsriptionsFromSWData.map { $0.serviceName })
+        let newUserSubscriptions = fetchedUserSubscriptinos.filter { !existingUserSubscriptions.contains($0.serviceName) }
+        
+        if !newUserSubscriptions.isEmpty {
+            userSubscriptionsVM.saveUserSubscriptionsToSwiftData(userSubscriptions: newUserSubscriptions, context: context)
+        }
     }
 
     /// Sorts the subscription list on ViewModel.
     private var sortedSubscriptions: [UserSubscription] {
         switch sortType {
         case .priceAscending:
-            return viewModel.userSubscriptions.sorted {
-                $0.plan.planPrice / Double($0.personCount) < $1.plan.planPrice / Double($1.personCount)
+            return userSubscriptionsVM.userSubscriptions.sorted {
+                $0.planPrice / Double($0.personCount) < $1.planPrice / Double($1.personCount)
             }
         case .priceDescending:
-            return viewModel.userSubscriptions.sorted {
-                $0.plan.planPrice / Double($0.personCount) > $1.plan.planPrice / Double($1.personCount)
+            return userSubscriptionsVM.userSubscriptions.sorted {
+                $0.planPrice / Double($0.personCount) > $1.planPrice / Double($1.personCount)
             }
         case .alphabetically:
-            return viewModel.userSubscriptions.sorted { $0.serviceName < $1.serviceName }
+            return userSubscriptionsVM.userSubscriptions.sorted { $0.serviceName < $1.serviceName }
         }
     }
     
     /// Process of the removing subscription.
     private func removeSubscription() {
         if let subscription = selectedSubscription {
-            viewModel.removeSubscriptionFromUser(selectedSub: subscription) { success, error in
+            userSubscriptionsVM.removeSubscriptionFromUser(selectedSub: subscription) { success, error in
                 DispatchQueue.main.async {
                     if success {
-                        self.feedbackMessage = "The \(selectedSubscription?.serviceName ?? "Subscription") was removed successfully."
-                        self.isAddError = false
-                        appState.isUserChangedSubsList = true
-                    } else if let error = error {
-                        self.feedbackMessage = error.localizedDescription
-                        self.isAddError = false
-                        self.loadSubscriptions()
+                        userSubscriptionsVM.removeUserSubscriptionFromSwiftData(
+                            selectedSub: subscription,
+                            userSubsriptionsFromSWData: userSubsriptionsFromSWData,
+                            context: context) { removeSuccess in
+                                handleRemovalResult(success: true, subscription: subscription)
+                            }
+                    } 
+                    else if let error = error {
+                        handleRemovalResult(success: false, subscription: subscription)
                     }
-                    self.showFeedbackSheet = true
                 }
             }
         }
     }
     
-    /// Opens the edit sheet when a subscription is selected for editing.
-    private func editSubscription() {
-        if selectedSubscription != nil {
-            showEditSheet = true
+    /// Handles the result of removing a subscription by updating the feedback message and showing a feedback sheet.
+    private func handleRemovalResult(success: Bool, subscription: UserSubscription) {
+        if success {
+            self.feedbackMessage = "The \(subscription.serviceName) was removed successfully."
+            self.isAddError = false
+            appState.isUserChangedSubsList = true
+        } else {
+            self.feedbackMessage = "Failed to remove the \(subscription.serviceName) subscription."
+            self.isAddError = true
+            loadUserSubscriptions()
         }
+        self.showFeedbackSheet = true
     }
     
+    /// Toggles the edit sheet when a subscription is selected for editing.
+    private func toggleShowEditSheet() {
+        if selectedSubscription != nil {
+            showEditSheet.toggle()
+        }
+    }
+
     /// Called when confirm button is tapped in the edit sheet, it edits the selected subscription by ViewModel.
-    private func confirmEdit2(editedSub: UserSubscription) {
-        viewModel.updateSubscription(editedSub: editedSub) { success, error in
+    private func editSelectedUserSubscription(editedSub: UserSubscription) {
+        userSubscriptionsVM.updateSubscription(editedSub: editedSub) { success, error in
             DispatchQueue.main.async {
                 if success {
                     self.feedbackMessage = "Subscription edited successfully."
@@ -144,7 +183,7 @@ struct UserSubscriptions: View {
                 }
                 showFeedbackSheet = true
                 showEditSheet = false
-                loadSubscriptions()
+                loadUserSubscriptions()
             }
         }
     }

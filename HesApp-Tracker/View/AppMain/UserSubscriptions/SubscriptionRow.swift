@@ -13,16 +13,16 @@ struct SubscriptionRow: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(subscription.serviceName)
-                    .font(.system(size: 20, weight: .medium))
+                    .font(.system(size: 18, weight: .medium))
                 Spacer(minLength: 5)
-                Text(subscription.plan.planName)
-                    .font(.system(size: 16, weight: .light))
+                Text(subscription.planName)
+                    .font(.system(size: 15, weight: .light))
             }
             .padding(.leading, 10)
             Spacer()
-            Text("\((subscription.plan.planPrice / Double(subscription.personCount)), specifier: "%.2f") TL")
+            Text("\((subscription.planPrice / Double(subscription.personCount)), specifier: "%.2f") TL")
                 .padding(.trailing)
-                .font(.system(size: 18, weight: .medium))
+                .font(.system(size: 17, weight: .medium))
         }
         .padding()
         .background(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
@@ -48,11 +48,12 @@ struct SubscriptionRow: View {
 }
 
 
+
 struct SubscriptionRow_Previews: PreviewProvider {
     @State static var selectedSubscription: UserSubscription? = UserSubscription(
-        id: UUID(),
         serviceName: "Example Service",
-        plan: Plan(planName: "Example Plan", planPrice: 100.0),
+        planName: "Example Plan",
+        planPrice: 100.0,
         personCount: 1
     )
     
@@ -60,9 +61,9 @@ struct SubscriptionRow_Previews: PreviewProvider {
         SubscriptionRow(
             selectedSubscription: $selectedSubscription,
             subscription: UserSubscription(
-                id: UUID(),
                 serviceName: "Example Service",
-                plan: Plan(planName: "Example Plan", planPrice: 100.0),
+                planName: "Example Plan",
+                planPrice: 100.0,
                 personCount: 1
             ),
             index: 0,
