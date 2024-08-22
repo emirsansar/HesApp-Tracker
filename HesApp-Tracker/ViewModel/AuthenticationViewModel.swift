@@ -78,7 +78,6 @@ class AuthenticationViewModel: ObservableObject {
         
         do {
             try AuthManager.shared.auth.signOut()
-            
         }
         catch let signOutError as NSError {
             self.logOutError = "Error signing out: \(signOutError.localizedDescription)"

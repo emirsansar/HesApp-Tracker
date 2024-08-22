@@ -63,7 +63,7 @@ struct HomeView: View {
         }
         .onChange(of: authVM.logOutSuccess) { success in
             if success {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.appState.updateLoginStatus(isLogged: false)
                 }
             } else if let error = authVM.logOutError {
@@ -244,6 +244,7 @@ struct HomeView: View {
     /// Loads user data from ViewModels.
     private func loadUserData() {
         
+        /// Loads user data from Firestore if the app is opened for the first time or the user's subscription list has changed.
         if !appState.isFetchedUserDetails || appState.isUserChangedSubsList {
             DispatchQueue.main.async {
                 userVM.fetchsUserFullname() { userFullName in
@@ -261,7 +262,8 @@ struct HomeView: View {
                     }
                 }
             }
-        } else {
+        }
+        else { /// Loads user data from SwiftData.
             DispatchQueue.main.async {
                 let userEmail = AuthManager.shared.auth.currentUser!.email!
                 
@@ -278,7 +280,15 @@ struct HomeView: View {
     /// Log the user out.
     private func logOut() {
         self.showLogOutFeedback = true
-        authVM.logOut()
+
+        userSubsVM.removeAllUserSubscriptionsFromSwiftData(context: context) { success in
+            if success {
+                authVM.logOut()
+            } else {
+                authVM.logOutSuccess = false
+                authVM.logOutError = "An error occurred while trying to log out."
+            }
+        }
     }
 
     /// Configures the navigation bar appearance.
@@ -293,7 +303,5 @@ struct HomeView: View {
 
 
 #Preview {
-    //let user = User(email: "emir2@gmail.com", fullName: "Emir Sansar", subscriptionCount: 2, monthlySpend: 125.12)
-    
     HomeView()
 }

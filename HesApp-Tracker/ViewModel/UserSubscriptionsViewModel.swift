@@ -195,7 +195,7 @@ class UserSubscriptionsViewModel: ObservableObject {
     }
     
     /// Updates the selected subscription on Firebase.
-    func updateSubscription(editedSub: UserSubscription, completion: @escaping (Bool, String?) -> Void) {
+    func updateSubscription(updatedSubscription: UserSubscription, completion: @escaping (Bool, String?) -> Void) {
         
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
@@ -210,20 +210,20 @@ class UserSubscriptionsViewModel: ObservableObject {
                 return
             }
             
-            if var serviceDetails = subscriptions[editedSub.serviceName] {
-                serviceDetails["PlanName"] = editedSub.planName
-                serviceDetails["Price"] = editedSub.planPrice
-                serviceDetails["PersonCount"] = editedSub.personCount
+            if var serviceDetails = subscriptions[updatedSubscription.serviceName] {
+                serviceDetails["PlanName"] = updatedSubscription.planName
+                serviceDetails["Price"] = updatedSubscription.planPrice
+                serviceDetails["PersonCount"] = updatedSubscription.personCount
                 
-                subscriptions[editedSub.serviceName] = serviceDetails
+                subscriptions[updatedSubscription.serviceName] = serviceDetails
                 
                 userRef.updateData(["Subscriptions": subscriptions]) { error in
                     if let error = error {
                         completion(false, error.localizedDescription)
                     } else {
                         DispatchQueue.main.async {
-                            if let index = self.userSubscriptions.firstIndex(where: { $0.serviceName == editedSub.serviceName }) {
-                                self.userSubscriptions[index] = editedSub
+                            if let index = self.userSubscriptions.firstIndex(where: { $0.serviceName == updatedSubscription.serviceName }) {
+                                self.userSubscriptions[index] = updatedSubscription
                             }
                             completion(true, nil)
                         }
@@ -271,4 +271,51 @@ class UserSubscriptionsViewModel: ObservableObject {
         }
     }
     
+    /// Updates a subscription in SwiftData.
+    func updateUserSubscriptionInSwiftData(selectedSub: UserSubscription, updatedSub: UserSubscription, userSubsriptionsFromSWData: [UserSubscription], context: ModelContext, completion: @escaping (Bool) -> Void) {
+
+        if let index = userSubsriptionsFromSWData.firstIndex(where: { $0.serviceName == selectedSub.serviceName }) {
+
+            let subscriptionToUpdate = userSubsriptionsFromSWData[index]
+            subscriptionToUpdate.planName = updatedSub.planName
+            subscriptionToUpdate.planPrice = updatedSub.planPrice
+            subscriptionToUpdate.personCount = updatedSub.personCount
+            subscriptionToUpdate.serviceName = updatedSub.serviceName
+            
+            do {
+                try context.save()
+                print("Subscription successfully updated in SwiftData.")
+                completion(true)
+            } catch {
+                print("Failed to update subscription in SwiftData: \(error)")
+                completion(false)
+            }
+        } else {
+            print("Subscription not found.")
+            completion(false)
+        }
+    }
+
+    /// Removes all user subscriptions directly from SwiftData.
+    func removeAllUserSubscriptionsFromSwiftData(context: ModelContext, completion: @escaping (Bool) -> Void) {
+        let fetchRequest = FetchDescriptor<UserSubscription>()
+        
+        do {
+            let allUserSubscriptions = try context.fetch(fetchRequest)
+            
+            for subscription in allUserSubscriptions {
+                context.delete(subscription)
+            }
+            
+            try context.save()
+            
+            print("All user subscriptions successfully removed from SwiftData.")
+            completion(true)
+        } catch {
+            print("Failed to remove all user subscriptions from SwiftData: \(error)")
+            completion(false)
+        }
+    }
+
+
 }

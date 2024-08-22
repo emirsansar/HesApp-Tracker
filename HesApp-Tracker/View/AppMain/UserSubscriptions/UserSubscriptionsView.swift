@@ -39,9 +39,13 @@ struct UserSubscriptionsView: View {
         .sheet(isPresented: $showEditSheet) {
             EditSubscriptionSheetView(
                 selectedSubscription: $selectedSubscription,
-                confirmEditedSubscription: editSelectedUserSubscription
+                confirmEditedSubscription: updateSelectedUserSubscription
             )
         }
+        .onChange(of: appState.isUserChangedSubsList) { _ in
+            loadUserSubscriptions()
+        }
+        
     }
     
     // MARK: - Subviews
@@ -129,20 +133,19 @@ struct UserSubscriptionsView: View {
     
     /// Process of the removing subscription.
     private func removeSubscription() {
-        if let subscription = selectedSubscription {
-            userSubscriptionsVM.removeSubscriptionFromUser(selectedSub: subscription) { success, error in
-                DispatchQueue.main.async {
-                    if success {
-                        userSubscriptionsVM.removeUserSubscriptionFromSwiftData(
-                            selectedSub: subscription,
-                            userSubsriptionsFromSWData: userSubsriptionsFromSWData,
-                            context: context) { removeSuccess in
-                                handleRemovalResult(success: true, subscription: subscription)
-                            }
-                    } 
-                    else if let error = error {
-                        handleRemovalResult(success: false, subscription: subscription)
-                    }
+        userSubscriptionsVM.removeSubscriptionFromUser(selectedSub: selectedSubscription!) { success, error in
+            DispatchQueue.main.async {
+                if success {
+                    userSubscriptionsVM.removeUserSubscriptionFromSwiftData(
+                        selectedSub: selectedSubscription!,
+                        userSubsriptionsFromSWData: userSubsriptionsFromSWData,
+                        context: context) 
+                        { removeSuccess in
+                            handleRemovalResult(success: true, subscription: selectedSubscription!)
+                        }
+                }
+                else if error != nil {
+                    handleRemovalResult(success: false, subscription: selectedSubscription!)
                 }
             }
         }
@@ -151,14 +154,15 @@ struct UserSubscriptionsView: View {
     /// Handles the result of removing a subscription by updating the feedback message and showing a feedback sheet.
     private func handleRemovalResult(success: Bool, subscription: UserSubscription) {
         if success {
-            self.feedbackMessage = "The \(subscription.serviceName) was removed successfully."
+            self.feedbackMessage = "The \(subscription.serviceName) removed successfully."
             self.isAddError = false
             appState.isUserChangedSubsList = true
         } else {
-            self.feedbackMessage = "Failed to remove the \(subscription.serviceName) subscription."
+            self.feedbackMessage = "Failed to remove \(subscription.serviceName). Please try again."
             self.isAddError = true
             loadUserSubscriptions()
         }
+        
         self.showFeedbackSheet = true
     }
     
@@ -170,22 +174,40 @@ struct UserSubscriptionsView: View {
     }
 
     /// Called when confirm button is tapped in the edit sheet, it edits the selected subscription by ViewModel.
-    private func editSelectedUserSubscription(editedSub: UserSubscription) {
-        userSubscriptionsVM.updateSubscription(editedSub: editedSub) { success, error in
+    private func updateSelectedUserSubscription(updatedSubscription: UserSubscription) {
+        showEditSheet = false
+        
+        userSubscriptionsVM.updateSubscription(updatedSubscription: updatedSubscription) { success, error in
             DispatchQueue.main.async {
                 if success {
-                    self.feedbackMessage = "Subscription edited successfully."
-                    appState.isUserChangedSubsList = true
-                    self.isAddError = false
-                } else if let error = error {
-                    self.feedbackMessage = error
-                    self.isAddError = true
+                    userSubscriptionsVM.updateUserSubscriptionInSwiftData(
+                        selectedSub: selectedSubscription!,
+                        updatedSub: updatedSubscription,
+                        userSubsriptionsFromSWData: userSubsriptionsFromSWData,
+                        context: context)
+                        { successOnSWData in
+                            handleUpdateResult(success: successOnSWData, updatedSubscription: updatedSubscription)
+                        }
+                } 
+                else if let error = error {
+                    handleUpdateResult(success: false, updatedSubscription: updatedSubscription)
                 }
-                showFeedbackSheet = true
-                showEditSheet = false
-                loadUserSubscriptions()
             }
         }
+    }
+    
+    /// Handles the result of updating a subscription by updating the feedback message and showing a feedback sheet.
+    private func handleUpdateResult (success: Bool, updatedSubscription: UserSubscription) {
+        if success {
+            self.feedbackMessage = "\(updatedSubscription.serviceName) was edited successfully."
+            appState.isUserChangedSubsList = true
+            self.isAddError = false
+        } else {
+            self.feedbackMessage = "Failed to update \(updatedSubscription.serviceName). Please try again."
+            self.isAddError = true
+        }
+        
+        self.showFeedbackSheet = true
     }
     
 }
