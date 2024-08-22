@@ -9,6 +9,7 @@ struct ServicePlansView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
+    @State private var plans: [Plan] = [Plan]()
     @State private var selectedPlan: Plan?
     
     @State private var showConfirmSubSheetView = false
@@ -24,13 +25,12 @@ struct ServicePlansView: View {
     
     @EnvironmentObject var appState: AppState
 
-    
     var body: some View {
         
-        VStack {
+        VStack(spacing: 0) {
             headerView
-            infoTextView
-            planList
+            planListDivider
+            planSections
         }
         .navigationBarBackButtonHidden(true)
         .background(GradientBackground())
@@ -70,15 +70,14 @@ struct ServicePlansView: View {
     
     // MARK: - Subviews
     
-    private var planList: some View {
+    private var planSections: some View {
         List {
-            ForEach(Array(plansVM.plans.enumerated()), id: \.element.planName) { index, plan in
-                PlanRow(plan: plan, index: index)
-                .onTapGesture {
-                    self.selectedPlan = plan
-                    self.showConfirmSubSheetView = true
-                }
-            }
+            AddCustomPlanSection(showCustomPlanSheet: $showCustomPlanSheet)
+            
+            AvailablePlansSection(
+                plans: $plans,
+                selectedPlan: $selectedPlan,
+                showConfirmSubSheetView: $showConfirmSubSheetView)
         }
     }
     
@@ -88,7 +87,6 @@ struct ServicePlansView: View {
             Spacer()
             serviceTitleView
             Spacer()
-            addCustomPlanButton
         }
         .padding()
     }
@@ -101,16 +99,6 @@ struct ServicePlansView: View {
             .lineLimit(3)
     }
     
-    private var addCustomPlanButton: some View {
-        Button(action: {
-            self.showCustomPlanSheet = true
-        }) {
-            Image(systemName: "plus")
-                .foregroundColor(.black.opacity(0.85))
-                .imageScale(.large)
-        }
-    }
-    
     private var backToServicesButton: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
@@ -121,38 +109,44 @@ struct ServicePlansView: View {
         }
     }
     
-    private var infoTextView: some View {
-        Text("Tap to choose your subscription.")
-            .font(.headline)
-            .fontWeight(.medium)
-            .foregroundColor(.black.opacity(0.7))
-            .padding(.top, -10)
+    private var planListDivider: some View {
+        Divider()
+            .frame(height: 0.6)
+            .background(Color.black.opacity(0.5))
     }
     
     
     // MARK: - Functions
     
+    /// Loads plans of selected service from Firestore.
     private func loadPlans() {
         plansVM.fetchPlansOfServiceFromFirestore(documentID: chosenService.serviceName) { plans, error in
-            self.plansVM.plans = plans ?? []
+            self.plans = plans ?? []
         }
     }
     
+    /// Adds the selected plan to user's collection in Firestore and provides feedback on the operation result.
     private func processSubscription(plan: Plan, quantity: Int) {
-        userSubsVM.addPlanToUserOnFirestore(serviceName: chosenService.serviceName, plan: plan, personCount: quantity) { success in
-            if success {
-                self.isAddError = false
-                appState.isUserChangedSubsList = true
-            } else {
-                self.isAddError = true
+        userSubsVM.addPlanToUserOnFirestore(
+            serviceName: chosenService.serviceName,
+            plan: plan,
+            personCount: quantity)
+            { success in
+                if success {
+                    self.isAddError = false
+                    self.feedbackMessage = "Selected plan added successfully:\n \(plan.planName) - \(plan.planPrice) ₺"
+                    appState.isUserChangedSubsList = true
+                } else {
+                    self.isAddError = true
+                    self.feedbackMessage = userSubsVM.planAddingError!
+                }
+
+                self.showFeedbackSheet = true
             }
-            
-            self.feedbackMessage = userSubsVM.planAddingError ?? ""
-            self.showFeedbackSheet = true
-        }
     }
     
 }
+
 
     // MARK: - Structs
 
@@ -163,12 +157,50 @@ struct PlanRow: View {
     var body: some View {
         HStack {
             Text(plan.planName)
-                .font(.system(size: 20, weight: .medium))
+                .font(.system(size: 19, weight: .regular))
             Spacer()
-            Text("\(plan.planPrice, specifier: "%.2f") TL")
-                .font(.system(size: 19, weight: .medium))
+            Text("\(plan.planPrice, specifier: "%.2f") ₺")
+                .font(.system(size: 18, weight: .regular))
         }
-        .listRowBackground(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
+    }
+}
+
+/// Subview to create a custom plan by showing CustomPlanSheetView.
+struct AddCustomPlanSection: View {
+    @Binding var showCustomPlanSheet: Bool
+    
+    var body: some View {
+        Section(header: Text("Add Custom Plan")) {
+            HStack {
+                Text("Custom Plan")
+                    .font(.system(size: 19, weight: .regular))
+                Spacer()
+                Image(systemName: "plus.circle.fill")
+                    .foregroundColor(.black.opacity(0.6))
+            }
+            .onTapGesture {
+                showCustomPlanSheet = true
+            }
+        }
+    }
+}
+
+/// Subview for the 'Available Plans' section.
+struct AvailablePlansSection: View {
+    @Binding var plans: [Plan]
+    @Binding var selectedPlan: Plan?
+    @Binding var showConfirmSubSheetView: Bool
+    
+    var body: some View {
+        Section(header: Text("Available Plans")) {
+            ForEach(Array(plans.enumerated()), id: \.element.planName) { index, plan in
+                PlanRow(plan: plan, index: index)
+                .onTapGesture {
+                    selectedPlan = plan
+                    showConfirmSubSheetView = true
+                }.listRowBackground(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
+            }
+        }
     }
 }
 

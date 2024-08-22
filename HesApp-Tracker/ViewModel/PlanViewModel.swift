@@ -2,8 +2,6 @@ import Foundation
 
 class PlanViewModel: ObservableObject {
     
-    @Published var plans = [Plan]()
-    
     /// Fetchs plans of selected service from 'Services' collection in Firestore.
     func fetchPlansOfServiceFromFirestore(documentID: String, completion: @escaping ([Plan]?, Error?) -> Void){
         
@@ -33,7 +31,7 @@ class PlanViewModel: ObservableObject {
                 completion(nil, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document not found or empty"]))
             }
         }
-        
+
     }
     
 }

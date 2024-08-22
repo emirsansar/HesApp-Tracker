@@ -6,8 +6,6 @@ struct FeedbackSheetView: View {
     @Binding var feedbackText: String
     @Binding var errorOccured: Bool
     
-    @Environment(\.presentationMode) var presentationMode
-    
     var body: some View {
         
         VStack(spacing: 20) {
@@ -21,9 +19,6 @@ struct FeedbackSheetView: View {
             
             Button("OK") {
                 showFeedbackSheet = false
-                if !errorOccured {
-                    presentationMode.wrappedValue.dismiss()
-                }
             }
             .padding()
         }
@@ -33,6 +28,7 @@ struct FeedbackSheetView: View {
     }
     
 }
+
 
 #Preview {
     
