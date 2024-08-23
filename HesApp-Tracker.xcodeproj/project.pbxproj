@@ -35,6 +35,7 @@
 		FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */; };
 		FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF922C65105500A52747 /* TabViewBackground.swift */; };
 		FD8BFF952C65164A00A52747 /* CustomServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF942C65164A00A52747 /* CustomServiceView.swift */; };
+		FDA7C4D72C77B7AA0073BB19 /* GradientBGforDarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7C4D62C77B7AA0073BB19 /* GradientBGforDarkTheme.swift */; };
 		FDB791002C6D26930075AE1B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB790FF2C6D26930075AE1B /* User.swift */; };
 		FDB791022C6D33190075AE1B /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB791012C6D33190075AE1B /* UserViewModel.swift */; };
 		FDCADF2B2C60CA150059BEF7 /* UserSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */; };
@@ -74,6 +75,7 @@
 		FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainTabView.swift; sourceTree = "<group>"; };
 		FD8BFF922C65105500A52747 /* TabViewBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewBackground.swift; sourceTree = "<group>"; };
 		FD8BFF942C65164A00A52747 /* CustomServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomServiceView.swift; sourceTree = "<group>"; };
+		FDA7C4D62C77B7AA0073BB19 /* GradientBGforDarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBGforDarkTheme.swift; sourceTree = "<group>"; };
 		FDB790FF2C6D26930075AE1B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FDB791012C6D33190075AE1B /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscription.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				FD0D18F92C628B0100A50366 /* GradientBackground.swift */,
+				FDA7C4D62C77B7AA0073BB19 /* GradientBGforDarkTheme.swift */,
 				FD8BFF922C65105500A52747 /* TabViewBackground.swift */,
 			);
 			path = Backgrounds;
@@ -378,6 +381,7 @@
 				FDCD60DE2C5E4E400049CED8 /* ServicesView.swift in Sources */,
 				FD2FD6972C5D7DB4003910F2 /* Service.swift in Sources */,
 				FD0D18FA2C628B0100A50366 /* GradientBackground.swift in Sources */,
+				FDA7C4D72C77B7AA0073BB19 /* GradientBGforDarkTheme.swift in Sources */,
 				FDCADF2B2C60CA150059BEF7 /* UserSubscription.swift in Sources */,
 				FD05CDBA2C5D364000E0171E /* AppMainView.swift in Sources */,
 				FD0D18F32C62863900A50366 /* CustomPlanSheetView.swift in Sources */,

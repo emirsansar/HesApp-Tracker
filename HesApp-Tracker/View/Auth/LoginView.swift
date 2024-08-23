@@ -9,6 +9,8 @@ struct LoginView: View {
     @State private var password: String = ""
     
     @ObservedObject var userAuthVM = AuthenticationViewModel()
+    
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         
@@ -22,7 +24,7 @@ struct LoginView: View {
             Spacer()
         }
         .padding(.horizontal)
-        .background(GradientBackground())
+        .background(backgroundView)
         .edgesIgnoringSafeArea(.all)
         
     }
@@ -33,7 +35,7 @@ struct LoginView: View {
     private var emailField: some View {
         TextField("Email", text: $email)
             .padding()
-            .background(Color.white)
+            .background()
             .cornerRadius(8)
             .shadow(radius: 5)
             .keyboardType(.emailAddress)
@@ -44,7 +46,7 @@ struct LoginView: View {
     private var passwordField: some View {
         SecureField("Password", text: $password)
             .padding()
-            .background(Color.white)
+            .background()
             .cornerRadius(8)
             .shadow(radius: 5)
             .frame(width: UIScreen.main.bounds.width*0.88)
@@ -54,17 +56,18 @@ struct LoginView: View {
         VStack {
             if let error = userAuthVM.loginError {
                 Text(error)
-                    .foregroundColor(.black.opacity(0.85))
+                    .foregroundColor(.black.opacity(0.9))
                     .padding()
-                    .background(Color.red.opacity(0.20))
+                    .background(Color.red.opacity(0.60))
                     .cornerRadius(8)
                     .padding(.bottom, 10)
             }
             if userAuthVM.loginSuccess {
                 Text("Login successful!\nYou are being redirected to the app.")
-                    .foregroundColor(.black.opacity(0.85))
+                    .foregroundColor(.black.opacity(0.9))
+                    .multilineTextAlignment(.center)
                     .padding()
-                    .background(Color.green.opacity(0.20))
+                    .background(Color.green.opacity(0.60))
                     .cornerRadius(8)
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -73,7 +76,7 @@ struct LoginView: View {
                         }
                     }
             }
-        }.animation(.easeInOut(duration: 0.15))
+        }.animation(.easeInOut, value: 0.15)
     }
     
     private var loginButton: some View {
@@ -97,7 +100,7 @@ struct LoginView: View {
             .aspectRatio(contentMode: .fit)
             .frame(height: UIScreen.main.bounds.height * 0.12)
             .padding(.top, 70)
-            .shadow(radius: 10)
+            //.shadow(radius: 10)
     }
     
     private var loginLogoView: some View {
@@ -109,6 +112,15 @@ struct LoginView: View {
             .padding(.bottom, 20)
     }
     
+    private var backgroundView: some View {
+        Group {
+            if colorScheme == .dark {
+                GradientBGforDarkTheme()
+            } else {
+                GradientBackground()
+            }
+        }
+    }
     
     // MARK: - Functions
     

@@ -25,6 +25,7 @@ struct ServicesView: View {
                     
                     AvailableServicesSection(services: $serviceList)
                 }
+                .scrollIndicators(.hidden)
                 .background(GradientBackground())
                 .listStyle(InsetGroupedListStyle())
                 .navigationTitle("Services")
@@ -96,6 +97,7 @@ struct AddNewServiceSection: View {
                 Text("Custom Service")
                     .font(.system(size: 20, weight: .regular))
             }
+            .listRowBackground(Color(UIColor.systemGray5))
         }
     }
 }
@@ -111,7 +113,7 @@ struct AvailableServicesSection: View {
                     Text(service.serviceName)
                         .font(.system(size: 20, weight: .regular))
                 }
-                .listRowBackground(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
+                .listRowBackground(index % 2 == 0 ? Color(UIColor.systemGray5) : Color(UIColor.systemGray4))
             }
         }
     }

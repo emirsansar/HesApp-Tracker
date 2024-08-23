@@ -14,6 +14,7 @@ struct UserSubscriptionsView: View {
     @State private var feedbackMessage: String = ""
     @State private var isAddError: Bool = false
     
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appState: AppState
     @Environment(\.modelContext) var context
     
@@ -42,7 +43,7 @@ struct UserSubscriptionsView: View {
                 confirmEditedSubscription: updateSelectedUserSubscription
             )
         }
-        .onChange(of: appState.isUserChangedSubsList) { _ in
+        .onChange(of: appState.isUserChangedSubsList) {
             loadUserSubscriptions()
         }
         
@@ -53,16 +54,19 @@ struct UserSubscriptionsView: View {
     private var titleView: some View {
         Text("Your Subscriptions")
             .font(.system(size: 30, weight: .semibold))
+            .foregroundColor(Color.black.opacity(0.9))
             .padding()
     }
     
     private var sortPickerView: some View {
         Picker("Sort Option", selection: $sortType) {
             ForEach(SortType.allCases) { sortOption in
-                Text(sortOption.rawValue).tag(sortOption)
+                Text(sortOption.rawValue)
+                    .tag(sortOption)
+                    .foregroundColor(colorScheme == .dark ? .black : .white)
             }
         }
-        .pickerStyle(PalettePickerStyle())
+        .pickerStyle(.segmented)
         .padding()
     }
     
@@ -86,7 +90,7 @@ struct UserSubscriptionsView: View {
     private var subscriptionListDivider: some View {
         Divider()
             .frame(height: 0.6)
-            .background(Color.black.opacity(0.5))
+            .background(colorScheme == .dark ? .white : .black.opacity(0.5))
     }
     
     
@@ -189,7 +193,7 @@ struct UserSubscriptionsView: View {
                             handleUpdateResult(success: successOnSWData, updatedSubscription: updatedSubscription)
                         }
                 } 
-                else if let error = error {
+                else if error != nil {
                     handleUpdateResult(success: false, updatedSubscription: updatedSubscription)
                 }
             }

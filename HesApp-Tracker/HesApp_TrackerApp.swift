@@ -14,14 +14,44 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct HesApp_TrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    var appState = AppState()
+    @ObservedObject var appState = AppState()
+    
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false 
+//    {
+//        didSet {
+//            applyTheme()
+//        }
+//    }
     
     var body: some Scene {
         WindowGroup {
-            AuthView()
-                
+            ZStack {
+                if appState.isUserLoggedIn {
+                    AppMainView()
+                        .transition(.move(edge: .trailing))
+                        .environment(\.colorScheme, isDarkMode ? .dark : .light)
+                } else {
+                    AuthView()
+                        .transition(.move(edge: .leading))
+                        .environment(\.colorScheme, isDarkMode ? .dark : .light)
+                }
+            }
+            .onAppear {
+                applyTheme()
+            }
+            .animation(.easeInOut(duration: 0.5), value: appState.isUserLoggedIn)
         }
         .environmentObject(appState)
         .modelContainer(for: [Service.self, User.self, UserSubscription.self])
     }
+    
+    
+    private func applyTheme() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            if let window = windowScene.windows.first {
+                window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+            }
+        }
+    }
+    
 }

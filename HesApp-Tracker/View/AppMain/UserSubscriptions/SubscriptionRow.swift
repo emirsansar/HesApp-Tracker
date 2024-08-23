@@ -25,7 +25,7 @@ struct SubscriptionRow: View {
                 .font(.system(size: 17, weight: .medium))
         }
         .padding()
-        .background(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
+        .background(index % 2 == 0 ? Color(UIColor.systemGray5) : Color(UIColor.systemGray4))
         .clipShape(Rectangle())
         .shadow(radius: 2)
         .swipeActions {

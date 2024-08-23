@@ -18,7 +18,6 @@ struct AppMainView: View {
             }
             
             AppMainTabView(appMainTabBarSelection: $appMainTabBarSelection)
-                .foregroundColor(Color(.systemGray4).opacity(0.7))
                 .padding(.top, -10)
         }
         .edgesIgnoringSafeArea(.bottom)

@@ -14,14 +14,15 @@ struct HomeView: View {
     @State private var logOutFeedbackText: String?
     @State private var isLogOutAlertPresented = false
     @State private var isSideMenuVisible = false
+    
+    @Environment(\.colorScheme) var colorScheme
 
     
     var body: some View {
         
         NavigationView {
             ZStack {
-                GradientBackground()
-                
+                backgroundView
                 VStack {
                     appLogoView
                     greetingView
@@ -37,16 +38,14 @@ struct HomeView: View {
                         .edgesIgnoringSafeArea(.all)
                     sideMenuContent
                 }
-                
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     sideMenuToggleButton
                 }
-                
                 ToolbarItem(placement: .principal) {
                     Text("Home")
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(.system(size: 19, weight: .semibold))
                         .foregroundStyle(Color.black.opacity(0.8))
                 }
             }
@@ -61,8 +60,8 @@ struct HomeView: View {
             loadUserData()
             configureNavigationBarAppearance()
         }
-        .onChange(of: authVM.logOutSuccess) { success in
-            if success {
+        .onChange(of: authVM.logOutSuccess) {
+            if authVM.logOutSuccess {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.appState.updateLoginStatus(isLogged: false)
                 }
@@ -81,7 +80,7 @@ struct HomeView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(height: UIScreen.main.bounds.height * 0.12)
-            .padding(.top, 5)
+            .padding(.top, 15)
     }
     
     private var sideMenuToggleButton: some View {
@@ -123,13 +122,16 @@ struct HomeView: View {
                 Image(systemName: "hand.wave.fill")
                     .resizable()
                     .frame(width: 25, height: 25)
+                    .foregroundColor(.black)
                 Text("Welcome,")
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundColor(.black)
             }
             Text(userVM.currentUser.fullName == "" ? " " : userVM.currentUser.fullName)
                 .font(.title2)
                 .padding(.bottom, 20)
+                .foregroundColor(.black)
         }
         .padding(.top, 20)
         .padding(.horizontal)
@@ -142,9 +144,9 @@ struct HomeView: View {
             annualSpendingView
         }
         .padding()
-        .background(Color.white.opacity(0.8))
+        .background(Color(.systemGray4).opacity(0.85))
         .cornerRadius(10)
-        .shadow(color: .gray, radius: 5, x: 0, y: 5)
+        .shadow(color: Color(.systemGray3), radius: 5, x: 0, y: 5)
         .frame(width: UIScreen.main.bounds.width * 0.85)
     }
     
@@ -166,12 +168,13 @@ struct HomeView: View {
                 .foregroundColor(.blue)
             Text(label)
                 .frame(alignment: .leading)
+                .fontWeight(.medium)
             Spacer()
             Text(value)
                 .frame(alignment: .trailing)
-                .fontWeight(.bold)
+                .fontWeight(.medium)
             Text("₺")
-                .font(.system(size: 16, weight: .bold))
+                .font(.system(size: 16, weight: .medium))
         }
         .padding(.vertical, 5)
     }
@@ -182,8 +185,8 @@ struct HomeView: View {
                 Text(error)
                     .font(.body)
                     .padding()
-                    .background(Color.red.opacity(0.20))
-                    .foregroundColor(.black.opacity(0.85))
+                    .background(Color.red.opacity(0.60))
+                    .foregroundColor(.black.opacity(0.9))
                     .cornerRadius(8)
                     .padding(.bottom, 10)
                     .transition(.opacity)
@@ -195,16 +198,16 @@ struct HomeView: View {
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding(.top,10)
                         .padding(.bottom,3)
-                        .scaleEffect(1.2) 
+                        .scaleEffect(1.2)
                     Text("Logging out.")
                         .font(.body)
                         .padding(.horizontal)
-                        .foregroundColor(.black.opacity(0.85))
-                        .cornerRadius(8)
+                        .foregroundColor(.black.opacity(0.9))
                         .transition(.opacity)
                         .padding(.bottom,10)
                 }
-                .background(Color.green.opacity(0.20))
+                .background(Color.green.opacity(0.60))
+                .cornerRadius(8)
             }
         }
         .animation(.easeInOut, value: showLogOutFeedback)
@@ -234,6 +237,16 @@ struct HomeView: View {
                         .offset(x: isSideMenuVisible ? 0 : 230)
                         .animation(.easeInOut(duration: 0.3), value: isSideMenuVisible)
                 Spacer()
+            }
+        }
+    }
+    
+    private var backgroundView: some View {
+        Group {
+            if colorScheme == .dark {
+                GradientBGforDarkTheme()
+            } else {
+                GradientBackground()
             }
         }
     }

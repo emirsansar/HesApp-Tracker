@@ -8,12 +8,14 @@ struct EditSubscriptionSheetView: View {
     @State private var selectedPlanPrice: String = ""
     @State private var numberOfUsers: String = ""
     
+    @Environment(\.colorScheme) var colorScheme
+    
     let confirmEditedSubscription: (UserSubscription) -> Void
     
     var body: some View {
         
         ZStack {
-            GradientBackground()
+            backgroundView
             
             VStack {
                 headerView
@@ -127,6 +129,16 @@ struct EditSubscriptionSheetView: View {
         .padding(.top)
         .padding(.horizontal, 16)
         .disabled(selectedPlanPrice.isEmpty || selectedPlanName.isEmpty || numberOfUsers.isEmpty)
+    }
+    
+    private var backgroundView: some View {
+        Group {
+            if colorScheme == .dark {
+                GradientBGforDarkTheme()
+            } else {
+                GradientBackground()
+            }
+        }
     }
     
 }

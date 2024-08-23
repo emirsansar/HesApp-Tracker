@@ -8,7 +8,11 @@ struct RegisterView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     
+    @Binding var authTabBarSelection: Int
+    
     @ObservedObject var userAuthVM = AuthenticationViewModel()
+    
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
@@ -24,7 +28,7 @@ struct RegisterView: View {
             Spacer()
         }
         .padding(.horizontal, 30)
-        .background(GradientBackground())
+        .background(backgroundView)
         .edgesIgnoringSafeArea(.all)
         
     }
@@ -36,14 +40,14 @@ struct RegisterView: View {
         HStack {
             TextField("Name", text: $name)
                 .padding()
-                .background(Color.white)
+                .background()
                 .cornerRadius(8)
                 .shadow(radius: 5)
                 .autocapitalization(.none)
             
             TextField("Surname", text: $surname)
                 .padding()
-                .background(Color.white)
+                .background()
                 .cornerRadius(8)
                 .shadow(radius: 5)
                 .autocapitalization(.none)
@@ -54,7 +58,7 @@ struct RegisterView: View {
         TextField("Email", text: $email)
             .padding()
             .keyboardType(.emailAddress)
-            .background(Color.white)
+            .background()
             .cornerRadius(8)
             .shadow(radius: 5)
             .autocapitalization(.none)
@@ -64,7 +68,7 @@ struct RegisterView: View {
     private var passwordField: some View {
         SecureField("Password", text: $password)
             .padding()
-            .background(Color.white)
+            .background()
             .cornerRadius(8)
             .shadow(radius: 5)
             .autocapitalization(.none)
@@ -74,7 +78,7 @@ struct RegisterView: View {
     private var confirmPasswordField: some View {
         SecureField("Confirm Password", text: $confirmPassword)
             .padding()
-            .background(Color.white)
+            .background()
             .cornerRadius(8)
             .shadow(radius: 5)
             .autocapitalization(.none)
@@ -93,12 +97,10 @@ struct RegisterView: View {
                     .foregroundColor(.green)
                     .padding()
                     .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            //selectedTab = 0
+                        DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
+                            self.authTabBarSelection = 1
                         }
                     }
-                Text("Giriş sayfasına yönlendiriliyorsunuz.")
-                    .foregroundColor(.green)
             }
         }
     }
@@ -108,7 +110,7 @@ struct RegisterView: View {
             Text("Register")
                 .frame(width: UIScreen.main.bounds.width * 0.80)
                 .padding()
-                .background(Color.blue)
+                .background(.blue)
                 .foregroundColor(.white)
                 .cornerRadius(8)
                 .font(.headline)
@@ -124,7 +126,6 @@ struct RegisterView: View {
             .aspectRatio(contentMode: .fit)
             .frame(height: UIScreen.main.bounds.height * 0.12)
             .padding(.top, 70)
-            .shadow(radius: 10)
     }
     
     private var registerLogoView: some View {
@@ -137,6 +138,15 @@ struct RegisterView: View {
             .padding(.leading,15)
     }
     
+    private var backgroundView: some View {
+        Group {
+            if colorScheme == .dark {
+                GradientBGforDarkTheme()
+            } else {
+                GradientBackground()
+            }
+        }
+    }
     
     // MARK: - Functions
     
@@ -159,5 +169,5 @@ struct RegisterView: View {
 
 
 #Preview {
-    RegisterView()
+    RegisterView(authTabBarSelection: .constant(2))
 }

@@ -16,6 +16,7 @@ struct CustomServiceView: View {
     @State private var isAddError: Bool = false
     
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
     
     
     var body: some View {
@@ -25,7 +26,7 @@ struct CustomServiceView: View {
             addServiceButton
             Spacer()
         }
-        .background(GradientBackground())
+        .background(backgroundView)
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showFeedbackSheet){
             FeedbackSheetView(
@@ -144,6 +145,16 @@ struct CustomServiceView: View {
             Image(systemName: "chevron.left")
                 .foregroundColor(.black.opacity(0.85))
                 .imageScale(.large)
+        }
+    }
+    
+    private var backgroundView: some View {
+        Group {
+            if colorScheme == .dark {
+                GradientBGforDarkTheme()
+            } else {
+                GradientBackground()
+            }
         }
     }
     

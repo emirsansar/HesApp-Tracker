@@ -24,6 +24,7 @@ struct ServicePlansView: View {
     @State private var isAddError: Bool = false
     
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         
@@ -112,7 +113,7 @@ struct ServicePlansView: View {
     private var planListDivider: some View {
         Divider()
             .frame(height: 0.6)
-            .background(Color.black.opacity(0.5))
+            .background(colorScheme == .dark ? .white : .black.opacity(0.5))
     }
     
     
@@ -178,6 +179,7 @@ struct AddCustomPlanSection: View {
                 Image(systemName: "plus.circle.fill")
                     .foregroundColor(.black.opacity(0.6))
             }
+            .listRowBackground(Color(UIColor.systemGray5))
             .onTapGesture {
                 showCustomPlanSheet = true
             }
@@ -198,7 +200,7 @@ struct AvailablePlansSection: View {
                 .onTapGesture {
                     selectedPlan = plan
                     showConfirmSubSheetView = true
-                }.listRowBackground(index % 2 == 0 ? Color.white : Color(UIColor.systemGray5))
+                }.listRowBackground(index % 2 == 0 ? Color(UIColor.systemGray5) : Color(UIColor.systemGray4))
             }
         }
     }
