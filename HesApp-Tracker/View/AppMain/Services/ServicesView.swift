@@ -3,7 +3,10 @@ import SwiftData
 
 struct ServicesView: View {
     
-    @State private var serviceList: [Service] = [Service]()
+    @State private var serviceList: [Service] = [Service]() /// Original list of all services.
+    @State private var filteredServiceList: [Service] = [Service]() /// List of services after filtering 'servicesList'.
+    @State private var filterText: String = ""
+    @State private var selectedServiceType: ServiceType = .all
     
     @ObservedObject var serviceVM = ServiceViewModel()
     
@@ -21,12 +24,13 @@ struct ServicesView: View {
         NavigationView {
             VStack {
                 List {
+                    SearchBarSection(filterText: $filterText, filterServiceFunction: filterServices)
+                    pickerServiceType
                     AddNewServiceSection()
-                    
-                    AvailableServicesSection(services: $serviceList)
+                    AvailableServicesSection(services: $filteredServiceList)
                 }
                 .scrollIndicators(.hidden)
-                .background(GradientBackground())
+                .background(Color.mainBlue)
                 .listStyle(InsetGroupedListStyle())
                 .navigationTitle("Services")
             }
@@ -35,6 +39,24 @@ struct ServicesView: View {
         .padding(.top, -40)
         
     }
+    
+    
+    // MARK: - Subviews
+    
+    private var pickerServiceType: some View {
+        Picker("Filter Services by Type", selection: $selectedServiceType) {
+            ForEach(ServiceType.allCases) { typeOption in
+                Text(typeOption.rawValue)
+                    .tag(typeOption)
+            }
+        }
+        .pickerStyle(.menu)
+        .onChange(of: selectedServiceType) {
+            filterServices()
+            print("Selected Type: \(selectedServiceType.rawValue)")
+        }
+    }
+    
 
     // MARK: - Functions
     
@@ -52,12 +74,14 @@ struct ServicesView: View {
                     processAddingServicesToSwiftData(fetchedServices: fetchedServices)
                     
                     self.serviceList = fetchedServices
+                    self.filteredServiceList = fetchedServices
                     appState.areServicesLoaded = true
                 }
             }
         } else {
             DispatchQueue.main.async {
                 self.serviceList = servicesFromSWData
+                self.filteredServiceList = servicesFromSWData
             }
         }
     }
@@ -69,6 +93,16 @@ struct ServicesView: View {
         
         if !newServices.isEmpty {
             serviceVM.saveServicesToSwiftData(services: newServices, context: context)
+        }
+    }
+    
+    /// Filters 'serviceList' based on 'filterText' and 'selectedServiceType', then updates 'filteredServiceList'.
+    private func filterServices() {
+        filteredServiceList = serviceList.filter { service in
+            let matchesText = filterText.isEmpty || service.serviceName.localizedCaseInsensitiveContains(filterText)
+            let matchesType = selectedServiceType == .all || service.serviceType == selectedServiceType.id
+            
+            return matchesText && matchesType
         }
     }
     
@@ -118,6 +152,36 @@ struct AvailableServicesSection: View {
         }
     }
 }
+
+struct SearchBarSection: View {
+    @Binding var filterText: String
+    var filterServiceFunction: () -> Void
+    
+    var body: some View {
+        Section(header: Text("Search Service")) {
+            TextField("Service Name...", text: $filterText)
+                .padding(10)
+                .cornerRadius(8)
+                .onChange(of: filterText) {
+                    filterServiceFunction()
+                }
+                .listRowInsets(EdgeInsets())
+        }
+    }
+}
+
+
+enum ServiceType: String, CaseIterable, Identifiable {
+    case all = "All"
+    case alışveriş = "Alışveriş"
+    case diziFilm = "Dizi - Film"
+    case gelişim = "Gelişim"
+    case müzik = "Müzik"
+    case oyun = "Oyun"
+    
+    var id: String { self.rawValue }
+}
+
 
 #Preview {
     ServicesView()
