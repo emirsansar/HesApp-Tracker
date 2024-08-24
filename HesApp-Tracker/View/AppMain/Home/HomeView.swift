@@ -16,7 +16,6 @@ struct HomeView: View {
     @State private var isSideMenuVisible = false
     
     @Environment(\.colorScheme) var colorScheme
-
     
     var body: some View {
         
@@ -219,7 +218,7 @@ struct HomeView: View {
         Alert(
             title: Text("Log Out"),
             message: Text("Are you sure you want to log out?"),
-            primaryButton: .destructive(Text("Log Out")) {
+            primaryButton: .destructive(Text("OK")) {
                 logOut()
             },
             secondaryButton: .cancel() {
@@ -262,12 +261,13 @@ struct HomeView: View {
             DispatchQueue.main.async {
                 userVM.fetchsUserFullname() { userFullName in
                     let fullName = userFullName
+                    userVM.updateCurrentUserName(fullName: fullName!)
                     
                     userSubsVM.fetchSubscriptionsSummary() { userSubCount, userMounthlySpend in
                         let subsCount = userSubCount
                         let monthlySpend = userMounthlySpend
                         
-                        userVM.updateCurrentUser(fullName: fullName!, subscriptionCount: subsCount, monthlySpend: monthlySpend)
+                        userVM.updateCurrentUserSubscriptionSummary( subscriptionCount: subsCount, monthlySpend: monthlySpend)
                         userVM.saveUserDetailsToSwiftData(user: userVM.currentUser, context: context)
                         
                         appState.isFetchedUserDetails = true
@@ -296,6 +296,8 @@ struct HomeView: View {
 
         userSubsVM.removeAllUserSubscriptionsFromSwiftData(context: context) { success in
             if success {
+                appState.isFetchedUserDetails = false
+                appState.isFetchedUserSubscriptions = false
                 authVM.logOut()
             } else {
                 authVM.logOutSuccess = false

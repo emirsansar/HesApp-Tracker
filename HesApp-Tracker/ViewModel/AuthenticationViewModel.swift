@@ -28,9 +28,19 @@ class AuthenticationViewModel: ObservableObject {
                     completion(false)
                     return
                 }
-                self.registrationSuccess = true
-                self.isRegistering = false
-                completion(true)
+                
+                self.saveUserDetailsToFirestore(email: email, name: name, surname: surname) { success in
+                    if success {
+                        self.registrationSuccess = true
+                        self.isRegistering = false
+                        completion(true)
+                        return
+                    } else {
+                        self.handleRegistrationError(error: "An error occured while trying to sign up.")
+                        completion(false)
+                        return
+                    }
+                }
             }
         }
     }

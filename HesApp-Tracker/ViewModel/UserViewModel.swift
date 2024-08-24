@@ -11,8 +11,11 @@ class UserViewModel: ObservableObject {
     }
 
     
-    func updateCurrentUser(fullName: String, subscriptionCount: Int, monthlySpend: Double) {
+    func updateCurrentUserName(fullName: String) {
         self.currentUser.fullName = fullName
+    }
+    
+    func updateCurrentUserSubscriptionSummary(subscriptionCount: Int, monthlySpend: Double) {
         self.currentUser.subscriptionCount = subscriptionCount
         self.currentUser.monthlySpend = monthlySpend
     }

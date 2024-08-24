@@ -16,12 +16,7 @@ struct HesApp_TrackerApp: App {
     
     @ObservedObject var appState = AppState()
     
-    @AppStorage("isDarkMode") private var isDarkMode: Bool = false 
-//    {
-//        didSet {
-//            applyTheme()
-//        }
-//    }
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
     
     var body: some Scene {
         WindowGroup {
