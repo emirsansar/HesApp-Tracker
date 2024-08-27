@@ -16,37 +16,26 @@ struct HesApp_TrackerApp: App {
     
     @ObservedObject var appState = AppState()
     
-    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
-    
     var body: some Scene {
         WindowGroup {
             ZStack {
                 if appState.isUserLoggedIn {
                     AppMainView()
                         .transition(.move(edge: .trailing))
-                        .environment(\.colorScheme, isDarkMode ? .dark : .light)
+                        .environment(\.locale, .init(identifier: appState.selectedLanguage))
                 } else {
                     AuthView()
                         .transition(.move(edge: .leading))
-                        .environment(\.colorScheme, isDarkMode ? .dark : .light)
+                        .environment(\.locale, .init(identifier: appState.selectedLanguage))
                 }
             }
             .onAppear {
-                applyTheme()
+                appState.applyTheme()
             }
             .animation(.easeInOut(duration: 0.5), value: appState.isUserLoggedIn)
         }
         .environmentObject(appState)
         .modelContainer(for: [Service.self, User.self, UserSubscription.self])
-    }
-    
-    
-    private func applyTheme() {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            if let window = windowScene.windows.first {
-                window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
-            }
-        }
     }
     
 }

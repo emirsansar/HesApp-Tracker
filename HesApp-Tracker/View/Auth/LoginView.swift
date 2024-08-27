@@ -33,7 +33,7 @@ struct LoginView: View {
     // MARK: - Subviews
     
     private var emailField: some View {
-        TextField("Email", text: $email)
+        TextField("label_email", text: $email)
             .padding()
             .background()
             .cornerRadius(8)
@@ -44,7 +44,7 @@ struct LoginView: View {
     }
     
     private var passwordField: some View {
-        SecureField("Password", text: $password)
+        SecureField("label_password", text: $password)
             .padding()
             .background()
             .cornerRadius(8)
@@ -63,7 +63,7 @@ struct LoginView: View {
                     .padding(.bottom, 10)
             }
             if userAuthVM.loginSuccess {
-                Text("Login successful!\nYou are being redirected to the app.")
+                Text("text_login_successful")
                     .foregroundColor(.black.opacity(0.9))
                     .multilineTextAlignment(.center)
                     .padding()
@@ -81,7 +81,7 @@ struct LoginView: View {
     
     private var loginButton: some View {
         Button(action: login) {
-            Text("Login")
+            Text("button_login")
                 .frame(width: UIScreen.main.bounds.width * 0.80)
                 .padding()
                 .background(Color.blue)
@@ -100,7 +100,6 @@ struct LoginView: View {
             .aspectRatio(contentMode: .fit)
             .frame(height: UIScreen.main.bounds.height * 0.12)
             .padding(.top, 70)
-            //.shadow(radius: 10)
     }
     
     private var loginLogoView: some View {

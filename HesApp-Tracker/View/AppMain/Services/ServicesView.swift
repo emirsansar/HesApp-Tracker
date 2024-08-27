@@ -32,7 +32,7 @@ struct ServicesView: View {
                 .scrollIndicators(.hidden)
                 .background(Color.mainBlue)
                 .listStyle(InsetGroupedListStyle())
-                .navigationTitle("Services")
+                .navigationTitle("services")
             }
         }
         .onAppear(perform: loadServices)
@@ -44,16 +44,15 @@ struct ServicesView: View {
     // MARK: - Subviews
     
     private var pickerServiceType: some View {
-        Picker("Filter Services by Type", selection: $selectedServiceType) {
+        Picker("filter_services_by_type", selection: $selectedServiceType) {
             ForEach(ServiceType.allCases) { typeOption in
-                Text(typeOption.rawValue)
+                Text(typeOption.localizedString(appState: appState))
                     .tag(typeOption)
             }
         }
         .pickerStyle(.menu)
         .onChange(of: selectedServiceType) {
             filterServices()
-            print("Selected Type: \(selectedServiceType.rawValue)")
         }
     }
     
@@ -100,7 +99,7 @@ struct ServicesView: View {
     private func filterServices() {
         filteredServiceList = serviceList.filter { service in
             let matchesText = filterText.isEmpty || service.serviceName.localizedCaseInsensitiveContains(filterText)
-            let matchesType = selectedServiceType == .all || service.serviceType == selectedServiceType.id
+            let matchesType = selectedServiceType == .all || service.serviceType == selectedServiceType.rawValue
             
             return matchesText && matchesType
         }
@@ -126,9 +125,9 @@ struct ServicesView: View {
 /// Subview to navigate CustomService to create a service
 struct AddNewServiceSection: View {
     var body: some View {
-        Section(header: Text("Add New Service")) {
+        Section(header: Text("add_new_service")) {
             NavigationLink(destination: CustomServiceView()) {
-                Text("Custom Service")
+                Text("label_custom_service")
                     .font(.system(size: 20, weight: .regular))
             }
             .listRowBackground(Color(UIColor.systemGray5))
@@ -141,7 +140,7 @@ struct AvailableServicesSection: View {
     @Binding var services: [Service]
     
     var body: some View {
-        Section(header: Text("Available Services")) {
+        Section(header: Text("available_services")) {
             ForEach(Array(services.enumerated()), id: \.element.id) { index, service in
                 NavigationLink(destination: ServicePlansView(chosenService: service)) {
                     Text(service.serviceName)
@@ -158,8 +157,8 @@ struct SearchBarSection: View {
     var filterServiceFunction: () -> Void
     
     var body: some View {
-        Section(header: Text("Search Service")) {
-            TextField("Service Name...", text: $filterText)
+        Section(header: Text("search_service")) {
+            TextField("service_name_field", text: $filterText)
                 .padding(10)
                 .cornerRadius(8)
                 .onChange(of: filterText) {
@@ -172,14 +171,19 @@ struct SearchBarSection: View {
 
 
 enum ServiceType: String, CaseIterable, Identifiable {
-    case all = "All"
-    case alışveriş = "Alışveriş"
-    case diziFilm = "Dizi - Film"
-    case gelişim = "Gelişim"
-    case müzik = "Müzik"
-    case oyun = "Oyun"
+    case all = "all"
+    case shopping = "shopping"
+    case seriesMovies = "seriesMovies"
+    case selfDevelopment = "selfDevelopment"
+    case music = "music"
+    case game = "game"
+    case sport = "sport"
     
     var id: String { self.rawValue }
+    
+    func localizedString(appState: AppState) -> String {
+        return appState.localizedString(for: self.rawValue)
+    }
 }
 
 

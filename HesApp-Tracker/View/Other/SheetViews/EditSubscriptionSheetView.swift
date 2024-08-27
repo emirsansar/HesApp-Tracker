@@ -13,7 +13,6 @@ struct EditSubscriptionSheetView: View {
     let confirmEditedSubscription: (UserSubscription) -> Void
     
     var body: some View {
-        
         ZStack {
             backgroundView
             
@@ -33,13 +32,12 @@ struct EditSubscriptionSheetView: View {
             }
         }
         .presentationDetents([.height(500)])
-        
     }
     
     // MARK: - Subviews
     
     private var headerView: some View {
-        Text("Edit Subscription")
+        Text("label_edit_subscription")
             .font(.system(size: 24, weight: .semibold))
             .fontWeight(.bold)
             .foregroundColor(.black)
@@ -69,11 +67,11 @@ struct EditSubscriptionSheetView: View {
     
     private var planNameField: some View {
         VStack(alignment: .leading) {
-            Text("Plan Name")
+            Text("label_plan_name")
                 .font(.headline)
                 .padding(.bottom, 2)
                 .padding(.leading, 16)
-            TextField("New Plan Name", text: $selectedPlanName)
+            TextField("label_new_plan_name", text: $selectedPlanName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
                 .padding(.horizontal, 16)
@@ -82,11 +80,11 @@ struct EditSubscriptionSheetView: View {
     
     private var planPriceField: some View {
         VStack(alignment: .leading) {
-            Text("Plan Price")
+            Text("label_plan_price")
                 .font(.headline)
                 .padding(.bottom, 2)
                 .padding(.leading, 16)
-            TextField("New Plan Price", text: $selectedPlanPrice)
+            TextField("label_new_plan_price", text: $selectedPlanPrice)
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
@@ -96,11 +94,11 @@ struct EditSubscriptionSheetView: View {
     
     private var numberOfUsersField: some View {
         VStack(alignment: .leading) {
-            Text("User Count")
+            Text("label_user_count")
                 .font(.headline)
                 .padding(.bottom, 2)
                 .padding(.leading, 16)
-            TextField("New User Count", text: $numberOfUsers)
+            TextField("", text: $numberOfUsers)
                 .keyboardType(.numberPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.horizontal, 16)
@@ -118,7 +116,7 @@ struct EditSubscriptionSheetView: View {
                 confirmEditedSubscription(editedSubscription)
             }
         } label: {
-            Text("Confirm")
+            Text("button_confirm")
                 .font(.headline)
                 .padding()
                 .frame(maxWidth: .infinity)

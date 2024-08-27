@@ -33,14 +33,14 @@ struct SubscriptionRow: View {
                 selectedSubscription = subscription
                 onRemove()
             } label: {
-                Label("Delete", systemImage: "trash.fill")
+                Label("label_delete", systemImage: "trash.fill")
             }
             
             Button() {
                 selectedSubscription = subscription
                 onEdit()
             } label: {
-                Label("Edit", systemImage: "pencil.line")
+                Label("label_edit", systemImage: "pencil.line")
             }
             .tint(.green)
         }

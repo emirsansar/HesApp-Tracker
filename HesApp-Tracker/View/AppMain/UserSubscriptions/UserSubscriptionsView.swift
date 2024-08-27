@@ -52,16 +52,16 @@ struct UserSubscriptionsView: View {
     // MARK: - Subviews
     
     private var titleView: some View {
-        Text("Your Subscriptions")
+        Text("your_subscriptions")
             .font(.system(size: 30, weight: .semibold))
             .foregroundColor(Color.black.opacity(0.9))
             .padding()
     }
     
     private var sortPickerView: some View {
-        Picker("Sort Option", selection: $sortType) {
+        Picker("sort_options", selection: $sortType) {
             ForEach(SortType.allCases) { sortOption in
-                Text(sortOption.rawValue)
+                Text(sortOption.localizedString(appState: appState))
                     .tag(sortOption)
                     .foregroundColor(colorScheme == .dark ? .black : .white)
             }
@@ -158,11 +158,11 @@ struct UserSubscriptionsView: View {
     /// Handles the result of removing a subscription by updating the feedback message and showing a feedback sheet.
     private func handleRemovalResult(success: Bool, subscription: UserSubscription) {
         if success {
-            self.feedbackMessage = "The \(subscription.serviceName) removed successfully."
+            self.feedbackMessage = String(format: appState.localizedString(for: "text_subscription_removed_succesfully"), subscription.serviceName)
             self.isAddError = false
             appState.isUserChangedSubsList = true
         } else {
-            self.feedbackMessage = "Failed to remove \(subscription.serviceName). Please try again."
+            self.feedbackMessage = String(format: appState.localizedString(for: "text_subscription_remove_failed"), subscription.serviceName)
             self.isAddError = true
             loadUserSubscriptions()
         }
@@ -203,11 +203,11 @@ struct UserSubscriptionsView: View {
     /// Handles the result of updating a subscription by updating the feedback message and showing a feedback sheet.
     private func handleUpdateResult (success: Bool, updatedSubscription: UserSubscription) {
         if success {
-            self.feedbackMessage = "\(updatedSubscription.serviceName) was edited successfully."
+            self.feedbackMessage = String(format: appState.localizedString(for: "text_subscription_updated_succesfully"), updatedSubscription.serviceName)
             appState.isUserChangedSubsList = true
             self.isAddError = false
         } else {
-            self.feedbackMessage = "Failed to update \(updatedSubscription.serviceName). Please try again."
+            self.feedbackMessage = String(format: appState.localizedString(for: "text_subscription_update_failed"), updatedSubscription.serviceName)
             self.isAddError = true
         }
         
@@ -218,11 +218,15 @@ struct UserSubscriptionsView: View {
 
 
 enum SortType: String, CaseIterable, Identifiable {
-    case priceAscending = "Price ↑"
-    case priceDescending = "Price ↓"
-    case alphabetically = "Alphabetically"
+    case priceAscending = "priceAscending"
+    case priceDescending = "priceDescending"
+    case alphabetically = "alphabetically"
     
     var id: String { self.rawValue }
+    
+    func localizedString(appState: AppState) -> String {
+        return appState.localizedString(for: self.rawValue)
+    }
 }
 
 

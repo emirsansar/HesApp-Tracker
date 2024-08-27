@@ -15,6 +15,8 @@ struct HomeView: View {
     @State private var isLogOutAlertPresented = false
     @State private var isSideMenuVisible = false
     
+    @State private var showSelectLanguageSheetView = false
+    
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -43,7 +45,7 @@ struct HomeView: View {
                     sideMenuToggleButton
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Home")
+                    Text("home")
                         .font(.system(size: 19, weight: .semibold))
                         .foregroundStyle(Color.black.opacity(0.8))
                 }
@@ -54,6 +56,9 @@ struct HomeView: View {
         .frame(maxWidth: .infinity)
         .alert(isPresented: $isLogOutAlertPresented) {
             logOutConfirmationAlert
+        }
+        .sheet(isPresented: $showSelectLanguageSheetView) {
+            SelectLanguageSheetView(defaultLanguage: $appState.selectedLanguage)
         }
         .onAppear {
             loadUserData()
@@ -122,7 +127,7 @@ struct HomeView: View {
                     .resizable()
                     .frame(width: 25, height: 25)
                     .foregroundColor(.black)
-                Text("Welcome,")
+                Text("welcome")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
@@ -150,22 +155,22 @@ struct HomeView: View {
     }
     
     private var subscriptionCountView: some View {
-        infoRow(label: "Total sub count:", value: "\(userVM.currentUser.subscriptionCount)", icon: "number")
+        infoRow(labelKey: "label_total_sub_count", value: "\(userVM.currentUser.subscriptionCount)", icon: "number")
     }
     
     private var monthlySpendingView: some View {
-        infoRow(label: "Monthly spend:", value: String(format: "%.2f", userVM.currentUser.monthlySpend), icon: "calendar")
+        infoRow(labelKey: "label_monthly_spend", value: String(format: "%.2f", userVM.currentUser.monthlySpend), icon: "calendar")
     }
     
     private var annualSpendingView: some View {
-        infoRow(label: "Annually spend:", value: String(format: "%.2f", userVM.currentUser.monthlySpend * 12), icon: "calendar")
+        infoRow(labelKey: "label_annualy_spend", value: String(format: "%.2f", userVM.currentUser.monthlySpend * 12), icon: "calendar")
     }
     
-    private func infoRow(label: String, value: String, icon: String) -> some View {
+    private func infoRow(labelKey: String, value: String, icon: String) -> some View {
         HStack {
             Image(systemName: icon)
                 .foregroundColor(.blue)
-            Text(label)
+            Text(appState.localizedString(for: labelKey))
                 .frame(alignment: .leading)
                 .fontWeight(.medium)
             Spacer()
@@ -198,7 +203,7 @@ struct HomeView: View {
                         .padding(.top,10)
                         .padding(.bottom,3)
                         .scaleEffect(1.2)
-                    Text("Logging out.")
+                    Text(appState.localizedString(for: "text_logging_out"))
                         .font(.body)
                         .padding(.horizontal)
                         .foregroundColor(.black.opacity(0.9))
@@ -216,12 +221,12 @@ struct HomeView: View {
 
     private var logOutConfirmationAlert: Alert {
         Alert(
-            title: Text("Log Out"),
-            message: Text("Are you sure you want to log out?"),
-            primaryButton: .destructive(Text("OK")) {
+            title: Text(appState.localizedString(for: "label_log_out")),
+            message: Text(appState.localizedString(for: "text_log_out_confirmation")),
+            primaryButton: .destructive(Text(appState.localizedString(for: "button_ok"))) {
                 logOut()
             },
-            secondaryButton: .cancel() {
+            secondaryButton: .cancel(Text(appState.localizedString(for: "button_cancel"))) {
                 isLogOutAlertPresented = false
             }
         )
@@ -232,7 +237,8 @@ struct HomeView: View {
             HStack {
                 AppSideMenuView(
                     showSideMenu: $isSideMenuVisible,
-                    showingLogoutAlert: $isLogOutAlertPresented)
+                    showingLogoutAlert: $isLogOutAlertPresented,
+                    showSelectLanguageSheetView: $showSelectLanguageSheetView)
                         .offset(x: isSideMenuVisible ? 0 : 230)
                         .animation(.easeInOut(duration: 0.3), value: isSideMenuVisible)
                 Spacer()
@@ -301,7 +307,7 @@ struct HomeView: View {
                 authVM.logOut()
             } else {
                 authVM.logOutSuccess = false
-                authVM.logOutError = "An error occurred while trying to log out."
+                authVM.logOutError = appState.localizedString(for: "text_error_log_out")
             }
         }
     }

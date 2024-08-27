@@ -44,7 +44,7 @@ struct CustomServiceView: View {
         HStack {
             backToServicesViewButton
             Spacer()
-            Text("Custom Service")
+            Text("label_custom_service")
                 .font(.system(size: 30, weight: .semibold))
                 .fontWeight(.bold)
                 .foregroundColor(.black)
@@ -69,11 +69,11 @@ struct CustomServiceView: View {
     
     private var serviceNameField: some View {
         VStack(alignment: .leading) {
-            Text("Service Name")
+            Text("label_service_name")
                 .font(.headline)
                 .padding(.bottom, 2)
                 .padding(.leading, 16)
-            TextField("Enter Service Name", text: $serviceName)
+            TextField("label_enter_service_name", text: $serviceName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
                 .padding(.horizontal, 16)
@@ -82,11 +82,11 @@ struct CustomServiceView: View {
     
     private var planNameField: some View {
         VStack(alignment: .leading) {
-            Text("Plan Name")
+            Text("label_plan_name")
                 .font(.headline)
                 .padding(.bottom, 2)
                 .padding(.leading, 16)
-            TextField("Enter Plan Name", text: $planName)
+            TextField("label_enter_plan_name", text: $planName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
                 .padding(.horizontal, 16)
@@ -95,11 +95,11 @@ struct CustomServiceView: View {
     
     private var planPriceField: some View {
         VStack(alignment: .leading) {
-            Text("Plan Price")
+            Text("label_plan_price")
                 .font(.headline)
                 .padding(.bottom, 2)
                 .padding(.leading, 16)
-            TextField("Enter Plan Price", text: $planPrice)
+            TextField("label_enter_plan_price", text: $planPrice)
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
@@ -109,11 +109,11 @@ struct CustomServiceView: View {
     
     private var numberOfUsersField: some View {
         VStack(alignment: .leading) {
-            Text("User Count")
+            Text("label_user_count")
                 .font(.headline)
                 .padding(.bottom, 2)
                 .padding(.leading, 16)
-            TextField("Enter User Count", text: $numberOfUsers)
+            TextField("label_enter_user_count", text: $numberOfUsers)
                 .keyboardType(.numberPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.horizontal, 16)
@@ -125,7 +125,7 @@ struct CustomServiceView: View {
         Button(action: {
             addCustomServiceToUser()
         }) {
-            Text("Add Service")
+            Text("button_add_service")
                 .font(.headline)
                 .foregroundColor(.white)
                 .padding()
@@ -179,7 +179,7 @@ struct CustomServiceView: View {
         
         guard success else {
             DispatchQueue.main.async {
-                self.feedbackMessage = "Invalid price format."
+                self.feedbackMessage = appState.localizedString(for: "text_invalid_price_format")
                 self.isAddError = true
                 self.showFeedbackSheet = true
             }

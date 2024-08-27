@@ -7,9 +7,8 @@ struct FeedbackSheetView: View {
     @Binding var errorOccured: Bool
     
     var body: some View {
-        
         VStack(spacing: 20) {
-            Text(errorOccured ? "Error" : "Success")
+            Text(errorOccured ? "label_error" : "label_success")
                 .font(.title2)
                 .foregroundColor(errorOccured ? .red : .green)
             
@@ -17,14 +16,13 @@ struct FeedbackSheetView: View {
                 .font(.body)
                 .multilineTextAlignment(.center)
             
-            Button("OK") {
+            Button("button_ok") {
                 showFeedbackSheet = false
             }
             .padding()
         }
         .padding(.horizontal, 40)
         .presentationDetents([.height(185)])
-        
     }
     
 }

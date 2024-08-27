@@ -1,18 +1,12 @@
-//
-//  AppMainTabView.swift
-//  HesApp-Tracker
-//
-//  Created by Emir Sansar on 8.08.2024.
-//
-
 import SwiftUI
 
 struct AppMainTabView: View {
     
     @Binding var appMainTabBarSelection: Int
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
-        
         ZStack{
             TabViewBackground()
             HStack{
@@ -23,7 +17,6 @@ struct AppMainTabView: View {
                 userSubscriptionsButton
             }
         }
-        
     }
     
     
@@ -33,10 +26,18 @@ struct AppMainTabView: View {
         }) {
             VStack {
                 Image(systemName: "house")
-                    .foregroundColor(appMainTabBarSelection == 1 ? .blue : .gray)
-                Text("Home")
+                    .foregroundColor(
+                            appMainTabBarSelection == 1
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
+                Text("tab_home")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(appMainTabBarSelection == 1 ? .blue : .gray)
+                    .foregroundColor(
+                            appMainTabBarSelection == 1
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
 
                 if appMainTabBarSelection == 1 {
                     Rectangle()
@@ -60,11 +61,19 @@ struct AppMainTabView: View {
             appMainTabBarSelection = 2
         }) {
             VStack {
-                Image(systemName: "text.badge.plus")
-                    .foregroundColor(appMainTabBarSelection == 2 ? .blue : .gray)
-                Text("Services")
+                Image(systemName: "list.bullet")
+                    .foregroundColor(
+                            appMainTabBarSelection == 2
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
+                Text("tab_services")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(appMainTabBarSelection == 2 ? .blue : .gray)
+                    .foregroundColor(
+                            appMainTabBarSelection == 2
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
 
                 if appMainTabBarSelection == 2 {
                     Rectangle()
@@ -88,12 +97,19 @@ struct AppMainTabView: View {
             appMainTabBarSelection = 3
         }) {
             VStack {
-                Image(systemName: "list.bullet")
-                    .foregroundColor(appMainTabBarSelection == 3 ? .blue : .gray)
-                Text("Subscriptions")
+                Image(systemName: "person")
+                    .foregroundColor(
+                            appMainTabBarSelection == 3
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
+                Text("tab_subscriptions")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(appMainTabBarSelection == 3 ? .blue : .gray)
-
+                    .foregroundColor(
+                            appMainTabBarSelection == 3
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
                 if appMainTabBarSelection == 3 {
                     Rectangle()
                         .frame(height: 2)

@@ -1,0 +1,113 @@
+"button_confirm" = "Confirm";
+"button_cancel" = "Cancel";
+"button_ok" = "OK";
+
+"label_error" = "Error";
+"label_success" = "Success";
+
+//Tabviews
+"tab_log_in" = "Login";
+"tab_register" = "Register";
+"tab_subscriptions" = "Subscriptions";
+"tab_home" = "Home";
+"tab_services" = "Services";
+
+//LoginView
+"text_login_successful" = "Login successful!\nYou are being redirected to the app.";
+"label_email" = "Email";
+"label_password" = "Password";
+"button_login" = "Login";
+
+//RegisterView
+"text_registeration_succesful" = "Registration successful";
+"button_register" = "Register";
+"label_name" = "Name";
+"label_surname" = "Surname";
+"label_confirm_password" = "Confirm Password";
+"error_password_doesnot_match" = "Passwords do not match.";
+
+//HomeView
+"welcome" = "Welcome,";
+"home" = "Home";
+"text_error_log_out" = "An error occurred while trying to log out.";
+"label_log_out" = "Log Out";
+"text_log_out_confirmation" = "Are you sure you want to log out?";
+"text_logging_out" = "Logging out.";
+"label_total_sub_count" = "Subscription Count:";
+"label_monthly_spend" = "Monthly spend:";
+"label_annualy_spend" = "Annualy spend:";
+
+//ServicesView
+"services" = "Services";
+"filter_services_by_type" = "Filter by Type";
+"add_new_service" = "Add New Service";
+"label_custom_service" = "Custom Service";
+"available_services" = "Available Services";
+"search_service" = "Search Service";
+"service_name_field" = "Service Name...";
+
+"all" = "All";
+"shopping" = "Shopping";
+"seriesMovies" = "Series - Movies";
+"selfDevelopment" = "Self-Development";
+"music" = "Music";
+"game" = "Games";
+"sport" = "Sport";
+
+//UserSubscriptionsView
+"your_subscriptions" = "Your Subscriptions";
+"sort_option" = "Sort Options";
+"text_subscription_removed_succesfully" = "The '%@' removed successfully.";
+"text_subscription_remove_failed" = "Failed to remove '%@'. Please try again.";
+"text_subscription_updated_succesfully" = "'%@' edited successfully.";
+"text_subscription_update_failed" = "Failed to update '%@'. Please try again.";
+
+"priceAscending" = "Price ↑";
+"priceDescending" = "Price ↓";
+"alphabetically" = "Alphabetically";
+//SubscriptionRow
+"label_delete" = "Delete";
+"label_edit" = "Edit";
+
+//SideMenu
+"label_settings" = "Settings";
+"label_log_out" = "Log Out";
+"label_dark_mode" = "Dark Mode";
+"label_light_mode" = "Light Mode";
+"label_change_language" = "Change Language";
+
+//ServicePlansView
+"label_available_plans" = "Available Plans";
+"label_custom_plan" = "Custom Plan";
+"label_add_custom_plan" = "Add Custom Plan";
+"label_plans_for_service" = "Plans for %@";
+"text_selected_plan_added" = "Selected plan added successfully:\n %@ - %@ ₺";
+
+//CustomServiceView
+"label_service_name" = "Service Name:";
+"label_enter_service_name" = "Enter Service Name";
+"label_plan_name" = "Plan Name:";
+"label_enter_plan_name" = "Enter Plan Name";
+"label_plan_price" = "Plan Price:";
+"label_enter_plan_price" = "Enter Plan Price";
+"label_user_count" = "User Count:";
+"label_enter_user_count" = "How many users?";
+"button_add_service" = "Add";
+"text_invalid_price_format" = "Invalid price format.";
+
+//EditSubscriptionSheetView
+"label_edit_subscription" = "Edit Subscription";
+"label_new_plan_name" = "New Plan Name";
+"label_new_plan_price" = "New Plan Price";
+"label_new_user_count" = "New User Count";
+
+//ConfirmationSubSheetView
+"label_how_many_users" = "How many users?";
+
+//CustomPlanSheetView
+"label_your_custom_plan" = "Your Custom Plan";
+"label_plan_price_with_format" = "Plan Price: 00.00";
+"label_error_invalid_format" = "Error: Please enter a valid price.";
+
+//SelectLanguageSheetView
+"button_change" = "Change";

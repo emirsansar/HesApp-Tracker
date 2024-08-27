@@ -35,6 +35,7 @@
 		FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */; };
 		FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF922C65105500A52747 /* TabViewBackground.swift */; };
 		FD8BFF952C65164A00A52747 /* CustomServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF942C65164A00A52747 /* CustomServiceView.swift */; };
+		FDA72B752C7CA7CF00E5C650 /* SelectLanguageSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA72B742C7CA7CF00E5C650 /* SelectLanguageSheetView.swift */; };
 		FDA7C4D72C77B7AA0073BB19 /* GradientBGforDarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7C4D62C77B7AA0073BB19 /* GradientBGforDarkTheme.swift */; };
 		FDB791002C6D26930075AE1B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB790FF2C6D26930075AE1B /* User.swift */; };
 		FDB791022C6D33190075AE1B /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB791012C6D33190075AE1B /* UserViewModel.swift */; };
@@ -47,6 +48,7 @@
 		FDD36B8A2C6B7D8F000702DC /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD36B892C6B7D8F000702DC /* AppState.swift */; };
 		FDDD0A972C67B45200A6121E /* SubscriptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */; };
 		FDDD0A992C67BE3900A6121E /* EditSubscriptionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDD0A982C67BE3900A6121E /* EditSubscriptionSheetView.swift */; };
+		FDEB683C2C79F9E900750643 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FDEB683E2C79F9E900750643 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +77,7 @@
 		FD8BFF8F2C64E71F00A52747 /* AppMainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMainTabView.swift; sourceTree = "<group>"; };
 		FD8BFF922C65105500A52747 /* TabViewBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewBackground.swift; sourceTree = "<group>"; };
 		FD8BFF942C65164A00A52747 /* CustomServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomServiceView.swift; sourceTree = "<group>"; };
+		FDA72B742C7CA7CF00E5C650 /* SelectLanguageSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLanguageSheetView.swift; sourceTree = "<group>"; };
 		FDA7C4D62C77B7AA0073BB19 /* GradientBGforDarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBGforDarkTheme.swift; sourceTree = "<group>"; };
 		FDB790FF2C6D26930075AE1B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FDB791012C6D33190075AE1B /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
@@ -88,6 +91,8 @@
 		FDDD0A962C67B45200A6121E /* SubscriptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRow.swift; sourceTree = "<group>"; };
 		FDDD0A982C67BE3900A6121E /* EditSubscriptionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubscriptionSheetView.swift; sourceTree = "<group>"; };
 		FDE3EBE52C6CC77C00912B05 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
+		FDEB683D2C79F9E900750643 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FDEB683F2C79F9EC00750643 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +138,7 @@
 				FD05CDA82C5D2DD300E0171E /* Assets.xcassets */,
 				FD05CDBF2C5D3AF900E0171E /* GoogleService-Info.plist */,
 				FD05CDAA2C5D2DD300E0171E /* Preview Content */,
+				FDEB683E2C79F9E900750643 /* Localizable.strings */,
 			);
 			path = "HesApp-Tracker";
 			sourceTree = "<group>";
@@ -194,6 +200,7 @@
 				FD0D18F42C62872200A50366 /* FeedbackPlanSheetView.swift */,
 				FD0D18F72C6287E300A50366 /* ConfirmationPlanSheetView.swift */,
 				FDDD0A982C67BE3900A6121E /* EditSubscriptionSheetView.swift */,
+				FDA72B742C7CA7CF00E5C650 /* SelectLanguageSheetView.swift */,
 			);
 			path = SheetViews;
 			sourceTree = "<group>";
@@ -341,6 +348,7 @@
 			knownRegions = (
 				en,
 				Base,
+				tr,
 			);
 			mainGroup = FD05CD982C5D2DD300E0171E;
 			packageReferences = (
@@ -360,6 +368,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDEB683C2C79F9E900750643 /* Localizable.strings in Resources */,
 				FD05CDAC2C5D2DD300E0171E /* Preview Assets.xcassets in Resources */,
 				FD05CDA92C5D2DD300E0171E /* Assets.xcassets in Resources */,
 				FD05CDC02C5D3AF900E0171E /* GoogleService-Info.plist in Resources */,
@@ -405,11 +414,24 @@
 				FD132FD82C64027B005619F0 /* AuthManager.swift in Sources */,
 				FDDD0A992C67BE3900A6121E /* EditSubscriptionSheetView.swift in Sources */,
 				FD0D18F82C6287E300A50366 /* ConfirmationPlanSheetView.swift in Sources */,
+				FDA72B752C7CA7CF00E5C650 /* SelectLanguageSheetView.swift in Sources */,
 				FD05CDA52C5D2DD300E0171E /* HesApp_TrackerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FDEB683E2C79F9E900750643 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FDEB683D2C79F9E900750643 /* en */,
+				FDEB683F2C79F9EC00750643 /* tr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		FD05CDAD2C5D2DD300E0171E /* Debug */ = {

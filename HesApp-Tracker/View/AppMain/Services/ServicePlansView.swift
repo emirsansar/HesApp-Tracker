@@ -93,7 +93,7 @@ struct ServicePlansView: View {
     }
     
     private var serviceTitleView: some View {
-        Text("Plans for \(chosenService.serviceName)")
+        Text( String(format: appState.localizedString(for: "label_plans_for_service"), chosenService.serviceName))
             .font(.system(size: 30, weight: .semibold))
             .fontWeight(.bold)
             .foregroundColor(.black)
@@ -135,7 +135,8 @@ struct ServicePlansView: View {
             { success in
                 if success {
                     self.isAddError = false
-                    self.feedbackMessage = "Selected plan added successfully:\n \(plan.planName) - \(plan.planPrice) ₺"
+                    let planPriceString = String(format: "%.2f", plan.planPrice)
+                    self.feedbackMessage = String(format: appState.localizedString(for: "text_selected_plan_added"), plan.planName, planPriceString)
                     appState.isUserChangedSubsList = true
                 } else {
                     self.isAddError = true
@@ -171,9 +172,9 @@ struct AddCustomPlanSection: View {
     @Binding var showCustomPlanSheet: Bool
     
     var body: some View {
-        Section(header: Text("Add Custom Plan")) {
+        Section(header: Text("label_add_custom_plan")) {
             HStack {
-                Text("Custom Plan")
+                Text("label_custom_plan")
                     .font(.system(size: 19, weight: .regular))
                 Spacer()
                 Image(systemName: "plus.circle.fill")
@@ -194,7 +195,7 @@ struct AvailablePlansSection: View {
     @Binding var showConfirmSubSheetView: Bool
     
     var body: some View {
-        Section(header: Text("Available Plans")) {
+        Section(header: Text("label_available_plans")) {
             ForEach(Array(plans.enumerated()), id: \.element.planName) { index, plan in
                 PlanRow(plan: plan, index: index)
                 .onTapGesture {

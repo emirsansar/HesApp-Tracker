@@ -13,6 +13,7 @@ struct RegisterView: View {
     @ObservedObject var userAuthVM = AuthenticationViewModel()
     
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         
@@ -38,14 +39,14 @@ struct RegisterView: View {
     
     private var nameFields: some View {
         HStack {
-            TextField("Name", text: $name)
+            TextField("label_name", text: $name)
                 .padding()
                 .background()
                 .cornerRadius(8)
                 .shadow(radius: 5)
                 .autocapitalization(.none)
             
-            TextField("Surname", text: $surname)
+            TextField("label_surname", text: $surname)
                 .padding()
                 .background()
                 .cornerRadius(8)
@@ -55,7 +56,7 @@ struct RegisterView: View {
     }
     
     private var emailField: some View {
-        TextField("Email", text: $email)
+        TextField("label_email", text: $email)
             .padding()
             .keyboardType(.emailAddress)
             .background()
@@ -66,7 +67,7 @@ struct RegisterView: View {
     }
     
     private var passwordField: some View {
-        SecureField("Password", text: $password)
+        SecureField("label_password", text: $password)
             .padding()
             .background()
             .cornerRadius(8)
@@ -76,7 +77,7 @@ struct RegisterView: View {
     }
     
     private var confirmPasswordField: some View {
-        SecureField("Confirm Password", text: $confirmPassword)
+        SecureField("label_confirm_password", text: $confirmPassword)
             .padding()
             .background()
             .cornerRadius(8)
@@ -93,7 +94,7 @@ struct RegisterView: View {
                     .padding()
             }
             if userAuthVM.registrationSuccess {
-                Text("Registration successful!")
+                Text("text_registeration_succesful")
                     .foregroundColor(.green)
                     .padding()
                     .onAppear {
@@ -107,7 +108,7 @@ struct RegisterView: View {
     
     private var registerButton: some View {
         Button(action: register) {
-            Text("Register")
+            Text("button_register")
                 .frame(width: UIScreen.main.bounds.width * 0.80)
                 .padding()
                 .background(.blue)
@@ -152,7 +153,7 @@ struct RegisterView: View {
     
     private func register() {
         if password != confirmPassword {
-            userAuthVM.registrationError = "Passwords do not match."
+            userAuthVM.registrationError = appState.localizedString(for: "error_password_doesnot_match")
             return
         }
         

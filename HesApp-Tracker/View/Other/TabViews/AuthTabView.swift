@@ -4,6 +4,8 @@ struct AuthTabView: View {
     
     @Binding var authTabBarSelection: Int
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         
         ZStack {
@@ -26,10 +28,18 @@ struct AuthTabView: View {
         }) {
             VStack {
                 Image(systemName: "person.text.rectangle")
-                    .foregroundColor(authTabBarSelection == 1 ? .blue : .gray)
-                Text("Log In")
+                    .foregroundColor(
+                        authTabBarSelection == 1
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
+                Text("tab_log_in")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(authTabBarSelection == 1 ? .blue : .gray)
+                    .foregroundColor(
+                        authTabBarSelection == 1
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
 
                 if authTabBarSelection == 1 {
                     Rectangle()
@@ -54,10 +64,18 @@ struct AuthTabView: View {
         }) {
             VStack {
                 Image(systemName: "pencil.line")
-                    .foregroundColor(authTabBarSelection == 2 ? .blue : .gray)
-                Text("Register")
+                    .foregroundColor(
+                            authTabBarSelection == 2
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
+                Text("tab_register")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(authTabBarSelection == 2 ? .blue : .gray)
+                    .foregroundColor(
+                            authTabBarSelection == 2
+                            ? .blue
+                            : (colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8) )
+                        )
                 
                 if authTabBarSelection == 2 {
                     Rectangle()

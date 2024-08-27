@@ -10,32 +10,34 @@ struct CustomPlanSheetView: View {
     @Binding var feedbackMessage: String
     @Binding var isAddError: Bool
     
+    @EnvironmentObject var appState: AppState
+    
     var processSubscription: (Plan, Int) -> Void
     
     var body: some View {
         
         VStack(spacing: 20) {
-            Text("Your Custom Plan")
+            Text("label_your_custom_plan")
                 .font(.headline)
             
-            TextField("Plan Name:", text: $customPlanName)
+            TextField("label_plan_name", text: $customPlanName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
-            TextField("Plan Price: 00.00", text: $customPlanPrice)
+            TextField("label_plan_price_with_format", text: $customPlanPrice)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.decimalPad)
             
-            TextField("How many users?", text: $numberOfUsers)
+            TextField("label_how_many_users", text: $numberOfUsers)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.numberPad)
             
             HStack {
-                Button("Cancel") {
+                Button("button_cancel") {
                     showCustomPlanSheet = false
                 }
                 .foregroundColor(.red)
                 Spacer()
-                Button("Confirm") {
+                Button("button_confirm") {
                     if let quantity = Int(numberOfUsers), quantity > 0 {
                         let normalizedPriceString = customPlanPrice.replacingOccurrences(of: ",", with: ".")
                         
@@ -43,7 +45,7 @@ struct CustomPlanSheetView: View {
                             let customPlan = Plan(planName: customPlanName, planPrice: price)
                             processSubscription(customPlan, quantity)
                         } else {
-                            feedbackMessage = "Error: Please enter a valid price."
+                            feedbackMessage = appState.localizedString(for: "label_error_invalid_format")
                             showFeedbackSheet = true
                             isAddError = true
                             showCustomPlanSheet = false

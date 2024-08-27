@@ -10,7 +10,7 @@ struct ConfirmationSubSheetView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("How many users?")
+            Text("label_how_many_users")
                 .font(.headline)
             
             TextField("1", text: $numberOfUsers)
@@ -18,12 +18,12 @@ struct ConfirmationSubSheetView: View {
                 .keyboardType(.numberPad)
             
             HStack {
-                Button("Cancel") {
+                Button("button_cancel") {
                     showConfirmSubSheetView = false
                 }
                 .foregroundColor(.red)
                 Spacer()
-                Button("Confirm") {
+                Button("button_confirm") {
                     if let quantity = Int(numberOfUsers), quantity > 0, let plan = selectedPlan {
                         processSubscription(plan, quantity)
                         showConfirmSubSheetView = false
