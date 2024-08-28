@@ -30,7 +30,6 @@ struct CustomServiceView: View {
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showFeedbackSheet){
             FeedbackSheetView(
-                showFeedbackSheet: $showFeedbackSheet,
                 feedbackText: $feedbackMessage,
                 errorOccured: $isAddError
             )

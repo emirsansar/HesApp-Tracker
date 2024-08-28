@@ -41,7 +41,6 @@ struct ServicePlansView: View {
         .sheet(isPresented: $showConfirmSubSheetView) {
             ConfirmationSubSheetView(
                 numberOfUsers: $numberOfUsers,
-                showConfirmSubSheetView: $showConfirmSubSheetView,
                 selectedPlan: $selectedPlan,
                 processSubscription: processSubscription
             )
@@ -51,7 +50,6 @@ struct ServicePlansView: View {
                 customPlanName: $customPlanName,
                 customPlanPrice: $customPlanPrice,
                 numberOfUsers: $numberOfUsers,
-                showCustomPlanSheet: $showCustomPlanSheet,
                 showFeedbackSheet: $showFeedbackSheet,
                 feedbackMessage: $feedbackMessage,
                 isAddError: $isAddError,
@@ -60,7 +58,6 @@ struct ServicePlansView: View {
         }
         .sheet(isPresented: $showFeedbackSheet){
             FeedbackSheetView(
-                showFeedbackSheet: $showFeedbackSheet,
                 feedbackText: $feedbackMessage,
                 errorOccured: $isAddError
             )
@@ -97,6 +94,7 @@ struct ServicePlansView: View {
             .font(.system(size: 30, weight: .semibold))
             .fontWeight(.bold)
             .foregroundColor(.black)
+            .multilineTextAlignment(.center)
             .lineLimit(3)
     }
     

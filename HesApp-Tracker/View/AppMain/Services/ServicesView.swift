@@ -20,7 +20,6 @@ struct ServicesView: View {
     }
     
     var body: some View {
-        
         NavigationView {
             VStack {
                 List {
@@ -30,14 +29,12 @@ struct ServicesView: View {
                     AvailableServicesSection(services: $filteredServiceList)
                 }
                 .scrollIndicators(.hidden)
-                .background(Color.mainBlue)
                 .listStyle(InsetGroupedListStyle())
                 .navigationTitle("services")
             }
         }
         .onAppear(perform: loadServices)
         .padding(.top, -40)
-        
     }
     
     
@@ -45,7 +42,7 @@ struct ServicesView: View {
     
     private var pickerServiceType: some View {
         Picker("filter_services_by_type", selection: $selectedServiceType) {
-            ForEach(ServiceType.allCases) { typeOption in
+            ForEach(sortedServiceTypes) { typeOption in
                 Text(typeOption.localizedString(appState: appState))
                     .tag(typeOption)
             }
@@ -54,6 +51,14 @@ struct ServicesView: View {
         .onChange(of: selectedServiceType) {
             filterServices()
         }
+    }
+    
+    /// Returns service types with 'all' first, followed by the rest sorted alphabetically.
+    private var sortedServiceTypes: [ServiceType] {
+        let sortedTypes = ServiceType.allCases
+            .filter { $0 != .all }
+            .sorted { $0.localizedString(appState: appState) < $1.localizedString(appState: appState) }
+        return [.all] + sortedTypes
     }
     
 
@@ -178,6 +183,7 @@ enum ServiceType: String, CaseIterable, Identifiable {
     case music = "music"
     case game = "game"
     case sport = "sport"
+    case storage = "storage"
     
     var id: String { self.rawValue }
     

@@ -16,26 +16,31 @@ struct RegisterView: View {
     @EnvironmentObject var appState: AppState
     
     var body: some View {
-        
-        VStack {
-            appLogoView
-            registerLogoView
-            nameFields
-            emailField
-            passwordField
-            confirmPasswordField
-            registerButton
-            registrationFeedback
-            Spacer()
+        ZStack {
+            backgroundView
+            
+            VStack {
+               appLogoView
+               labelCreateAccount
+               registerForm
+               registerButton
+               registrationFeedback
+               Spacer()
+           }
         }
-        .padding(.horizontal, 30)
-        .background(backgroundView)
-        .edgesIgnoringSafeArea(.all)
-        
     }
     
     
     // MARK: - Subviews
+    
+    private var registerForm: some View {
+        VStack {
+            nameFields
+            emailField
+            passwordField
+            confirmPasswordField
+        }
+    }
     
     private var nameFields: some View {
         HStack {
@@ -52,7 +57,7 @@ struct RegisterView: View {
                 .cornerRadius(8)
                 .shadow(radius: 5)
                 .autocapitalization(.none)
-        }.frame(width: UIScreen.main.bounds.width*0.88)
+        }.frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var emailField: some View {
@@ -63,7 +68,7 @@ struct RegisterView: View {
             .cornerRadius(8)
             .shadow(radius: 5)
             .autocapitalization(.none)
-            .frame(width: UIScreen.main.bounds.width*0.88)
+            .frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var passwordField: some View {
@@ -73,7 +78,7 @@ struct RegisterView: View {
             .cornerRadius(8)
             .shadow(radius: 5)
             .autocapitalization(.none)
-            .frame(width: UIScreen.main.bounds.width*0.88)
+            .frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var confirmPasswordField: some View {
@@ -83,7 +88,7 @@ struct RegisterView: View {
             .cornerRadius(8)
             .shadow(radius: 5)
             .autocapitalization(.none)
-            .frame(width: UIScreen.main.bounds.width*0.88)
+            .frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var registrationFeedback: some View {
@@ -92,6 +97,11 @@ struct RegisterView: View {
                 Text(error)
                     .foregroundColor(.red)
                     .padding()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
+                            userAuthVM.registrationError = nil
+                        }
+                    }
             }
             if userAuthVM.registrationSuccess {
                 Text("text_registeration_succesful")
@@ -109,7 +119,7 @@ struct RegisterView: View {
     private var registerButton: some View {
         Button(action: register) {
             Text("button_register")
-                .frame(width: UIScreen.main.bounds.width * 0.80)
+                .frame(width: UIScreen.main.bounds.width * 0.75)
                 .padding()
                 .background(.blue)
                 .foregroundColor(.white)
@@ -118,6 +128,7 @@ struct RegisterView: View {
                 .shadow(color: .blue.opacity(0.3), radius: 5)
         }
         .padding(.top, 15)
+        .padding(.bottom, 15)
         .disabled(userAuthVM.isRegistering)
     }
     
@@ -125,18 +136,17 @@ struct RegisterView: View {
         Image("hesapp")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(height: UIScreen.main.bounds.height * 0.12)
-            .padding(.top, 70)
+            .frame(height: UIScreen.main.bounds.height * 0.14)
+            .padding(.top, 15)
+            .padding(.bottom, 10)
     }
     
-    private var registerLogoView: some View {
-        Image("register")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(height: UIScreen.main.bounds.height * 0.10)
-            .padding(.top, 40)
-            .padding(.bottom, 15)
-            .padding(.leading,15)
+    private var labelCreateAccount: some View {
+        Text("label_create_account")
+            .font(.system(size: 30, weight: .bold))
+            .foregroundStyle(.iconBlue)
+            .shadow(color: .white.opacity(0.4), radius: 5)
+            .padding()
     }
     
     private var backgroundView: some View {

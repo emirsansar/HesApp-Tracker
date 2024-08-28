@@ -22,17 +22,13 @@ struct UserSubscriptionsView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            titleView
-            sortPickerView
+            headerView
             subscriptionListDivider
             subscriptionsListView
         }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .background(GradientBackground())
         .onAppear(perform: loadUserSubscriptions)
         .sheet(isPresented: $showFeedbackSheet) {
             FeedbackSheetView(
-                showFeedbackSheet: $showFeedbackSheet,
                 feedbackText: $feedbackMessage,
                 errorOccured: $isAddError
             )
@@ -70,6 +66,14 @@ struct UserSubscriptionsView: View {
         .padding()
     }
     
+    private var headerView: some View {
+        VStack {
+            titleView
+            sortPickerView
+        }
+        .background(.mainBlue)
+    }
+    
     private var subscriptionsListView: some View {
         List {
             ForEach(Array(sortedSubscriptions.enumerated()), id: \.element.serviceName) { index, subscription in
@@ -91,6 +95,16 @@ struct UserSubscriptionsView: View {
         Divider()
             .frame(height: 0.6)
             .background(colorScheme == .dark ? .white : .black.opacity(0.5))
+    }
+    
+    private var backgroundView: some View {
+        Group {
+            if colorScheme == .dark {
+                GradientBGforDarkTheme()
+            } else {
+                GradientBackground()
+            }
+        }
     }
     
     

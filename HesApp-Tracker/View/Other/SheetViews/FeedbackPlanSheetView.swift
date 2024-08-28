@@ -2,9 +2,10 @@ import SwiftUI
 
 struct FeedbackSheetView: View {
     
-    @Binding var showFeedbackSheet: Bool
     @Binding var feedbackText: String
     @Binding var errorOccured: Bool
+    
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack(spacing: 20) {
@@ -17,12 +18,12 @@ struct FeedbackSheetView: View {
                 .multilineTextAlignment(.center)
             
             Button("button_ok") {
-                showFeedbackSheet = false
+                dismiss()
             }
             .padding()
         }
         .padding(.horizontal, 40)
-        .presentationDetents([.height(185)])
+        .presentationDetents([.height(170)])
     }
     
 }
@@ -30,12 +31,10 @@ struct FeedbackSheetView: View {
 
 #Preview {
     
-    @State var showFeedbackSheet = true
     @State var feedbackMessage = "An error occurred"
     @State var isAddError = true
     
     return FeedbackSheetView(
-        showFeedbackSheet: $showFeedbackSheet,
         feedbackText: $feedbackMessage,
         errorOccured: $isAddError
     )

@@ -31,7 +31,7 @@ struct EditSubscriptionSheetView: View {
                 }
             }
         }
-        .presentationDetents([.height(500)])
+        .presentationDetents([.height(460)])
     }
     
     // MARK: - Subviews
@@ -41,7 +41,8 @@ struct EditSubscriptionSheetView: View {
             .font(.system(size: 24, weight: .semibold))
             .fontWeight(.bold)
             .foregroundColor(.black)
-            .padding()
+            .padding(.top, 20)
+            .padding(.bottom,10)
     }
     
     private var formFields: some View {
@@ -61,8 +62,8 @@ struct EditSubscriptionSheetView: View {
             Text(selectedSubscription?.serviceName ?? "")
                 .font(.title3).bold()
         }
-        .padding(.top, 20)
-        .padding(.bottom,10)
+        .padding(.top, 15)
+        .padding(.bottom,5)
     }
     
     private var planNameField: some View {

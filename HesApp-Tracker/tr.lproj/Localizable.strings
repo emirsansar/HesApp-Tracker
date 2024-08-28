@@ -17,6 +17,7 @@
 "label_email" = "Email";
 "label_password" = "Şifre";
 "button_login" = "Giriş";
+"label_login" = "Giriş";
 
 //RegisterView
 "text_registeration_succesful" = "Kayıt Başarılı!";
@@ -25,6 +26,7 @@
 "label_surname" = "Soyad";
 "label_confirm_password" = "Şifre (Tekrar)";
 "error_password_doesnot_match" = "Şifreler eşleşmiyor!";
+"label_create_account" = "Hesap Oluştur";
 
 //HomeView
 "welcome" = "Hoşgeldiniz,";
@@ -53,6 +55,7 @@
 "music" = "Müzik";
 "game" = "Oyun";
 "sport" = "Spor";
+"storage" = "Depolama";
 
 //UserSubscriptionsView
 "your_subscriptions" = "Aboneliklerim";
@@ -80,7 +83,7 @@
 "label_available_plans" = "Mevcut Planlar";
 "label_custom_plan" = "Özel Plan";
 "label_add_custom_plan" = "Özel Plan Ekle";
-"label_plans_for_service" = "%@ için Planlar";
+"label_plans_for_service" = "%@ Planları";
 "text_selected_plan_added" = "Seçilen plan başarıyla eklendi:\n %@ - %@ ₺";
 
 //CustomServiceView
@@ -106,7 +109,7 @@
 
 //CustomPlanSheetView
 "label_your_custom_plan" = "Özel Plan";
-"label_plan_price_with_format" = "Plan Fiyatı: 00.00";
+"label_plan_price_with_format" = "00.00";
 "label_error_invalid_format" = "Error: Lütfen fiyatı geçerli formatta giriniz.";
 
 //SelectLanguageSheetView

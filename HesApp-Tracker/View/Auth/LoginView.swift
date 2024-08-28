@@ -13,20 +13,19 @@ struct LoginView: View {
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-        
-        VStack (){
-            appLogoView
-            loginLogoView
-            emailField
-            passwordField
-            loginButton
-            loginFeedback
-            Spacer()
+        ZStack {
+            backgroundView
+            
+            VStack (){
+                appLogoView
+                labelLogin
+                emailField
+                passwordField
+                loginButton
+                loginFeedback
+                Spacer()
+            }
         }
-        .padding(.horizontal)
-        .background(backgroundView)
-        .edgesIgnoringSafeArea(.all)
-        
     }
     
     
@@ -40,7 +39,7 @@ struct LoginView: View {
             .shadow(radius: 5)
             .keyboardType(.emailAddress)
             .autocapitalization(.none)
-            .frame(width: UIScreen.main.bounds.width*0.88)
+            .frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var passwordField: some View {
@@ -49,7 +48,7 @@ struct LoginView: View {
             .background()
             .cornerRadius(8)
             .shadow(radius: 5)
-            .frame(width: UIScreen.main.bounds.width*0.88)
+            .frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var loginFeedback: some View {
@@ -61,6 +60,11 @@ struct LoginView: View {
                     .background(Color.red.opacity(0.60))
                     .cornerRadius(8)
                     .padding(.bottom, 10)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            userAuthVM.loginError = nil
+                        }
+                    }
             }
             if userAuthVM.loginSuccess {
                 Text("text_login_successful")
@@ -76,13 +80,15 @@ struct LoginView: View {
                         }
                     }
             }
-        }.animation(.easeInOut, value: 0.15)
+        }
+        .frame(width: UIScreen.main.bounds.width*0.75)
+        .animation(.easeInOut, value: userAuthVM.loginSuccess || userAuthVM.loginError != nil)
     }
     
     private var loginButton: some View {
         Button(action: login) {
             Text("button_login")
-                .frame(width: UIScreen.main.bounds.width * 0.80)
+                .frame(width: UIScreen.main.bounds.width * 0.75)
                 .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
@@ -98,17 +104,17 @@ struct LoginView: View {
         Image("hesapp")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(height: UIScreen.main.bounds.height * 0.12)
-            .padding(.top, 70)
+            .frame(height: UIScreen.main.bounds.height * 0.14)
+            .padding(.top, 15)
+            .padding(.bottom, 10)
     }
     
-    private var loginLogoView: some View {
-        Image("login")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(height: UIScreen.main.bounds.height * 0.10)
-            .padding(.top, 40)
-            .padding(.bottom, 20)
+    private var labelLogin: some View {
+        Text("label_login")
+            .font(.system(size: 30, weight: .bold))
+            .foregroundStyle(.iconBlue)
+            .shadow(color: .white.opacity(0.4), radius: 5)
+            .padding()
     }
     
     private var backgroundView: some View {
