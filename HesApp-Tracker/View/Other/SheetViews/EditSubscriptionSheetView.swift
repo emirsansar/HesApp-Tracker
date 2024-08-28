@@ -119,7 +119,6 @@ struct EditSubscriptionSheetView: View {
                 .foregroundColor(.white)
                 .cornerRadius(10)
         }
-        .buttonStyle()
         .padding(.top)
         .padding(.horizontal, 16)
         .disabled(selectedPlanPrice.isEmpty || selectedPlanName.isEmpty || numberOfUsers.isEmpty)
