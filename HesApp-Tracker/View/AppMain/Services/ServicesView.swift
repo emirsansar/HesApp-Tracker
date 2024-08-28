@@ -64,32 +64,42 @@ struct ServicesView: View {
 
     // MARK: - Functions
     
-    /// Loads services from Firestore if they haven't been loaded yet and updates SwiftData with any new services. 
+    /// Loads services from Firestore if they haven't been loaded yet and updates SwiftData with any new services.
     /// If services have already been loaded, it simply retrieves them from SwiftData.
     private func loadServices() {
         if !appState.areServicesLoaded {
-            serviceVM.fetchServicesFromFirestore { fetchedServices, error in
-                DispatchQueue.main.async {
-                    guard let fetchedServices = fetchedServices else {
-                        print("Error fetching services: \(error?.localizedDescription ?? "Unknown error")")
-                        return
-                    }
-                    
-                    processAddingServicesToSwiftData(fetchedServices: fetchedServices)
-                    
-                    self.serviceList = fetchedServices
-                    self.filteredServiceList = fetchedServices
-                    appState.areServicesLoaded = true
-                }
-            }
+            loadServicesFromFirestore()
         } else {
+            loadServicesFromSwiftData()
+        }
+    }
+
+    private func loadServicesFromFirestore() {
+        serviceVM.fetchServicesFromFirestore { fetchedServices, error in
             DispatchQueue.main.async {
-                self.serviceList = servicesFromSWData
-                self.filteredServiceList = servicesFromSWData
+                guard let fetchedServices = fetchedServices else {
+                    print("Error fetching services: \(error?.localizedDescription ?? "Unknown error")")
+                    return
+                }
+                
+                processAddingServicesToSwiftData(fetchedServices: fetchedServices)
+                updateServiceLists(with: fetchedServices)
+                
+                appState.areServicesLoaded = true
             }
         }
     }
-    
+
+    private func loadServicesFromSwiftData() {
+        self.serviceList = servicesFromSWData
+        self.filteredServiceList = servicesFromSWData
+    }
+
+    private func updateServiceLists(with services: [Service]) {
+        self.serviceList = services
+        self.filteredServiceList = services
+    }
+
     /// Processes and adds new services to SwiftData.
     private func processAddingServicesToSwiftData (fetchedServices: [Service]) {
         let existingServiceNames = Set(servicesFromSWData.map { $0.serviceName })

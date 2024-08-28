@@ -52,9 +52,7 @@ struct CustomPlanSheetView: View {
     private var planNameField: some View {
         VStack(alignment: .leading) {
             Text("label_plan_name")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_plan_name", text: $customPlanName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
@@ -65,9 +63,7 @@ struct CustomPlanSheetView: View {
     private var planPriceField: some View {
         VStack(alignment: .leading) {
             Text("label_plan_price")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_plan_price_with_format", text: $customPlanPrice)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.decimalPad)
@@ -79,9 +75,7 @@ struct CustomPlanSheetView: View {
     private var userCountField: some View {
         VStack(alignment: .leading) {
             Text("label_user_count")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_how_many_users", text: $numberOfUsers)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.numberPad)

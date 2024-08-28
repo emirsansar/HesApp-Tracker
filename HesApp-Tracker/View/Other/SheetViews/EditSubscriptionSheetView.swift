@@ -69,9 +69,7 @@ struct EditSubscriptionSheetView: View {
     private var planNameField: some View {
         VStack(alignment: .leading) {
             Text("label_plan_name")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_new_plan_name", text: $selectedPlanName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
@@ -82,9 +80,7 @@ struct EditSubscriptionSheetView: View {
     private var planPriceField: some View {
         VStack(alignment: .leading) {
             Text("label_plan_price")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_new_plan_price", text: $selectedPlanPrice)
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -96,9 +92,7 @@ struct EditSubscriptionSheetView: View {
     private var numberOfUsersField: some View {
         VStack(alignment: .leading) {
             Text("label_user_count")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("", text: $numberOfUsers)
                 .keyboardType(.numberPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -125,6 +119,7 @@ struct EditSubscriptionSheetView: View {
                 .foregroundColor(.white)
                 .cornerRadius(10)
         }
+        .buttonStyle()
         .padding(.top)
         .padding(.horizontal, 16)
         .disabled(selectedPlanPrice.isEmpty || selectedPlanName.isEmpty || numberOfUsers.isEmpty)

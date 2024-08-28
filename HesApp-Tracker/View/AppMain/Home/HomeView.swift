@@ -187,13 +187,7 @@ struct HomeView: View {
         VStack {
             if let error = logOutFeedbackText {
                 Text(error)
-                    .font(.body)
-                    .padding()
-                    .background(Color.red.opacity(0.60))
-                    .foregroundColor(.black.opacity(0.9))
-                    .cornerRadius(8)
-                    .padding(.bottom, 10)
-                    .transition(.opacity)
+                    .errorFeedbackTextStyle()
             }
             
             if authVM.isLoggingOut || authVM.logOutSuccess {
@@ -259,41 +253,46 @@ struct HomeView: View {
     
     // MARK: - Functions
     
-    /// Loads user data from ViewModels.
     private func loadUserData() {
-        
         /// Loads user data from Firestore if the app is opened for the first time or the user's subscription list has changed.
-        if !appState.isFetchedUserDetails || appState.isUserChangedSubsList {
-            DispatchQueue.main.async {
-                userVM.fetchsUserFullname() { userFullName in
-                    let fullName = userFullName
-                    userVM.updateCurrentUserName(fullName: fullName!)
-                    
-                    userSubsVM.fetchSubscriptionsSummary() { userSubCount, userMounthlySpend in
-                        let subsCount = userSubCount
-                        let monthlySpend = userMounthlySpend
-                        
-                        userVM.updateCurrentUserSubscriptionSummary( subscriptionCount: subsCount, monthlySpend: monthlySpend)
-                        userVM.saveUserDetailsToSwiftData(user: userVM.currentUser, context: context)
-                        
-                        appState.isFetchedUserDetails = true
-                        appState.isUserChangedSubsList = false
-                    }
-                }
-            }
+        guard !appState.isFetchedUserDetails || appState.isUserChangedSubsList else {
+            loadUserDataFromSwiftData()
+            return
         }
-        else { /// Loads user data from SwiftData.
-            DispatchQueue.main.async {
-                let userEmail = AuthManager.shared.auth.currentUser!.email!
-                
-                if let existingUser = userVM.fetchUserFromSwiftData(byEmail: userEmail, context: context) {
-                    userVM.currentUser = existingUser
-                } else {
-                    print("No user found in SwiftData with email: \(userEmail)")
-                }
-            }
-        }
+        
+        /// Loads user data from SwiftData.
+        loadUserDataFromFirestore()
+    }
 
+    private func loadUserDataFromFirestore() {
+        userVM.fetchsUserFullname() { userFullName in
+            guard let fullName = userFullName else { return }
+            userVM.updateCurrentUserName(fullName: fullName)
+            
+            fetchSubscriptionsSummary()
+        }
+    }
+
+    /// Fetchs user fullname from Firestore.
+    private func fetchSubscriptionsSummary() {
+        userSubsVM.fetchSubscriptionsSummary() { userSubCount, userMounthlySpend in
+            userVM.updateCurrentUserSubscriptionSummary(subscriptionCount: userSubCount, monthlySpend: userMounthlySpend)
+            userVM.saveUserDetailsToSwiftData(user: userVM.currentUser, context: context)
+            
+            appState.isFetchedUserDetails = true
+            appState.isUserChangedSubsList = false
+        }
+    }
+    
+    /// Fetch subscription summary and update user subscription details.
+    private func loadUserDataFromSwiftData() {
+        guard let userEmail = AuthManager.shared.auth.currentUser?.email else { return }
+        
+        if let existingUser = userVM.fetchUserFromSwiftData(byEmail: userEmail, context: context) {
+            userVM.currentUser = existingUser
+        } else {
+            print("No user found in SwiftData with email: \(userEmail)")
+        }
     }
     
     /// Log the user out.

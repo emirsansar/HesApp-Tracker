@@ -69,9 +69,7 @@ struct CustomServiceView: View {
     private var serviceNameField: some View {
         VStack(alignment: .leading) {
             Text("label_service_name")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_enter_service_name", text: $serviceName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
@@ -82,9 +80,7 @@ struct CustomServiceView: View {
     private var planNameField: some View {
         VStack(alignment: .leading) {
             Text("label_plan_name")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_enter_plan_name", text: $planName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 10)
@@ -95,9 +91,7 @@ struct CustomServiceView: View {
     private var planPriceField: some View {
         VStack(alignment: .leading) {
             Text("label_plan_price")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_enter_plan_price", text: $planPrice)
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -109,9 +103,7 @@ struct CustomServiceView: View {
     private var numberOfUsersField: some View {
         VStack(alignment: .leading) {
             Text("label_user_count")
-                .font(.headline)
-                .padding(.bottom, 2)
-                .padding(.leading, 16)
+                .labelStyle()
             TextField("label_enter_user_count", text: $numberOfUsers)
                 .keyboardType(.numberPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())

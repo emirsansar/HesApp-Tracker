@@ -45,57 +45,35 @@ struct RegisterView: View {
     private var nameFields: some View {
         HStack {
             TextField("label_name", text: $name)
-                .padding()
-                .background()
-                .cornerRadius(8)
-                .shadow(radius: 5)
+                .smallTextFieldStyle()
                 .autocapitalization(.none)
             
             TextField("label_surname", text: $surname)
-                .padding()
-                .background()
-                .cornerRadius(8)
-                .shadow(radius: 5)
-                .autocapitalization(.none)
+                .smallTextFieldStyle()
         }.frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var emailField: some View {
         TextField("label_email", text: $email)
-            .padding()
+            .textFieldStyle()
             .keyboardType(.emailAddress)
-            .background()
-            .cornerRadius(8)
-            .shadow(radius: 5)
-            .autocapitalization(.none)
-            .frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var passwordField: some View {
         SecureField("label_password", text: $password)
-            .padding()
-            .background()
-            .cornerRadius(8)
-            .shadow(radius: 5)
-            .autocapitalization(.none)
-            .frame(width: UIScreen.main.bounds.width*0.85)
+            .textFieldStyle()
     }
     
     private var confirmPasswordField: some View {
         SecureField("label_confirm_password", text: $confirmPassword)
-            .padding()
-            .background()
-            .cornerRadius(8)
-            .shadow(radius: 5)
-            .autocapitalization(.none)
-            .frame(width: UIScreen.main.bounds.width*0.85)
+            .textFieldStyle()
     }
     
     private var registrationFeedback: some View {
         VStack {
             if let error = userAuthVM.registrationError {
                 Text(error)
-                    .foregroundColor(.red)
+                    .errorFeedbackTextStyle()
                     .padding()
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
@@ -105,7 +83,7 @@ struct RegisterView: View {
             }
             if userAuthVM.registrationSuccess {
                 Text("text_registeration_succesful")
-                    .foregroundColor(.green)
+                    .successFeedbackTextStyle()
                     .padding()
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
@@ -120,12 +98,7 @@ struct RegisterView: View {
         Button(action: register) {
             Text("button_register")
                 .frame(width: UIScreen.main.bounds.width * 0.75)
-                .padding()
-                .background(.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-                .font(.headline)
-                .shadow(color: .blue.opacity(0.3), radius: 5)
+                .buttonStyle()
         }
         .padding(.top, 15)
         .padding(.bottom, 15)

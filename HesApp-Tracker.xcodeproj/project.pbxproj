@@ -37,6 +37,7 @@
 		FD8BFF952C65164A00A52747 /* CustomServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8BFF942C65164A00A52747 /* CustomServiceView.swift */; };
 		FDA72B752C7CA7CF00E5C650 /* SelectLanguageSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA72B742C7CA7CF00E5C650 /* SelectLanguageSheetView.swift */; };
 		FDA7C4D72C77B7AA0073BB19 /* GradientBGforDarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA7C4D62C77B7AA0073BB19 /* GradientBGforDarkTheme.swift */; };
+		FDB30F572C7F61CF000D1A34 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB30F562C7F61CF000D1A34 /* Extensions.swift */; };
 		FDB791002C6D26930075AE1B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB790FF2C6D26930075AE1B /* User.swift */; };
 		FDB791022C6D33190075AE1B /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB791012C6D33190075AE1B /* UserViewModel.swift */; };
 		FDCADF2B2C60CA150059BEF7 /* UserSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */; };
@@ -79,6 +80,7 @@
 		FD8BFF942C65164A00A52747 /* CustomServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomServiceView.swift; sourceTree = "<group>"; };
 		FDA72B742C7CA7CF00E5C650 /* SelectLanguageSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLanguageSheetView.swift; sourceTree = "<group>"; };
 		FDA7C4D62C77B7AA0073BB19 /* GradientBGforDarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBGforDarkTheme.swift; sourceTree = "<group>"; };
+		FDB30F562C7F61CF000D1A34 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		FDB790FF2C6D26930075AE1B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FDB791012C6D33190075AE1B /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		FDCADF2A2C60CA150059BEF7 /* UserSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscription.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				FD8BFF912C65103800A52747 /* Backgrounds */,
 				FD132FDB2C6412E0005619F0 /* TabViews */,
 				FD0D18F62C6287B600A50366 /* SheetViews */,
+				FDB30F562C7F61CF000D1A34 /* Extensions.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				FD29891C2C663B1E00A92F31 /* AppSideMenuView.swift in Sources */,
 				FD8BFF902C64E71F00A52747 /* AppMainTabView.swift in Sources */,
 				FDDD0A972C67B45200A6121E /* SubscriptionRow.swift in Sources */,
+				FDB30F572C7F61CF000D1A34 /* Extensions.swift in Sources */,
 				FD8BFF952C65164A00A52747 /* CustomServiceView.swift in Sources */,
 				FD8BFF932C65105500A52747 /* TabViewBackground.swift in Sources */,
 				FDCD60E02C5E4FB00049CED8 /* PlanViewModel.swift in Sources */,

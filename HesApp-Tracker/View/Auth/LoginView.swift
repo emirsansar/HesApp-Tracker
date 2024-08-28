@@ -33,33 +33,20 @@ struct LoginView: View {
     
     private var emailField: some View {
         TextField("label_email", text: $email)
-            .padding()
-            .background()
-            .cornerRadius(8)
-            .shadow(radius: 5)
+            .textFieldStyle()
             .keyboardType(.emailAddress)
-            .autocapitalization(.none)
-            .frame(width: UIScreen.main.bounds.width*0.85)
     }
     
     private var passwordField: some View {
         SecureField("label_password", text: $password)
-            .padding()
-            .background()
-            .cornerRadius(8)
-            .shadow(radius: 5)
-            .frame(width: UIScreen.main.bounds.width*0.85)
+            .textFieldStyle()
     }
     
     private var loginFeedback: some View {
         VStack {
             if let error = userAuthVM.loginError {
                 Text(error)
-                    .foregroundColor(.black.opacity(0.9))
-                    .padding()
-                    .background(Color.red.opacity(0.60))
-                    .cornerRadius(8)
-                    .padding(.bottom, 10)
+                    .errorFeedbackTextStyle()
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             userAuthVM.loginError = nil
@@ -68,11 +55,7 @@ struct LoginView: View {
             }
             if userAuthVM.loginSuccess {
                 Text("text_login_successful")
-                    .foregroundColor(.black.opacity(0.9))
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .background(Color.green.opacity(0.60))
-                    .cornerRadius(8)
+                    .successFeedbackTextStyle()
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
@@ -81,7 +64,7 @@ struct LoginView: View {
                     }
             }
         }
-        .frame(width: UIScreen.main.bounds.width*0.75)
+        .frame(width: UIScreen.main.bounds.width*0.80)
         .animation(.easeInOut, value: userAuthVM.loginSuccess || userAuthVM.loginError != nil)
     }
     
@@ -89,12 +72,7 @@ struct LoginView: View {
         Button(action: login) {
             Text("button_login")
                 .frame(width: UIScreen.main.bounds.width * 0.75)
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-                .font(.headline)
-                .shadow(color: .blue.opacity(0.3), radius: 5)
+                .buttonStyle()
         }
         .padding()
         .disabled(userAuthVM.isLoggingIn)

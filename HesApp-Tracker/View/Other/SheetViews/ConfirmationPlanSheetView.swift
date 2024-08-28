@@ -12,7 +12,7 @@ struct ConfirmationSubSheetView: View {
     var body: some View {
         VStack(spacing: 20) {
             Text("label_how_many_users")
-                .font(.headline)
+                .labelStyle()
             
             TextField("1", text: $numberOfUsers)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
