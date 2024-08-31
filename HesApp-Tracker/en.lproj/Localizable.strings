@@ -6,8 +6,8 @@
 "label_success" = "Success";
 
 //Tabviews
-"tab_log_in" = "Login";
-"tab_register" = "Register";
+"tab_log_in" = "Log In";
+"tab_register" = "Sign Up";
 "tab_subscriptions" = "Subscriptions";
 "tab_home" = "Home";
 "tab_services" = "Services";
@@ -16,41 +16,41 @@
 "text_login_successful" = "Login successful!\nYou are being redirected to the app.";
 "label_email" = "Email";
 "label_password" = "Password";
-"button_login" = "Login";
-"label_login" = "Login";
+"button_login" = "Log In";
+"label_login" = "Log In";
 
 //RegisterView
-"text_registeration_succesful" = "Registration successful";
-"button_register" = "Register";
-"label_name" = "Name";
-"label_surname" = "Surname";
+"text_registeration_succesful" = "Registration successful.";
+"button_register" = "Sign Up";
+"label_name" = "First Name";
+"label_surname" = "Last Name";
 "label_confirm_password" = "Confirm Password";
-"error_password_doesnot_match" = "Passwords do not match.";
+"error_password_doesnot_match" = "Passwords don't match.";
 "label_create_account" = "Create Account";
 
 //HomeView
 "welcome" = "Welcome,";
 "home" = "Home";
-"text_error_log_out" = "An error occurred while trying to log out.";
+"text_error_log_out" = "An error occurred while logging out.\nPlease try again.";
 "label_log_out" = "Log Out";
 "text_log_out_confirmation" = "Are you sure you want to log out?";
-"text_logging_out" = "Logging out.";
+"text_logging_out" = "Logging out...";
 "label_total_sub_count" = "Subscription Count:";
 "label_monthly_spend" = "Monthly spend:";
-"label_annualy_spend" = "Annualy spend:";
+"label_annualy_spend" = "Annual spend:";
 
 //ServicesView
 "services" = "Services";
 "filter_services_by_type" = "Filter by Type";
-"add_new_service" = "Add New Service";
+"add_new_service" = "Add a New Service";
 "label_custom_service" = "Custom Service";
 "available_services" = "Available Services";
-"search_service" = "Search Service";
+"search_service" = "Search Services";
 "service_name_field" = "Service Name...";
 
 "all" = "All";
 "shopping" = "Shopping";
-"seriesMovies" = "Series - Movies";
+"seriesMovies" = "Series & Movies";
 "selfDevelopment" = "Self-Development";
 "music" = "Music";
 "game" = "Games";
@@ -58,12 +58,14 @@
 "storage" = "Storage";
 
 //UserSubscriptionsView
-"your_subscriptions" = "Your Subscriptions";
+"your_subscriptions" = "My Subscriptions";
 "sort_option" = "Sort Options";
-"text_subscription_removed_succesfully" = "The '%@' removed successfully.";
+"text_subscription_removed_succesfully" = "The '%@' has been removed successfully.";
 "text_subscription_remove_failed" = "Failed to remove '%@'. Please try again.";
 "text_subscription_updated_succesfully" = "'%@' edited successfully.";
 "text_subscription_update_failed" = "Failed to update '%@'. Please try again.";
+"text_no_subscriptions" = "You have no subscriptions.";
+"error_fetching_subscription" = "An error occurred while fetching subscriptions.";
 
 "priceAscending" = "Price ↑";
 "priceDescending" = "Price ↓";
@@ -82,9 +84,10 @@
 //ServicePlansView
 "label_available_plans" = "Available Plans";
 "label_custom_plan" = "Custom Plan";
-"label_add_custom_plan" = "Add Custom Plan";
+"label_add_custom_plan" = "Add a Custom Plan";
 "label_plans_for_service" = "%@'s Plans";
 "text_selected_plan_added" = "Selected plan added successfully:\n %@ - %@ ₺";
+"text_error_selected_plan_added" = "An error occurred while adding plan.";
 
 //CustomServiceView
 "label_service_name" = "Service Name:";
@@ -96,7 +99,7 @@
 "label_user_count" = "User Count:";
 "label_enter_user_count" = "How many users are using it?";
 "button_add_service" = "Add";
-"text_invalid_price_format" = "Invalid price format.";
+"text_invalid_price_format" = "Invalid price format. Please enter a valid price.";
 
 //EditSubscriptionSheetView
 "label_edit_subscription" = "Edit Subscription";

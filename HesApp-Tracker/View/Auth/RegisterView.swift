@@ -10,7 +10,7 @@ struct RegisterView: View {
     
     @Binding var authTabBarSelection: Int
     
-    @ObservedObject var userAuthVM = AuthenticationViewModel()
+    @ObservedObject var authVM = AuthenticationViewModel()
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appState: AppState
@@ -71,17 +71,18 @@ struct RegisterView: View {
     
     private var registrationFeedback: some View {
         VStack {
-            if let error = userAuthVM.registrationError {
-                Text(error)
+            if authVM.registerState == .failure && authVM.registrationError != nil {
+                Text(authVM.registrationError!)
                     .errorFeedbackTextStyle()
                     .padding()
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
-                            userAuthVM.registrationError = nil
+                            authVM.registrationError = nil
                         }
                     }
             }
-            if userAuthVM.registrationSuccess {
+            
+            if authVM.registerState == .success {
                 Text("text_registeration_succesful")
                     .successFeedbackTextStyle()
                     .padding()
@@ -102,7 +103,7 @@ struct RegisterView: View {
         }
         .padding(.top, 15)
         .padding(.bottom, 15)
-        .disabled(userAuthVM.isRegistering)
+        .disabled(authVM.registerState == .registering)
     }
     
     private var appLogoView: some View {
@@ -136,17 +137,11 @@ struct RegisterView: View {
     
     private func register() {
         if password != confirmPassword {
-            userAuthVM.registrationError = appState.localizedString(for: "error_password_doesnot_match")
+            authVM.registrationError = appState.localizedString(for: "error_password_doesnot_match")
             return
         }
         
-        userAuthVM.registerUserToFirebaseAuth(email: email, password: password, name: name, surname: surname) { success in
-            if success {
-                userAuthVM.registrationSuccess = true
-            } else {
-                userAuthVM.registrationSuccess = false
-            }
-        }
+        authVM.registerUserToFirebaseAuth(email: email, password: password, name: name, surname: surname)
     }
     
 }

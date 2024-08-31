@@ -7,16 +7,22 @@ struct AppMainTabView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        ZStack{
-            TabViewBackground()
-            HStack{
-                homeButton
-                Spacer()
-                servicesButton
-                Spacer()
-                userSubscriptionsButton
+        
+        VStack(spacing: 0) {
+            tabViewDivider
+            
+            ZStack{
+                TabViewBackground()
+                HStack{
+                    homeButton
+                    Spacer()
+                    servicesButton
+                    Spacer()
+                    userSubscriptionsButton
+                }
             }
         }
+       
     }
     
     
@@ -125,6 +131,12 @@ struct AppMainTabView: View {
             .padding()
         }
         .frame(maxWidth: .infinity)
+    }
+    
+    private var tabViewDivider: some View {
+        Divider()
+            .frame(height: 0.1)
+            .background(.black)
     }
     
 }

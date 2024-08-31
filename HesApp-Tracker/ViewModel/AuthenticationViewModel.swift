@@ -1,44 +1,57 @@
 import Foundation
+import os.log
 
 class AuthenticationViewModel: ObservableObject {
     
+    enum RegisterState: Equatable{
+        case registering
+        case success
+        case failure
+    }
+    
+    enum LoginState: Equatable{
+        case logging
+        case success
+        case failure
+    }
+    
+    enum LoggingOutState: Equatable{
+        case loggingOut
+        case success
+        case failure(String)
+    }
+    
+    @Published var registerState: RegisterState?
     @Published var registrationError: String?
-    @Published var registrationSuccess: Bool = false
-    @Published var isRegistering: Bool = false
+
+    @Published var loginState: LoginState?
+    @Published var loggingError: String?
+ 
+    @Published var loggingOutState: LoggingOutState?
     
-    @Published var loginError: String?
-    @Published var isLoggingIn: Bool = false
-    @Published var loginSuccess: Bool = false
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "AuthenticationViewModel")
     
-    @Published var isLoggingOut: Bool = false
-    @Published var logOutError: String?
-    @Published var logOutSuccess: Bool = false
     
-    @Published var fullname: String = ""
+// MARK: - Firebase
     
     /// Registers a user with Firebase Authentication.
-    func registerUserToFirebaseAuth(email: String, password: String, name: String, surname: String, completion: @escaping (Bool) -> Void) {
-        isRegistering = true
-        registrationError = nil
+    func registerUserToFirebaseAuth(email: String, password: String, name: String, surname: String) {
+        self.registerState = .registering
         
         AuthManager.shared.auth.createUser(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 guard error == nil else {
-                    self.handleRegistrationError(error: error!.localizedDescription)
-                    completion(false)
+                    self.logger.error("Register error: \(error!.localizedDescription)")
+                    self.registrationError = error!.localizedDescription
                     return
                 }
                 
                 self.saveUserDetailsToFirestore(email: email, name: name, surname: surname) { success in
                     if success {
-                        self.registrationSuccess = true
-                        self.isRegistering = false
-                        completion(true)
-                        return
+                        self.logger.info("Registiration has been successful.")
+                        self.registerState = .success
                     } else {
-                        self.handleRegistrationError(error: "An error occured while trying to sign up.")
-                        completion(false)
-                        return
+                        self.registerState = .failure
                     }
                 }
             }
@@ -47,36 +60,37 @@ class AuthenticationViewModel: ObservableObject {
     
     /// Saves user details to Firestore.
     private func saveUserDetailsToFirestore(email: String, name: String, surname: String, completion: @escaping (Bool) -> Void) {
-
-        let userData: [String: Any] = ["Name": name, "Surname": surname]
+        let userData: [String: Any] = ["Name": name, "Surname": surname, "Subscriptions": [:] ]
         
         FirestoreManager.shared.db.collection("Users").document(email).setData(userData) { error in
             DispatchQueue.main.async {
                 guard error == nil else {
-                    self.handleLoginError(error: error!.localizedDescription)
+                    self.logger.error("An error occured while trying to save user's details on Firestore: \(error!.localizedDescription)")
                     completion(false)
                     return
                 }
+                self.logger.info("User's details has been saved on Firestore successfully.")
                 completion(true)
             }
         }
-        
     }
     
     /// Logs in a user with Firebase Authentication.
-    func loginUser(email: String, password: String, completion: @escaping (Bool) -> Void) {
+    func loginUser(email: String, password: String) {
+        self.loginState = .logging
         
         AuthManager.shared.auth.signIn(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 guard error == nil else {
-                    self.handleLoginError(error: error!.localizedDescription)
-                    completion(false)
+                    self.logger.error("Login error: \(error!.localizedDescription)")
+                    self.loggingError = error!.localizedDescription
+                    self.loginState = .failure
                     return
                 }
-                self.loginSuccess = true
-                self.isLoggingIn = false
+                
+                self.logger.info("Login successful.")
+                self.loginState = .success
                 AuthManager.shared.currentUserEmail = result?.user.email
-                completion(true)
             }
         }
         
@@ -84,36 +98,21 @@ class AuthenticationViewModel: ObservableObject {
     
     /// Logs out a user with Firebase Authentication.
     func logOut() {
-        self.isLoggingOut = true
+        self.loggingOutState = .loggingOut
         
         do {
             try AuthManager.shared.auth.signOut()
         }
         catch let signOutError as NSError {
-            self.logOutError = "Error signing out: \(signOutError.localizedDescription)"
-            self.isLoggingOut = false
-            self.logOutSuccess = false
+            print(signOutError)
+            self.logger.error("Log out error: \(signOutError)")
+            self.loggingOutState = .failure("logging_out_error")
             return
         }
         
+        self.logger.info("Log out successful.")
+        self.loggingOutState = .success
         UserDefaults.standard.set(false, forKey: "isUserLoggedIn")
-        self.isLoggingOut = false
-        self.logOutSuccess = true
-    }
-    
-    
-    /// Handles registration errors and updates the state
-    private func handleRegistrationError(error: String) {
-      registrationError = error
-      registrationSuccess = false
-      isRegistering = false
-    }
-
-    /// Handles login errors and updates the state
-    private func handleLoginError(error: String) {
-      loginError = error
-      loginSuccess = false
-      isLoggingIn = false
     }
     
 }

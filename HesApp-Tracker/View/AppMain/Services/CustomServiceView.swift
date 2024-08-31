@@ -183,12 +183,15 @@ struct CustomServiceView: View {
             DispatchQueue.main.async {
                 if success {
                     appState.isUserChangedSubsList = true
+                    
+                    let planPriceString = String(format: "%.2f", plan.planPrice)
+                    self.feedbackMessage = String(format: appState.localizedString(for: "text_selected_plan_added"), plan.planName, planPriceString)
                     self.handleShowingFeedback(isSuccessful: true)
                 } else {
+                    self.feedbackMessage = String(format: appState.localizedString(for: "text_error_selected_plan_added"))
                     self.handleShowingFeedback(isSuccessful: false)
                 }
                 
-                self.feedbackMessage = userSubsVM.planAddingError ?? ""
                 self.showFeedbackSheet = true
             }
         }

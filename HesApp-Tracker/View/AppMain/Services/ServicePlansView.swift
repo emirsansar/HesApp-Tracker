@@ -129,20 +129,21 @@ struct ServicePlansView: View {
         userSubsVM.addPlanToUserOnFirestore(
             serviceName: chosenService.serviceName,
             plan: plan,
-            personCount: quantity)
-            { success in
-                if success {
-                    self.isAddError = false
-                    let planPriceString = String(format: "%.2f", plan.planPrice)
-                    self.feedbackMessage = String(format: appState.localizedString(for: "text_selected_plan_added"), plan.planName, planPriceString)
-                    appState.isUserChangedSubsList = true
-                } else {
-                    self.isAddError = true
-                    self.feedbackMessage = userSubsVM.planAddingError!
-                }
-
-                self.showFeedbackSheet = true
+            personCount: quantity
+        )
+        { success in
+            if success {
+                self.isAddError = false
+                let planPriceString = String(format: "%.2f", plan.planPrice)
+                self.feedbackMessage = String(format: appState.localizedString(for: "text_selected_plan_added"), plan.planName, planPriceString)
+                appState.isUserChangedSubsList = true
+            } else {
+                self.isAddError = true
+                self.feedbackMessage = String(format: appState.localizedString(for: "text_error_selected_plan_added"))
             }
+
+            self.showFeedbackSheet = true
+        }
     }
     
 }

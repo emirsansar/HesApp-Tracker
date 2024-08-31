@@ -44,16 +44,18 @@ struct LoginView: View {
     
     private var loginFeedback: some View {
         VStack {
-            if let error = userAuthVM.loginError {
-                Text(error)
+            //if let error = userAuthVM.loginError {
+            if userAuthVM.loginState == .failure && userAuthVM.loggingError != nil {
+                Text(userAuthVM.loggingError!)
                     .errorFeedbackTextStyle()
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            userAuthVM.loginError = nil
+                            userAuthVM.loggingError = nil
                         }
                     }
             }
-            if userAuthVM.loginSuccess {
+            
+            if userAuthVM.loginState == .success {
                 Text("text_login_successful")
                     .successFeedbackTextStyle()
                     .onAppear {
@@ -65,7 +67,7 @@ struct LoginView: View {
             }
         }
         .frame(width: UIScreen.main.bounds.width*0.80)
-        .animation(.easeInOut, value: userAuthVM.loginSuccess || userAuthVM.loginError != nil)
+        .animation(.easeInOut, value: userAuthVM.loginState == .success || userAuthVM.loginState == .failure)
     }
     
     private var loginButton: some View {
@@ -75,7 +77,7 @@ struct LoginView: View {
                 .buttonStyle()
         }
         .padding()
-        .disabled(userAuthVM.isLoggingIn)
+        .disabled(userAuthVM.loginState == .logging)
     }
     
     private var appLogoView: some View {
@@ -105,16 +107,11 @@ struct LoginView: View {
         }
     }
     
+    
     // MARK: - Functions
     
     private func login() {
-        userAuthVM.loginUser(email: email, password: password) { success in
-            if success {
-                userAuthVM.loginSuccess = true
-            } else {
-                userAuthVM.loginSuccess = false
-            }
-        }
+        userAuthVM.loginUser(email: email, password: password)
     }
     
 }

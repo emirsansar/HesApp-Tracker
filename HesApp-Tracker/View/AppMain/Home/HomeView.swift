@@ -11,46 +11,38 @@ struct HomeView: View {
     @ObservedObject private var authVM = AuthenticationViewModel()
     
     @State private var showLogOutFeedback = false
-    @State private var logOutFeedbackText: String?
     @State private var isLogOutAlertPresented = false
     @State private var isSideMenuVisible = false
-    
     @State private var showSelectLanguageSheetView = false
     
     @Environment(\.colorScheme) var colorScheme
     
+    init() {
+        configureNavigationBarAppearance()
+    }
+    
     var body: some View {
         
         NavigationView {
-            ZStack {
-                backgroundView
-                VStack {
-                    appLogoView
-                    greetingView
-                    userSummaryCard
-                    if showLogOutFeedback {
-                        feedbackView
+            VStack(spacing: 0) {
+                navBarDivider
+                ZStack {
+                    
+                    backgroundView
+                    
+                    mainContentView
+                    
+                    if isSideMenuVisible {
+                        overlayView
+                        sideMenuContent
                     }
-                    Spacer()
-                }
-                
-                if isSideMenuVisible {
-                    Color.black.opacity(0.5)
-                        .edgesIgnoringSafeArea(.all)
-                    sideMenuContent
                 }
             }
+            
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    sideMenuToggleButton
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("home")
-                        .font(.system(size: 19, weight: .semibold))
-                        .foregroundStyle(Color.black.opacity(0.8))
-                }
+                leadingToolbarItem
+                principalToolbarItem
             }
-            .background(Color.mainBlue)
             .navigationBarTitleDisplayMode(.inline)
         }
         .frame(maxWidth: .infinity)
@@ -62,15 +54,12 @@ struct HomeView: View {
         }
         .onAppear {
             loadUserData()
-            configureNavigationBarAppearance()
         }
-        .onChange(of: authVM.logOutSuccess) {
-            if authVM.logOutSuccess {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        .onChange(of: authVM.loggingOutState) {
+            if authVM.loggingOutState == .success {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     self.appState.updateLoginStatus(isLogged: false)
                 }
-            } else if let error = authVM.logOutError {
-                logOutFeedbackText = error
             }
         }
         
@@ -79,6 +68,18 @@ struct HomeView: View {
     
     // MARK: - Subviews
     
+    private var mainContentView: some View {
+        VStack {
+            appLogoView
+            greetingView
+            userSummaryCard
+            if showLogOutFeedback {
+                feedbackView
+            }
+            Spacer()
+        }
+    }
+
     private var appLogoView: some View {
         Image("hesapp")
             .resizable()
@@ -89,7 +90,7 @@ struct HomeView: View {
     
     private var sideMenuToggleButton: some View {
         Button {
-            withAnimation {
+            withAnimation(.easeInOut(duration: 0.2)) {
                 isSideMenuVisible.toggle()
             }
         } label: {
@@ -148,7 +149,7 @@ struct HomeView: View {
             annualSpendingView
         }
         .padding()
-        .background(Color(.systemGray4).opacity(0.85))
+        .background(colorScheme == .dark ? Color(.systemGray4).opacity(0.85) :  Color(.systemGray5).opacity(0.90))
         .cornerRadius(10)
         .shadow(color: Color(.systemGray3), radius: 5, x: 0, y: 5)
         .frame(width: UIScreen.main.bounds.width * 0.85)
@@ -174,23 +175,30 @@ struct HomeView: View {
                 .frame(alignment: .leading)
                 .fontWeight(.medium)
             Spacer()
-            Text(value)
-                .frame(alignment: .trailing)
-                .fontWeight(.medium)
-            Text("₺")
-                .font(.system(size: 16, weight: .medium))
+            if userSubsVM.fetchingUserSummaryState == .loading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(0.8)
+            } else if userSubsVM.fetchingUserSummaryState == .success {
+                Text(value)
+                    .frame(alignment: .trailing)
+                    .fontWeight(.medium)
+                Text("₺")
+                    .font(.system(size: 16, weight: .medium))
+            }
+            
         }
         .padding(.vertical, 5)
     }
     
     private var feedbackView: some View {
         VStack {
-            if let error = logOutFeedbackText {
-                Text(error)
+            if authVM.loggingOutState == .failure("logging_out_error") {
+                Text(appState.localizedString(for: "text_error_log_out"))
                     .errorFeedbackTextStyle()
             }
             
-            if authVM.isLoggingOut || authVM.logOutSuccess {
+            if authVM.loggingOutState == .loggingOut || authVM.loggingOutState == .success {
                 VStack {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
@@ -250,18 +258,42 @@ struct HomeView: View {
         }
     }
     
+    /// Handles the semi-transparent background when the side menu is visible.
+    private var overlayView: some View {
+        Color.black.opacity(0.5)
+            .edgesIgnoringSafeArea(.all)
+    }
+    
+    private var leadingToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            sideMenuToggleButton
+        }
+    }
+    
+    private var principalToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text("home")
+                .font(.system(size: 19, weight: .semibold))
+                .foregroundStyle(Color.black.opacity(0.8))
+        }
+    }
+    
+    private var navBarDivider: some View {
+        Divider()
+            .frame(height: 0.3)
+            .background(.black)
+    }
+
     
     // MARK: - Functions
     
+    /// Loads user data from Firestore if the app is opened for the first time or the user's subscription list has changed.
     private func loadUserData() {
-        /// Loads user data from Firestore if the app is opened for the first time or the user's subscription list has changed.
-        guard !appState.isFetchedUserDetails || appState.isUserChangedSubsList else {
+        if !appState.isFetchedUserDetails || appState.isUserChangedSubsList {
+            loadUserDataFromFirestore()
+        } else {
             loadUserDataFromSwiftData()
-            return
         }
-        
-        /// Loads user data from SwiftData.
-        loadUserDataFromFirestore()
     }
 
     private func loadUserDataFromFirestore() {
@@ -286,11 +318,14 @@ struct HomeView: View {
     
     /// Fetch subscription summary and update user subscription details.
     private func loadUserDataFromSwiftData() {
+        userSubsVM.fetchingUserSummaryState = .loading
         guard let userEmail = AuthManager.shared.auth.currentUser?.email else { return }
         
         if let existingUser = userVM.fetchUserFromSwiftData(byEmail: userEmail, context: context) {
+            userSubsVM.fetchingUserSummaryState = .success
             userVM.currentUser = existingUser
         } else {
+            userSubsVM.fetchingUserSummaryState = .failure
             print("No user found in SwiftData with email: \(userEmail)")
         }
     }
@@ -305,8 +340,7 @@ struct HomeView: View {
                 appState.isFetchedUserSubscriptions = false
                 authVM.logOut()
             } else {
-                authVM.logOutSuccess = false
-                authVM.logOutError = appState.localizedString(for: "text_error_log_out")
+                authVM.loggingOutState = .failure("logging_out_error")
             }
         }
     }
@@ -314,7 +348,7 @@ struct HomeView: View {
     /// Configures the navigation bar appearance.
     private func configureNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = UIColor(Color(.mainBlue).opacity(0.90))
+        appearance.backgroundColor = UIColor(Color(.mainBlue))
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }

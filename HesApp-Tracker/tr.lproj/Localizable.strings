@@ -21,7 +21,7 @@
 
 //RegisterView
 "text_registeration_succesful" = "Kayıt Başarılı!";
-"button_register" = "Kayıt";
+"button_register" = "Kayıt Ol";
 "label_name" = "Ad";
 "label_surname" = "Soyad";
 "label_confirm_password" = "Şifre (Tekrar)";
@@ -64,6 +64,8 @@
 "text_subscription_remove_failed" = "'%@' kaldırılırken bir sorun oluştu. Lütfen tekrar deneyiniz. ";
 "text_subscription_updated_succesfully" = "%@ başarıyla güncellendi.";
 "text_subscription_update_failed" = "'%@' güncellenirken bir sorun oluştu. Lütfen tekrar deneyiniz.";
+"text_no_subscriptions" = "Bir aboneliğiniz bulunmamaktadır.";
+"error_fetching_subscription" = "Abonelikler çekilirken bir hata oluştu.";
 
 "priceAscending" = "Fiyat ↑";
 "priceDescending" = "Fiyat ↓";
@@ -85,6 +87,7 @@
 "label_add_custom_plan" = "Özel Plan Ekle";
 "label_plans_for_service" = "%@ Planları";
 "text_selected_plan_added" = "Seçilen plan başarıyla eklendi:\n %@ - %@ ₺";
+"text_error_selected_plan_added" = "Plan eklenmeye çalışırken bir hata oldu.";
 
 //CustomServiceView
 "label_service_name" = "Servis İsmi";

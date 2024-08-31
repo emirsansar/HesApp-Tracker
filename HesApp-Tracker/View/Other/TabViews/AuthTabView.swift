@@ -8,14 +8,18 @@ struct AuthTabView: View {
     
     var body: some View {
         
-        ZStack {
-            TabViewBackground()
-            HStack {
-                Spacer()
-                loginButton
-                Spacer()
-                registerButton
-                Spacer()
+        VStack(spacing: 0) {
+            tabViewDivider
+                    
+            ZStack {
+                TabViewBackground()
+                HStack {
+                    Spacer()
+                    loginButton
+                    Spacer()
+                    registerButton
+                    Spacer()
+                }
             }
         }
         
@@ -92,6 +96,12 @@ struct AuthTabView: View {
             .padding()
         }
         .frame(maxWidth: .infinity)
+    }
+    
+    private var tabViewDivider: some View {
+        Divider()
+            .frame(height: 0.1)
+            .background(.black)
     }
     
 }

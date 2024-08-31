@@ -1,9 +1,12 @@
 import Foundation
 import SwiftData
+import os.log
 
 class UserViewModel: ObservableObject {
     
     @Published var currentUser: User
+    
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "UserViewModel")
 
     init() {
         let email = AuthManager.shared.currentUserEmail!
@@ -27,6 +30,7 @@ class UserViewModel: ObservableObject {
         FirestoreManager.shared.db.collection("Users").document(email!).getDocument { documentSnapshot, error in
             DispatchQueue.main.async {
                 guard let document = documentSnapshot, error == nil else {
+                    self.logger.error("User cannot be found on 'Users' collection.")
                     return
                 }
                 
@@ -51,9 +55,9 @@ class UserViewModel: ObservableObject {
                 
         do {
             try context.save()
-            print("User data saved or updated successfully.")
+            self.logger.info("User data saved or updated successfully on SwiftData.")
         } catch {
-            print("Failed to save or update user data: \(error)")
+            self.logger.error("Failed to save or update user data on SwiftData: \(error)")
         }
     }
     
@@ -65,9 +69,10 @@ class UserViewModel: ObservableObject {
         
         do {
             let fetchedUsers = try context.fetch(fetchRequest)
+            self.logger.info("User has been fetched from SwiftData.")
             return fetchedUsers.first
         } catch {
-            print("Failed to fetch user: \(error)")
+            self.logger.error("Failed to fetch user on SwiftData: \(error)")
             return nil
         }
     }

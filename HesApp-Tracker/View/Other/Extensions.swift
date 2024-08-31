@@ -5,11 +5,13 @@ extension View {
     
     func errorFeedbackTextStyle() -> some View {
         self.font(.body)
-            .background(Color.red.opacity(0.60))
             .foregroundColor(.black.opacity(0.9))
+            .padding()
+            .background(Color.red.opacity(0.60))
             .cornerRadius(8)
             .padding(.bottom, 10)
             .transition(.opacity)
+            .multilineTextAlignment(.center)
     }
     
     func successFeedbackTextStyle() -> some View {
@@ -19,6 +21,7 @@ extension View {
             .padding()
             .background(Color.green.opacity(0.60))
             .cornerRadius(8)
+            .multilineTextAlignment(.center)
     }
     
     func textFieldStyle() -> some View {

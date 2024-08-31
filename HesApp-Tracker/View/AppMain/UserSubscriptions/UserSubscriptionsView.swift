@@ -24,7 +24,7 @@ struct UserSubscriptionsView: View {
         VStack(spacing: 0) {
             headerView
             subscriptionListDivider
-            subscriptionsListView
+            userSubscriptionListContent
         }
         .onAppear(perform: loadUserSubscriptions)
         .sheet(isPresented: $showFeedbackSheet) {
@@ -91,6 +91,61 @@ struct UserSubscriptionsView: View {
         }
     }
     
+    private var userSubscriptionListContent: some View {
+        Group {
+            switch userSubscriptionsVM.fetchingSubscriptionsState {
+                case .loading:
+                    loadingView
+                case .failure:
+                    errorView()
+                case .success:
+                    if userSubscriptionsVM.userSubscriptions.isEmpty {
+                        emptyStateView
+                    } else {
+                        subscriptionsListView
+                    }
+                case .none:
+                    Spacer()
+                }
+        }.transition(.opacity)
+    }
+
+    private var loadingView: some View {
+        VStack {
+            Spacer()
+            ProgressView("Loading...")
+            Spacer()
+        }
+    }
+
+    private func errorView() -> some View {
+        VStack {
+            Spacer()
+            Text(appState.localizedString(for: "error_fetching_subscription"))
+                .font(.body)
+                .foregroundColor(.red)
+                .padding()
+            Spacer()
+        }
+        .refreshable {
+            appState.isFetchedUserSubscriptions = false
+        }
+    }
+
+    private var emptyStateView: some View {
+        VStack {
+            Spacer()
+            Text(appState.localizedString(for: "text_no_subscriptions"))
+                .font(.body)
+                .foregroundColor(.gray)
+                .padding()
+            Spacer()
+        }
+        .refreshable {
+            appState.isFetchedUserSubscriptions = false
+        }
+    }
+
     private var subscriptionListDivider: some View {
         Divider()
             .frame(height: 0.6)
@@ -110,20 +165,39 @@ struct UserSubscriptionsView: View {
     
     // MARK: - Functions
     
-    /// Loads user's subscriptions from ViewModel.
+    /// Loads user's subscriptions based on the current state.
     private func loadUserSubscriptions() {
-        if !appState.isFetchedUserSubscriptions || appState.isUserChangedSubsList {
-            userSubscriptionsVM.fetchUserSubscriptions() { fetchedUserSubscriptions, success in
-                if success {
-                    processAddingUserSubscriptionsToSwiftData(fetchedUserSubscriptinos: fetchedUserSubscriptions!)
-                    appState.isFetchedUserSubscriptions = true
-                }
-            }
+        if shouldFetchFromFirestore() {
+            fetchFromFirestore()
         } else {
-            userSubscriptionsVM.userSubscriptions = userSubsriptionsFromSWData
+            fetchFromSwiftData()
         }
     }
     
+    /// Determines if data should be fetched from Firestore.
+    private func shouldFetchFromFirestore() -> Bool {
+        return !appState.isFetchedUserSubscriptions || appState.isUserChangedSubsList
+    }
+    
+    /// Fetches subscriptions from Firestore by ViewModel.
+    private func fetchFromFirestore() {
+        userSubscriptionsVM.fetchUserSubscriptionsFromFirestore { fetchedUserSubscriptions, success in
+            if success {
+                processAddingUserSubscriptionsToSwiftData(fetchedUserSubscriptinos: fetchedUserSubscriptions!)
+                
+                appState.isFetchedUserSubscriptions = true
+            }
+        }
+    }
+    
+    /// Loads subscriptions from SwiftData and sets the appropriate fetching state.
+    private func fetchFromSwiftData() {
+        userSubscriptionsVM.userSubscriptions = userSubsriptionsFromSWData
+        
+        userSubscriptionsVM.fetchingSubscriptionsState = .success
+    }
+   
+    /// Processes and saves new subscriptions to SwiftData.
     private func processAddingUserSubscriptionsToSwiftData (fetchedUserSubscriptinos: [UserSubscription]) {
         let existingUserSubscriptions = Set(userSubsriptionsFromSWData.map { $0.serviceName })
         let newUserSubscriptions = fetchedUserSubscriptinos.filter { !existingUserSubscriptions.contains($0.serviceName) }
@@ -195,7 +269,7 @@ struct UserSubscriptionsView: View {
     private func updateSelectedUserSubscription(updatedSubscription: UserSubscription) {
         showEditSheet = false
         
-        userSubscriptionsVM.updateSubscription(updatedSubscription: updatedSubscription) { success, error in
+        userSubscriptionsVM.updateSubscription(updatedSubscription: updatedSubscription) { success in
             DispatchQueue.main.async {
                 if success {
                     userSubscriptionsVM.updateUserSubscriptionInSwiftData(
@@ -207,7 +281,7 @@ struct UserSubscriptionsView: View {
                             handleUpdateResult(success: successOnSWData, updatedSubscription: updatedSubscription)
                         }
                 } 
-                else if error != nil {
+                else {
                     handleUpdateResult(success: false, updatedSubscription: updatedSubscription)
                 }
             }

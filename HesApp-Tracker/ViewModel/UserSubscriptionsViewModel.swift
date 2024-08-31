@@ -1,22 +1,31 @@
 import FirebaseFirestore
 import SwiftData
+import os.log
 
 class UserSubscriptionsViewModel: ObservableObject {
     
-    @Published var planAddingError: String?
-    @Published var isAddingPlan: Bool = false
-    @Published var planAddedSuccesfully: Bool = false
+    enum FetchingSubscriptionsState: Equatable{
+        case loading
+        case success
+        case failure
+    }
+    
+    enum FetchingUserSummaryState: Equatable{
+        case loading
+        case success
+        case failure
+    }
+
+    @Published var fetchingSubscriptionsState: FetchingSubscriptionsState?
+    @Published var fetchingUserSummaryState: FetchingUserSummaryState?
     
     @Published var userSubscriptions = [UserSubscription]()
-    @Published var fetchingSubsError: String?
-    @Published var isFetchingSubs: Bool = false
-    
-    @Published var fetchSubscriptionSummaryError: String?
-    @Published var isGettingUserSubCountandSpending: Bool = false
     
     @Published var totalSubscriptionCount: Int = 0
     @Published var totalMonthlySpending: Double = 0.0
- 
+    
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "UserSubscriptionsViewModel")
+    
     
 // MARK: - Firestore
     
@@ -28,9 +37,7 @@ class UserSubscriptionsViewModel: ObservableObject {
         userRef.getDocument { documentSnapshot, error in
             guard error == nil else {
                 DispatchQueue.main.async {
-                    self.planAddingError = "There is an error: \(error!.localizedDescription)"
-                    self.planAddedSuccesfully = false
-                    self.isAddingPlan = false
+                    self.logger.error("There is an error: \(error!.localizedDescription)")
                 }
                 completion(false)
                 return
@@ -62,14 +69,12 @@ class UserSubscriptionsViewModel: ObservableObject {
             userRef.setData(updateData, merge: true) { error in
                 DispatchQueue.main.async {
                     if let error = error {
-                        self.planAddingError = "Error: \(error.localizedDescription)"
-                        self.planAddedSuccesfully = false
+                        self.logger.error("Error: \(error.localizedDescription)")
                         completion(false)
                     } else {
-                        self.planAddedSuccesfully = true
+                        self.logger.info("Successfully added plan \(plan.planName, privacy: .public) to user \(AuthManager.shared.currentUserEmail!, privacy: .public).")
                         completion(true)
                     }
-                    self.isAddingPlan = false
                 }
             }
         }
@@ -77,24 +82,24 @@ class UserSubscriptionsViewModel: ObservableObject {
     }
 
     /// Fetchs the user's subscriptions from Firestore.
-    func fetchUserSubscriptions(completion: @escaping ([UserSubscription]? ,Bool) -> Void) {
-
+    func fetchUserSubscriptionsFromFirestore(completion: @escaping ([UserSubscription]? ,Bool) -> Void) {
+        self.fetchingSubscriptionsState = .loading
+        
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
-                DispatchQueue.main.async {
-                    self.fetchingSubsError = "An error occurred: \(error.localizedDescription)"
-                }
+                self.logger.error("An error occurred whilte trying to fetch user's subscription list: \(error.localizedDescription)")
+                self.fetchingSubscriptionsState = .failure
                 completion(nil, false)
                 return
             }
             
             guard let document = documentSnapshot, document.exists,
                   let subscriptions = document.data()?["Subscriptions"] as? [String: [String: Any]] else {
-                DispatchQueue.main.async {
-                    self.fetchingSubsError = "There are no subscriptions."
-                }
+                
+                self.logger.error("User's subscription list cannot be found.")
+                self.fetchingSubscriptionsState = .failure
                 completion(nil, false)
                 return
             }
@@ -106,14 +111,15 @@ class UserSubscriptionsViewModel: ObservableObject {
                   let planPrice = serviceDetails["Price"] as? Double,
                   let personCount = serviceDetails["PersonCount"] as? Int {
                    
-                   //let plan = Plan(planName: planName, planPrice: planPrice)
                    let userSub = UserSubscription(serviceName: serviceName, planName: planName, planPrice: planPrice, personCount: personCount)
                    fetchedSubscriptions.append(userSub)
                }
            }
            
            DispatchQueue.main.async {
+               self.logger.info("User's subscriptions list have been fetched successfully.")
                self.userSubscriptions = fetchedSubscriptions
+               self.fetchingSubscriptionsState = .success
                completion(self.userSubscriptions, true)
            }
         }
@@ -135,6 +141,7 @@ class UserSubscriptionsViewModel: ObservableObject {
             
             userRef.updateData(["Subscriptions.\(fieldToRemove)": FieldValue.delete()]) { error in
                 if let error = error {
+                    self.logger.error("Error while trying to remove sub: \(error.localizedDescription)")
                     completion(false, error)
                 } else {
                     DispatchQueue.main.async {
@@ -142,6 +149,7 @@ class UserSubscriptionsViewModel: ObservableObject {
                             self.userSubscriptions.remove(at: index)
                         }
                     }
+                    self.logger.info("Subscriptions have been removed successfully.")
                     completion(true, nil)
                 }
             }
@@ -151,15 +159,15 @@ class UserSubscriptionsViewModel: ObservableObject {
     
     /// Fetches a summary of the user's total subscription count and monthly spending from Firestore.
     func fetchSubscriptionsSummary(completion: @escaping (Int, Double) -> Void){
-        isGettingUserSubCountandSpending = true
+        self.fetchingUserSummaryState = .loading
 
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
                 DispatchQueue.main.async {
-                    self.fetchSubscriptionSummaryError = error.localizedDescription
-                    self.isGettingUserSubCountandSpending = false
+                    self.logger.error("User's summary error: \(error.localizedDescription)")
+                    self.fetchingUserSummaryState = .failure
                 }
                 return
             }
@@ -167,8 +175,8 @@ class UserSubscriptionsViewModel: ObservableObject {
             guard let document = documentSnapshot, document.exists,
                   let subscriptions = document.data()?["Subscriptions"] as? [String: [String: Any]] else {
                     DispatchQueue.main.async {
-                        self.fetchSubscriptionSummaryError = "No subscriptions found."
-                        self.isGettingUserSubCountandSpending = false
+                        self.logger.error("No subscriptions found.")
+                        self.fetchingUserSummaryState = .failure
                 }
                 return
             }
@@ -186,8 +194,9 @@ class UserSubscriptionsViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.totalSubscriptionCount = serviceCount
                 self.totalMonthlySpending = monthlySpend
-                self.isGettingUserSubCountandSpending = false
+                self.fetchingUserSummaryState = .success
                 
+                self.logger.info("User's subscriptions summary have been fetched succesfully.")
                 completion(self.totalSubscriptionCount, self.totalMonthlySpending)
             }
         }
@@ -195,18 +204,20 @@ class UserSubscriptionsViewModel: ObservableObject {
     }
     
     /// Updates the selected subscription on Firebase.
-    func updateSubscription(updatedSubscription: UserSubscription, completion: @escaping (Bool, String?) -> Void) {
+    func updateSubscription(updatedSubscription: UserSubscription, completion: @escaping (Bool) -> Void) {
         
         let userRef = FirestoreManager.shared.db.collection("Users").document(AuthManager.shared.currentUserEmail!)
         
         userRef.getDocument { documentSnapshot, error in
             if let error = error {
-                completion(false, error.localizedDescription)
+                self.logger.error("Error when trying to update sub: \(error.localizedDescription)")
+                completion(false)
             }
             
             guard let document = documentSnapshot, document.exists,
                   var subscriptions = document.data()?["Subscriptions"] as? [String: [String: Any]] else {
-                completion(false, "No subscriptions found or document does not exist.")
+                self.logger.info("No subscriptions found or document does not exist.")
+                completion(false)
                 return
             }
             
@@ -219,19 +230,22 @@ class UserSubscriptionsViewModel: ObservableObject {
                 
                 userRef.updateData(["Subscriptions": subscriptions]) { error in
                     if let error = error {
-                        completion(false, error.localizedDescription)
+                        self.logger.error("\(error.localizedDescription)")
+                        completion(false)
                     } else {
                         DispatchQueue.main.async {
                             if let index = self.userSubscriptions.firstIndex(where: { $0.serviceName == updatedSubscription.serviceName }) {
                                 self.userSubscriptions[index] = updatedSubscription
                             }
-                            completion(true, nil)
+                            self.logger.info("Service have been updated successfully.")
+                            completion(true)
                         }
                     }
                 }
             } 
             else {
-                completion(false, "Service not found in user's subscriptions.")
+                self.logger.error("Service not found in user's subscriptions.")
+                completion(false)
             }
         }
     }
@@ -248,9 +262,9 @@ class UserSubscriptionsViewModel: ObservableObject {
         
         do {
             try context.save()
-            print("User's subscriptions have been successfully saved to SwiftData.")
+            self.logger.info("User's subscriptions have been successfully saved to SwiftData.")
         } catch {
-            print("Failed to save user's subscriptions to SwiftData: \(error)")
+            self.logger.error("Failed to save user's subscriptions to SwiftData: \(error.localizedDescription)")
         }
     }
 
@@ -262,10 +276,10 @@ class UserSubscriptionsViewModel: ObservableObject {
             
             do {
                 try context.save()
-                print("Subscription successfully removed from SwiftData.")
+                self.logger.info("User's subscriptions have been successfully removed to SwiftData.")
                 completion(true)
             } catch {
-                print("Failed to remove subscription from SwiftData: \(error)")
+                self.logger.error("Failed to remove subscription from SwiftData: \(error)")
                 completion(false)
             }
         }
@@ -284,14 +298,15 @@ class UserSubscriptionsViewModel: ObservableObject {
             
             do {
                 try context.save()
-                print("Subscription successfully updated in SwiftData.")
+                
+                self.logger.info("Subscription successfully updated in SwiftData.")
                 completion(true)
             } catch {
-                print("Failed to update subscription in SwiftData: \(error)")
+                self.logger.error("Failed to update subscription in SwiftData: \(error)")
                 completion(false)
             }
         } else {
-            print("Subscription not found.")
+            self.logger.error("Subscription not found on SwiftData.")
             completion(false)
         }
     }
@@ -309,10 +324,10 @@ class UserSubscriptionsViewModel: ObservableObject {
             
             try context.save()
             
-            print("All user subscriptions successfully removed from SwiftData.")
+            self.logger.info("All user subscriptions successfully removed from SwiftData.")
             completion(true)
         } catch {
-            print("Failed to remove all user subscriptions from SwiftData: \(error)")
+            self.logger.error("Failed to remove all user subscriptions from SwiftData: \(error)")
             completion(false)
         }
     }
